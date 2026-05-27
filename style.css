@@ -19,40 +19,13 @@
     background-image: url('main_wedding_photo.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     z-index: 10;
 }.lock-wrapper {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.15); 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.2); 
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center;
     padding: 70px 20px 40px 20px;
-}.top-info {
-    text-align: center;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-}.date { 
-    font-size: 1.3rem; 
-    font-weight: 500;
-    margin-bottom: 5px; 
-    color: #ffffff;
-    letter-spacing: 1px;
-}.time { 
-    font-size: 4.5rem; 
-    font-weight: 700; 
-    color: #ffffff;
-}.swipe-up-text {
-    font-size: 1rem;
-    color: #ffffff;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    animation: blink 1.5s infinite;
-    font-weight: 500;
-}@keyframes blink {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-}/* 2. 홈 화면 */#home-screen {
+}.top-info { text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }.date { font-size: 1.3rem; font-weight: 500; color: #fff; }.time { font-size: 4.5rem; font-weight: 700; color: #fff; }.swipe-up-text { font-size: 1rem; color: #fff; animation: blink 1.5s infinite; }@keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }/* 2. 홈 화면 - 배경에 두 번째 사진 적용 */#home-screen {
     background-image: url('main_wedding_photo.jpg');
     background-size: cover;
     background-position: center;
@@ -65,232 +38,48 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.15); 
+    background: rgba(0, 0, 0, 0.35); /* 사진 위에 아이콘이 잘 보이도록 어둡게 처리 */
+    backdrop-filter: blur(10px); /* 아이폰 배경 블러 효과 */
+    -webkit-backdrop-filter: blur(10px);
     z-index: 1;
-}.hidden {
-    display: none !important;
-}.slide-up {
-    transform: translateY(-100%);
-}/* 음악 재생 버튼 */#music-btn {
+}.hidden { display: none !important; }.slide-up { transform: translateY(-100%); }/* 🎵 [신규] 배경음악 온/오프 음표 버튼 스타일 */#music-btn {
     position: absolute;
     top: 25px;
     right: 25px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 15;
+    backdrop-filter: blur(5px);
+}#music-btn.playing {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }/* 앱 아이콘 배치 그리드 */.app-grid {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px 15px;
-    width: 100%;
-    max-width: 400px;
-    margin-top: 30px;
-}.icon-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-}/* 🌟 절대 깨지지 않는 무적의 아이폰 순정 템플릿 아이콘 디자인 */.icon-box {
-    width: 60px;
-    height: 60px;
-    border-radius: 13.5px; /* 아이폰 전용 곡률 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 6px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    overflow: hidden;
-    position: relative;
-}.icon-emoji {
-    font-size: 1.8rem;
-    z-index: 2;
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 15px;
+    width: 100%; max-width: 400px; margin-top: 30px;
+}.icon-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }.icon-box {
+    width: 60px; height: 60px; border-radius: 13.5px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }.icon-item span {
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-align: center;
-    letter-spacing: -0.3px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-}.icon-item:active .icon-box {
-    transform: scale(0.9);
-}/* 🎨 [디자인 세팅] CSS 코드로 강제 구현한 아이폰 순정 스타일 배경색 */
-/* 1. 우리 이야기 (건강 앱 - 흰 바탕에 붉은 그라데이션 포인트) */
-.ios-health {
-    background: #ffffff;
-}
-.ios-health .icon-emoji { font-size: 2rem; }
-
-/* 2. 오시는 길 (지도 앱 - 연두/하늘색 지도 격자 베이스) */
-.ios-maps {
-    background: linear-gradient(135deg, #a8e6cf, #dcedc1);
-}
-.map-grid-lines {
-    position: absolute; width: 100%; height: 100%;
-    border-right: 2px solid rgba(255,255,255,0.4);
-    border-bottom: 2px solid rgba(255,255,255,0.4);
-    background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
-    background-size: 20px 20px;
-}
-.ios-maps .icon-emoji { font-size: 1.6rem; color: #ff7675; }
-
-/* 3. 갤러리 (사진 앱 - 흰 바탕에 알록달록 꽃잎 레이아웃) */
-.ios-photos {
-    background: #ffffff;
-}
-.flower-petal {
-    position: absolute; width: 22px; height: 22px; border-radius: 50%; opacity: 0.5; filter: blur(1px);
-}
-.pt-1 { background: #ff7675; top: 12px; left: 12px; }
-.pt-2 { background: #74b9ff; top: 12px; right: 12px; }
-.pt-3 { background: #ffeaa7; bottom: 12px; left: 12px; }
-.pt-4 { background: #55efc4; bottom: 12px; right: 12px; }
-.ios-photos .icon-emoji { font-size: 1.4rem; opacity: 0.9; }
-
-/* 4. 참석 여부 (메일 앱 - 순정 시그니처 블루 그라데이션) */
-.ios-mail {
-    background: linear-gradient(180deg, #2980b9, #3498db);
-}
-.ios-mail .icon-emoji { color: white; font-size: 1.5rem; }
-
-/* 5. 축의금 (주식 앱 - 어두운 다크그레이에 파란 등락 선트랙) */
-.ios-stocks {
-    background: #2c3e50;
-}
-.stock-line {
-    position: absolute; width: 100%; height: 2px; background: #00d2d3; top: 50%; transform: rotate(-15px);
-}
-.ios-stocks .icon-emoji { font-size: 1.5rem; }
-
-/* 6. 드레스 코드 (App Store - 청량한 스카이블루에 메탈릭 텍스트) */
-.ios-appstore {
-    background: linear-gradient(180deg, #38ef7d, #11998e); /* 캡처본 스토어 고유 컬러 매칭 */
-}
-.ios-appstore .icon-emoji {
-    font-family: 'Arial', sans-serif; font-weight: bold; color: white; font-size: 2.2rem;
-}
-
-/* 7. 방명록 (메시지 앱 - 순정 시그니처 그린) */
-.ios-messages {
-    background: linear-gradient(180deg, #4cd137, #44bd32);
-}
-.ios-messages .icon-emoji { font-size: 1.6rem; color: white; }
-
-
-/* 하단 독(Dock) 바 스타일 */
-.ios-dock {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 400px;
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 24px;
-    padding: 12px 15px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}.ios-dock .icon-box {
-    margin-bottom: 0;
-    width: 55px;
-    height: 55px;
-}/* --- 오시는 길 상세 창 스타일 --- */.detail-page {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 85%; 
-    background: #ffffff;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
-    animation: slideIn 0.4s ease-out;
-}@keyframes slideIn {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-}.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-}.page-header h3 {
-    font-size: 1.2rem;
-    color: #333;
-}.close-btn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: #999;
-}.page-content {
-    padding: 20px;
-    overflow-y: auto; 
-    color: #444;
-}.info-section {
-    margin-bottom: 25px;
-    line-height: 1.6;
-    font-size: 0.9rem;
-}.info-section h4 {
-    font-size: 1.3rem;
-    color: #111;
-    margin-bottom: 5px;
-}.info-section h5 {
-    font-size: 1rem;
-    color: #d65a31;
-    margin-bottom: 8px;
-}.address-text {
-    color: #666;
-    margin-bottom: 12px;
-}.copy-full {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: bold;
-    background-color: #f1f3f5;
-    color: #333;
-    cursor: pointer;
-    margin-bottom: 8px;
-}.btn-group {
-    display: flex;
-    gap: 8px;
-}.action-btn {
-    flex: 1;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    display: inline-block;
-}.action-btn.kakao {
-    background-color: #fee500 !important;
-    color: #191919 !important;
-}.action-btn.naver {
-    background-color: #03c75a !important;
-    color: #ffffff !important;
-}.sub-title {
-    font-weight: bold;
-    color: #222;
-    margin-bottom: 4px;
-}
+    color: #fff; font-size: 0.75rem; font-weight: 500;
+    margin-top: 5px; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}/* 아이폰 순정 스타일 아이콘 색상 세팅 */.ios-health { background: #fff; }.ios-maps { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }.ios-photos { background: #fff; }.ios-mail { background: linear-gradient(180deg, #2980b9, #3498db); }.ios-stocks { background: #2c3e50; }.ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }.ios-messages { background: linear-gradient(180deg, #4cd137, #44bd32); }/* 하단 독(Dock) 바 */.ios-dock {
+    position: relative; z-index: 2; width: 100%; max-width: 400px;
+    background: rgba(255, 255, 255, 0.25); border-radius: 24px; padding: 12px 15px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}.ios-dock .icon-box { width: 55px; height: 55px; }/* 상세 페이지 팝업 */.detail-page {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 85%; 
+    background: #fff; border-radius: 25px 25px 0 0; z-index: 20;
+    display: flex; flex-direction: column; animation: slideIn 0.4s ease-out;
+}@keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }.page-header { display: flex; justify-content: space-between; padding: 20px; border-bottom: 1px solid #eee; }.close-btn { background: none; border: none; font-size: 1.2rem; color: #999; }.page-content { padding: 20px; }
