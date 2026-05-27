@@ -26,7 +26,6 @@ function handleSwipe() {
         lockScreen.classList.add('slide-up');
         homeScreen.classList.remove('hidden');
         
-        // [추가] 화면을 위로 올리는 행동(터치 제스처)을 감지했을 때 음악 시작!
         playMusic();
 
         setTimeout(() => {
@@ -40,7 +39,6 @@ function playMusic() {
     bgm.play().then(() => {
         isMusicPlaying = true;
         musicBtn.innerText = "🎵";
-        musicBtn.classList.remove('off');
     }).catch(err => {
         console.log("브라우저 차단으로 음악 자동 재생 실패:", err);
     });
@@ -51,12 +49,10 @@ function toggleMusic() {
         bgm.pause();
         isMusicPlaying = false;
         musicBtn.innerText = "🔇";
-        musicBtn.classList.add('off');
     } else {
         bgm.play();
         isMusicPlaying = true;
         musicBtn.innerText = "🎵";
-        musicBtn.classList.remove('off');
     }
 }
 
