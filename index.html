@@ -4,24 +4,19 @@
     <title>우리 결혼합니다</title>
     <link rel="stylesheet" href="style.css"></head><body>
 
-    <!-- 배경음악 오디오 태그 (loop는 무한반복을 의미합니다) -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
-    <!-- 1. 잠금 화면 -->
     <div id="lock-screen" class="screen">
-        <div class="top-info">
-            <div class="date">2026-10-10(SAT)</div>
-            <div class="time">14:50</div>
+        <div class="lock-wrapper">
+            <div class="top-info">
+                <div class="date">2026-10-10 (SAT)</div>
+                <div class="time">14:50</div>
+            </div>
+            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
         </div>
-        <div class="main-photo">
-            <img src="main_wedding_photo.jpg" alt="웨딩 사진">
-        </div>
-        <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
     </div>
 
-    <!-- 2. 홈 화면 -->
     <div id="home-screen" class="screen hidden">
-        <!-- 오른쪽 위에 고정될 음악 제어 버튼 -->
         <button id="music-btn" onclick="toggleMusic()">🎵</button>
 
         <div class="icon-grid">
@@ -44,7 +39,6 @@
         </div>
     </div>
 
-    <!-- 3. 오시는 길 팝업 상세 화면 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <h3>오시는 길</h3>
