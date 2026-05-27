@@ -15,29 +15,45 @@
     top: 0;
     left: 0;
     transition: transform 0.5s ease-in-out;
-}/* 잠금 화면 스타일 */#lock-screen {
-    background: #222; 
-    color: white;
+}/* [대폭 수정] 잠금 화면 스타일 - 사진이 배경으로 꽉 차게 설정 */#lock-screen {
+    background-image: url('main_wedding_photo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 10;
+}/* 사진 위에 글자가 잘 보이도록 어두운 필터를 살짝 깔아줍니다 */.lock-wrapper {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25); 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 60px 20px;
-    z-index: 10;
+    padding: 70px 20px 40px 20px;
 }.top-info {
     text-align: center;
-}.date { font-size: 1.2rem; margin-bottom: 5px; }.time { font-size: 3.5rem; font-weight: bold; }.main-photo img {
-    width: 100%;
-    max-width: 350px;
-    border-radius: 20px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6); /* 글자 뒤 그림자로 가독성 확보 */
+}.date { 
+    font-size: 1.3rem; 
+    font-weight: 500;
+    margin-bottom: 5px; 
+    color: #ffffff;
+    letter-spacing: 1px;
+}.time { 
+    font-size: 4.5rem; 
+    font-weight: 700; 
+    color: #ffffff;
 }.swipe-up-text {
     font-size: 1rem;
+    color: #ffffff;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
     animation: blink 1.5s infinite;
+    font-weight: 500;
 }@keyframes blink {
-    0%, 100% { opacity: 0.3; }
+    0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
 }/* 홈 화면 스타일 */#home-screen {
-    background: #333; 
+    background: #252525; 
     padding: 50px 20px;
     display: flex;
     justify-content: center;
@@ -71,7 +87,7 @@
     gap: 20px;
     width: 100%;
     max-width: 400px;
-    align-self: center; /* 음악 버튼 밑으로 예쁘게 정렬 */
+    align-self: center;
 }.icon-item {
     display: flex;
     flex-direction: column;
