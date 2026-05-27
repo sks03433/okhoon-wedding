@@ -15,7 +15,7 @@
     top: 0;
     left: 0;
     transition: transform 0.5s ease-in-out;
-}/* 1. 잠금 화면 */#lock-screen {
+}/* 1. 잠금 화면 배경 지정 (lock_photo.jpg) */#lock-screen {
     background-image: url('lock_photo.jpg');
     background-size: cover;
     background-position: center;
@@ -23,10 +23,10 @@
     z-index: 10;
 }.lock-wrapper {
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.15); 
+    background: rgba(0, 0, 0, 0.15); /* 첫 번째 사진 무드에 맞춰 투명도 조절 가능 */
     display: flex; flex-direction: column; justify-content: space-between; align-items: center;
     padding: 70px 20px 40px 20px;
-}.top-info { text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }.date { font-size: 1.3rem; font-weight: 500; color: #fff; }.time { font-size: 4.5rem; font-weight: 700; color: #fff; }.swipe-up-text { font-size: 1rem; color: #fff; animation: blink 1.5s infinite; }@keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }/* 2. 홈 화면 (선명한 두 번째 사진 배경) */#home-screen {
+}.top-info { text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }.date { font-size: 1.3rem; font-weight: 500; color: #fff; }.time { font-size: 4.5rem; font-weight: 700; color: #fff; }.swipe-up-text { font-size: 1rem; color: #fff; animation: blink 1.5s infinite; }@keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }/* 2. 홈 화면 배경 지정 (home_photo.jpg) */#home-screen {
     background-image: url('home_photo.jpg');
     background-size: cover;
     background-position: center;
@@ -39,13 +39,15 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.15); 
+    background: rgba(0, 0, 0, 0.3); /* 영화관 사진 위 아이콘 가독성을 위한 암전 처리 */
+    backdrop-filter: blur(8px); /* 홈 화면 아이폰 특유의 블러 효과 */
+    -webkit-backdrop-filter: blur(8px);
     z-index: 1;
 }.hidden { display: none !important; }.slide-up { transform: translateY(-100%); }/* 배경음악 온/오프 버튼 */#music-btn {
     position: absolute;
     top: 25px;
     right: 25px;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     width: 42px;
@@ -61,43 +63,22 @@
 }#music-btn.playing {
     background: rgba(255, 255, 255, 0.4);
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}/* 홈 화면 콘텐츠 정렬 wrapper */.home-content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 400px;
-    margin: 30px auto 0 auto;
-}/* 앱 아이콘 공통 그리드 스타일 */.app-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    width: 100%;
-}/* 🌟 [수정 포인트] 두 번째 줄 아이콘 3개만 아래로 살짝 내리기 */.row-2 {
-    margin-top: 40px; /* 이 수치를 키우면 밑으로 더 내려가고, 줄이면 올라갑니다 */
-}.icon-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-}.icon-item.empty {
-    cursor: default;
-    pointer-events: none;
-}.icon-box {
+}/* 앱 아이콘 배치 그리드 */.app-grid {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 15px;
+    width: 100%; max-width: 400px; margin-top: 30px;
+}.icon-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }.icon-box {
     width: 60px; height: 60px; border-radius: 13.5px;
     display: flex; justify-content: center; align-items: center;
     font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }.icon-item span {
     color: #fff; font-size: 0.75rem; font-weight: 500;
-    margin-top: 6px; text-shadow: 0 1px 5px rgba(0,0,0,0.9);
-    text-align: center;
-}/* 아이폰 순정 스타일 색상 */.ios-health { background: #fff; }.ios-maps { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }.ios-photos { background: #fff; }.ios-mail { background: linear-gradient(180deg, #2980b9, #3498db); }.ios-stocks { background: #2c3e50; }.ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }.ios-messages { background: linear-gradient(180deg, #4cd137, #44bd32); }/* 📱 [수정 포인트] 캡처 화면 원본 형태 그대로 유지된 4칸짜리 하단 독 바 */.ios-dock {
+    margin-top: 5px; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}/* 아이폰 순정 스타일 배경셋 */.ios-health { background: #fff; }.ios-maps { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }.ios-photos { background: #fff; }.ios-mail { background: linear-gradient(180deg, #2980b9, #3498db); }.ios-stocks { background: #2c3e50; }.ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }.ios-messages { background: linear-gradient(180deg, #4cd137, #44bd32); }/* 하단 독 바 */.ios-dock {
     position: relative; z-index: 2; width: 100%; max-width: 400px;
     background: rgba(255, 255, 255, 0.25); border-radius: 24px; padding: 12px 15px;
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); /* 원래 사진처럼 4칸 형태로 고정 */
-    gap: 15px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    margin: 0 auto;
 }.ios-dock .icon-box { width: 55px; height: 55px; }/* 상세 페이지 팝업 */.detail-page {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 85%; 
     background: #fff; border-radius: 25px 25px 0 0; z-index: 20;
