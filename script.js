@@ -3,6 +3,7 @@ const homeScreen = document.getElementById('home-screen');
 const mapPage = document.getElementById('map-page');
 const bgm = document.getElementById('bgm');
 const musicBtn = document.getElementById('music-btn');
+const musicIcon = document.getElementById('music-icon');
 
 let startY = 0;
 let endY = 0;
@@ -25,52 +26,37 @@ function handleSwipe() {
     if (startY - endY > 50) {
         lockScreen.classList.add('slide-up');
         homeScreen.classList.remove('hidden');
-        
-        playMusic();
-
-        setTimeout(() => {
-            lockScreen.classList.add('hidden'); 
-        }, 500);
+        setTimeout(() => { lockScreen.classList.add('hidden'); }, 500);
     }
 }
 
-// 2. 음악 관련 함수
-function playMusic() {
-    bgm.play().then(() => {
-        isMusicPlaying = true;
-        musicBtn.innerText = "🎵";
-    }).catch(err => {
-        console.log("브라우저 차단으로 음악 자동 재생 실패:", err);
-    });
-}
-
+// 2. 배경음악 토글 함수 (수정됨)
 function toggleMusic() {
     if (isMusicPlaying) {
         bgm.pause();
         isMusicPlaying = false;
-        musicBtn.innerText = "🔇";
+        musicIcon.classList.remove('fa-beat'); // 흔들리는 효과 제거
+        musicBtn.classList.remove('playing');
+        musicIcon.className = 'fa-solid fa-music'; // 일반 음표 아이콘
     } else {
-        bgm.play();
-        isMusicPlaying = true;
-        musicBtn.innerText = "🎵";
+        bgm.play().then(() => {
+            isMusicPlaying = true;
+            musicIcon.classList.add('fa-beat'); // 재생 중일 때 콩닥콩닥 흔들림
+            musicBtn.classList.add('playing');
+        }).catch(err => {
+            alert("음악 파일을 불러오는데 실패했습니다. 깃허브에 bgm.mp3가 있는지 확인해주세요!");
+        });
     }
 }
 
-// 3. 오시는 길 창 열고 닫기 함수
-function openMap() {
-    mapPage.classList.remove('hidden');
-}
+// 3. 오시는 길 제어
+function openMap() { mapPage.classList.remove('hidden'); }
+function closeMap() { mapPage.classList.add('hidden'); }
 
-function closeMap() {
-    mapPage.classList.add('hidden');
-}
-
-// 4. 주소 복사 기능
+// 4. 주소 복사
 function copyAddress() {
     const address = "경기 수원시 팔달구 중부대로 181";
     navigator.clipboard.writeText(address).then(() => {
-        alert("주소가 복사되었습니다! 원하시는 네비게이션 앱에 붙여넣으세요.");
-    }).catch(err => {
-        alert("복사 실패했습니다. 직접 주소를 선택해 복사해주세요.");
+        alert("주소가 복사되었습니다!");
     });
 }
