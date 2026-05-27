@@ -52,7 +52,7 @@
 }@keyframes blink {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
-}/* 2. 홈 화면 - 배경 투명도 조절하여 사진이 선명하게 보이도록 함 */#home-screen {
+}/* 2. 홈 화면 - 배경 투명도 조절하여 사진이 완전 선명하게 나오도록 함 */#home-screen {
     background-image: url('main_wedding_photo.jpg');
     background-size: cover;
     background-position: center;
@@ -65,7 +65,7 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.15); /* 사진 원본 색감을 위해 어둡기를 최소화 */
+    background: rgba(0, 0, 0, 0.15); /* 캡처본처럼 인물 사진이 깨끗하게 잘 보이도록 조정 */
     z-index: 1;
 }.hidden {
     display: none !important;
@@ -87,7 +87,7 @@
     justify-content: center;
     align-items: center;
     z-index: 15;
-}/* 앱 아이콘 그리드 */.app-grid {
+}/* 앱 아이콘 배치 그리드 */.app-grid {
     position: relative;
     z-index: 2;
     display: grid;
@@ -101,54 +101,30 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-}.icon-box {
+}/* 아이폰 순정 이미지 전용 아이콘 박스 */.icon-box {
     width: 60px;
     height: 60px;
-    border-radius: 14px; /* 아이폰 스쿼클 곡률 */
+    border-radius: 13.5px; /* 실제 아이폰의 둥근 모서리 디자인 */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.8rem;
     margin-bottom: 6px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     overflow: hidden;
+    background-color: transparent;
+}.icon-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 아이콘 박스 크기에 꽉 차도록 채움 */
+}.icon-item:active .icon-box {
+    transform: scale(0.9);
 }.icon-item span {
     color: #ffffff;
     font-size: 0.75rem;
     font-weight: 500;
     text-align: center;
     letter-spacing: -0.3px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8); /* 글자가 사진에 묻히지 않게 그림자 강화 */
-}/* 🎨 [디자인 반영] 요청하신 아이폰 순정 스타일 아이콘 색상 및 그라데이션 */.ios-heart {
-    background: linear-gradient(135deg, #ff5252, #ff7b7b); /* 우리 이야기: 하트(건강 앱) */
-    color: white;
-}.ios-map {
-    background: #ffffff; /* 오시는 길: 애플 지도 디자인 느낌 */
-    position: relative;
-}.map-inner {
-    font-size: 1.6rem;
-    background: linear-gradient(135deg, #74b9ff, #81ecec);
-    width: 100%; height: 100%;
-    display: flex; justify-content: center; align-items: center;
-}.ios-gallery {
-    background: #ffffff; /* 갤러리: 흰 바탕에 알록달록 사진 앱 느낌 */
-}.gallery-flower {
-    font-size: 1.5rem;
-    background: linear-gradient(135deg, #ffeedd, #ffb7b2);
-    width: 90%; height: 90%; border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-}.ios-mail {
-    background: linear-gradient(135deg, #2980b9, #6dd5fa); /* 참석 여부: 파란색 메일 앱 */
-    color: white;
-}.ios-bank {
-    background: linear-gradient(135deg, #e056fd, #be2edd); /* 축의금: 금융/주식 앱 딥핑크 */
-    color: white;
-}.ios-dress {
-    background: linear-gradient(135deg, #f093fb, #f5576c); /* 드레스 코드: 오렌지/핑크 쇼핑 느낌 */
-    color: white;
-}.ios-message {
-    background: linear-gradient(135deg, #4cd137, #44bd32); /* 방명록: 초록색 아이메시지 앱 */
-    color: white;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8); /* 글자가 영화관 사진 배경에 묻히지 않게 그림자 처리 */
 }/* 하단 독(Dock) 바 스타일 */.ios-dock {
     position: relative;
     z-index: 2;
