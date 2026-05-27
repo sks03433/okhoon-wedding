@@ -18,7 +18,7 @@ body, html {
     position: absolute;
     top: 0;
     left: 0;
-    transition: transform 0.5s ease-in-out; /* 화면 전환 슬라이드 애니메이션 */
+    transition: transform 0.5s ease-in-out;
 }
 
 /* 1. 잠금 화면 */
@@ -43,7 +43,7 @@ body, html {
 .swipe-up-text { font-size: 1rem; color: #fff; animation: blink 1.5s infinite; }
 @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-/* 🌟 2. 홈 화면 (블러 효과 완전 제거 + 사진 선명하게) */
+/* 2. 홈 화면 */
 #home-screen {
     background-image: url('home_photo.jpg');
     background-size: cover;
@@ -59,16 +59,12 @@ body, html {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.15); /* 글자 가독성을 위한 최소한의 어두운 톤 (블러 효과 없음) */
+    background: rgba(0, 0, 0, 0.15); 
     z-index: 1;
 }
 
 .hidden { display: none !important; }
-
-/* 🌟 잠금화면이 위로 스르륵 올라가는 슬라이드 효과 클래스 */
-.slide-up { 
-    transform: translateY(-100%); 
-}
+.slide-up { transform: translateY(-100%); }
 
 /* 배경음악 온/오프 버튼 */
 #music-btn {
@@ -95,7 +91,7 @@ body, html {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-/* 홈 화면 콘텐츠 정렬 wrapper */
+/* 홈 화면 콘텐츠 정렬 */
 .home-content {
     position: relative;
     z-index: 2;
@@ -104,7 +100,6 @@ body, html {
     margin: 30px auto 0 auto;
 }
 
-/* 앱 아이콘 공통 그리드 스타일 */
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -112,10 +107,7 @@ body, html {
     width: 100%;
 }
 
-/* 두 번째 줄 아이콘 3개만 아래로 살짝 내리기 */
-.row-2 {
-    margin-top: 40px; 
-}
+.row-2 { margin-top: 40px; }
 
 .icon-item {
     display: flex;
@@ -124,10 +116,7 @@ body, html {
     cursor: pointer;
 }
 
-.icon-item.empty {
-    cursor: default;
-    pointer-events: none;
-}
+.icon-item.empty { cursor: default; pointer-events: none; }
 
 .icon-box {
     width: 60px; height: 60px; border-radius: 13.5px;
@@ -141,7 +130,6 @@ body, html {
     text-align: center;
 }
 
-/* 아이폰 순정 스타일 색상 */
 .ios-health { background: #fff; }
 .ios-maps { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }
 .ios-photos { background: #fff; }
@@ -150,27 +138,239 @@ body, html {
 .ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }
 .ios-messages { background: linear-gradient(180deg, #4cd137, #44bd32); }
 
-/* 하단 독 바 */
 .ios-dock {
     position: relative; z-index: 2; width: 100%; max-width: 400px;
     background: rgba(255, 255, 255, 0.25); border-radius: 24px; padding: 12px 15px;
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 15px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     margin: 0 auto;
 }
-
 .ios-dock .icon-box { width: 55px; height: 55px; }
 
-/* 상세 페이지 팝업 */
+
+/* 💎 [대폭 업그레이드] 오시는 길 상세 페이지 디자인 */
 .detail-page {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 85%; 
-    background: #fff; border-radius: 25px 25px 0 0; z-index: 20;
-    display: flex; flex-direction: column; animation: slideIn 0.4s ease-out;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 88%; /* 카드 뷰가 더 시원하게 보이도록 높이 소폭 상향 */
+    background: #f4f5f7; /* 모던하고 깔끔한 아이폰 설정창 느낌의 연그레이 배경색 변경 */
+    border-radius: 30px 30px 0 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+    animation: slideIn 0.4s cubic-bezier(0.1, 0.8, 0.3, 1);
 }
 
-@keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.page-header { display: flex; justify-content: space-between; padding: 20px; border-bottom: 1px solid #eee; }
-.close-btn { background: none; border: none; font-size: 1.2rem; color: #999; }
-.page-content { padding: 20px; }
+.page-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 20px 14px 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
+    border-radius: 30px 30px 0 0;
+}
+
+.header-bar {
+    position: absolute;
+    top: 10px;
+    width: 40px;
+    height: 5px;
+    background: #d1d1d6;
+    border-radius: 3px;
+}
+
+.page-header h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #1c1c1e;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    background: #e5e5ea;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #8e8e93;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-content {
+    padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 🏢 메인 웨딩홀 네임 카드 컴포넌트 디자인 */
+.venue-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.venue-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1c1c1e;
+    margin-bottom: 8px;
+}
+
+.venue-address {
+    font-size: 0.95rem;
+    color: #48484a;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.sub-addr {
+    font-size: 0.85rem;
+    color: #8e8e93;
+}
+
+/* 주소 복사 버튼 */
+.copy-full {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: #f2f2f7;
+    color: #007aff; /* 애플 시그니처 블루 */
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: background 0.2s;
+}
+.copy-full:active { background: #e5e5ea; }
+
+/* 지도 연결 버튼 그룹 */
+.btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 13px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.action-btn.kakao { background: #fee500; color: #191919; }
+.action-btn.naver { background: #03c75a; color: #ffffff; }
+.naver-icon {
+    font-family: 'Arial Black', sans-serif;
+    font-weight: 900;
+    font-size: 0.8rem;
+    background: white;
+    color: #03c75a;
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+/* 🚇 🚌 🚗 하단 리스트 영역 스타일 */
+.transport-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-block {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.sub-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 교통수단별 메인 컬러 포인트 */
+.sub-subway { color: #007aff; }
+.sub-bus { color: #34c759; }
+.sub-parking { color: #ff9500; }
+
+.info-details {
+    font-size: 0.9rem;
+    color: #3a3a3c;
+    line-height: 1.7;
+}
+
+/* 호선 정보 뱃지 스타일 */
+.badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    margin-right: 4px;
+}
+.badge.line-1 { background-color: #0052A4; }
+.badge.line-sin { background-color: #D4003B; }
+
+/* 버스 및 주차 디테일 가독성 보완 */
+.station-highlight {
+    font-weight: 600;
+    color: #1c1c1e;
+    background: #e5f1ff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.bus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 4px;
+}
+
+.bus-numbers {
+    font-weight: 500;
+}
+.bus-numbers.blue { color: #007aff; }
+.bus-numbers.red { color: #ff3b30; }
+.bus-numbers.green { color: #34c759; }
+
+.parking-highlight {
+    margin: 4px 0;
+}
+.emp-text {
+    color: #ff9500;
+    font-weight: 700;
+}
