@@ -71,12 +71,12 @@
     color: white;
     font-size: 0.8rem;
     text-align: center;
-}/* --- 새로 추가된 오시는 길 상세 창 스타일 --- */.detail-page {
+}/* --- 오시는 길 상세 창 스타일 --- */.detail-page {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 85%; /* 스마트폰 하단에서 슥 올라오는 느낌 */
+    height: 85%; 
     background: #ffffff;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
@@ -105,7 +105,7 @@
     color: #999;
 }.page-content {
     padding: 20px;
-    overflow-y: auto; /* 내용이 길어지면 스크롤 가능하게 */
+    overflow-y: auto; 
     color: #444;
 }.info-section {
     margin-bottom: 25px;
@@ -121,14 +121,21 @@
     margin-bottom: 8px;
 }.address-text {
     color: #666;
-    margin-bottom: 15px;
-}.sub-title {
+    margin-bottom: 12px;
+}/* 버튼 스타일 */.copy-full {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.85rem;
     font-weight: bold;
-    color: #222;
-    margin-bottom: 4px;
+    background-color: #f1f3f5;
+    color: #333;
+    cursor: pointer;
+    margin-bottom: 8px;
 }.btn-group {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }.action-btn {
     flex: 1;
     padding: 12px;
@@ -139,10 +146,17 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-}.action-btn.copy {
-    background-color: #f1f3f5;
-    color: #333;
-}.action-btn.kakao {
-    background-color: #fee500;
-    color: #191919;
+    display: inline-block;
+}/* [수정] 카카오맵 버튼 색상 강제 지정 */
+.action-btn.kakao {
+    background-color: #fee500 !important;
+    color: #191919 !important;
+}/* [수정] 네이버 지도 버튼 초록색 강제 지정 및 글자색 흰색 고정 */
+.action-btn.naver {
+    background-color: #03c75a !important;
+    color: #ffffff !important;
+}.sub-title {
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 4px;
 }
