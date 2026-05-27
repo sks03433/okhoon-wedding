@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 결혼합니다</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css"></head><body>
 
     <audio id="bgm" src="bgm.mp3" loop></audio>
@@ -17,77 +18,54 @@
     </div>
 
     <div id="home-screen" class="screen hidden">
-        <button id="music-btn" onclick="toggleMusic()">🎵</button>
+        <button id="music-btn" onclick="toggleMusic()">
+            <i id="music-icon" class="fa-solid fa-music"></i>
+        </button>
 
         <div class="app-grid">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
-                <div class="icon-box ios-health">
-                    <span class="icon-emoji">❤️</span>
-                </div>
+                <div class="icon-box ios-health">❤️</div>
                 <span>우리 이야기</span>
             </div>
-            
             <div class="icon-item" onclick="openMap()">
-                <div class="icon-box ios-maps">
-                    <div class="map-grid-lines"></div>
-                    <span class="icon-emoji">🧭</span>
-                </div>
+                <div class="icon-box ios-maps">🧭</div>
                 <span>오시는 길</span>
             </div>
-            
             <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                <div class="icon-box ios-photos">
-                    <div class="flower-petal pt-1"></div>
-                    <div class="flower-petal pt-2"></div>
-                    <div class="flower-petal pt-3"></div>
-                    <div class="flower-petal pt-4"></div>
-                    <span class="icon-emoji">📸</span>
-                </div>
+                <div class="icon-box ios-photos">📸</div>
                 <span>갤러리</span>
             </div>
-            
             <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                <div class="icon-box ios-mail">
-                    <span class="icon-emoji">✉️</span>
-                </div>
+                <div class="icon-box ios-mail">✉️</div>
                 <span>참석 여부</span>
             </div>
 
             <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
-                <div class="icon-box ios-stocks">
-                    <div class="stock-line"></div>
-                    <span class="icon-emoji">📊</span>
-                </div>
+                <div class="icon-box ios-stocks">📊</div>
                 <span>축의금</span>
             </div>
-            
             <div class="icon-item" onclick="alert('드레스 코드 페이지로 이동!')">
-                <div class="icon-box ios-appstore">
-                    <span class="icon-emoji">A</span>
-                </div>
+                <div class="icon-box ios-appstore">A</div>
                 <span>드레스 코드</span>
             </div>
-            
             <div class="icon-item" onclick="alert('방명록 페이지로 이동!')">
-                <div class="icon-box ios-messages">
-                    <span class="icon-emoji">💬</span>
-                </div>
+                <div class="icon-box ios-messages">💬</div>
                 <span>방명록</span>
             </div>
         </div>
 
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
-                <div class="icon-box ios-health"><span class="icon-emoji">❤️</span></div>
+                <div class="icon-box ios-health">❤️</div>
             </div>
             <div class="icon-item" onclick="openMap()">
-                <div class="icon-box ios-maps"><div class="map-grid-lines"></div><span class="icon-emoji">🧭</span></div>
+                <div class="icon-box ios-maps">🧭</div>
             </div>
             <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                <div class="icon-box ios-photos"><div class="flower-petal pt-1"></div><div class="flower-petal pt-2"></div><span class="icon-emoji">📸</span></div>
+                <div class="icon-box ios-photos">📸</div>
             </div>
             <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                <div class="icon-box ios-mail"><span class="icon-emoji">✉️</span></div>
+                <div class="icon-box ios-mail">✉️</div>
             </div>
         </div>
     </div>
@@ -100,33 +78,12 @@
         <div class="page-content">
             <div class="info-section venue-info">
                 <h4>더아리엘 수원</h4>
-                <p class="address-text">경기 수원시 팔달구 중부대로 181 (우만동 147-7)</p>
-                
+                <p class="address-text">경기 수원시 팔달구 중부대로 181</p>
                 <button class="copy-full" onclick="copyAddress()">📋 주소 복사하기</button>
                 <div class="btn-group">
                     <a href="https://map.kakao.com/link/search/더아리엘 수원" target="_blank" class="action-btn kakao">🗺️ 카카오맵</a>
                     <a href="https://map.naver.com/v5/search/더아리엘 수원" target="_blank" class="action-btn naver">🗺️ 네이버 지도</a>
                 </div>
-            </div>
-
-            <div class="info-section">
-                <h5>🚇 지하철 이용 시</h5>
-                <p><strong>1호선 수원역</strong> 4번 출구에서 버스 환승</p>
-                <p><strong>신분당선 광교중앙역</strong>에서 도보 약 15분 또는 버스 환승</p>
-            </div>
-
-            <div class="info-section">
-                <h5>🚌 버스 이용 시</h5>
-                <p class="sub-title"><strong>[동수원병원·라마다호텔] 정류장 하차 (도보 1분)</strong></p>
-                <p>• <strong>일반버스:</strong> 10, 10-2, 11-1, 13-4, 27, 37, 62-1, 66, 82-1, 83-1</p>
-                <p>• <strong>직행버스:</strong> 3002, 4000, 7002</p>
-                <p>• <strong>시외버스:</strong> 8443, 8424</p>
-            </div>
-
-            <div class="info-section">
-                <h5>🚗 주차 안내</h5>
-                <p>• 웨딩홀 내부 및 외부 전용 주차장 보유 (1,000대 동시 주차 가능)</p>
-                <p>• 하객분들은 <strong>2시간 무료 주차</strong>가 가능합니다.</p>
             </div>
         </div>
     </div>
