@@ -1,106 +1,176 @@
-<!DOCTYPE html><html lang="ko"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>우리 결혼합니다</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css"></head><body>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    <audio id="bgm" src="bgm.mp3" loop></audio>
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    background-color: #000;
+}
 
-    <div id="lock-screen" class="screen">
-        <div class="lock-wrapper">
-            <div class="top-info">
-                <div class="date">2026-10-10 (SAT)</div>
-                <div class="time">14:50</div>
-            </div>
-            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
-        </div>
-    </div>
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s ease-in-out; /* 화면 전환 슬라이드 애니메이션 */
+}
 
-    <div id="home-screen" class="screen hidden">
-        <button id="music-btn" onclick="toggleMusic()">
-            <i id="music-icon" class="fa-solid fa-music"></i>
-        </button>
+/* 1. 잠금 화면 */
+#lock-screen {
+    background-image: url('lock_photo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 10;
+}
 
-        <div class="home-content">
-            <div class="app-grid row-1">
-                <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
-                    <div class="icon-box ios-health">❤️</div>
-                    <span>우리 이야기</span>
-                </div>
-                <div class="icon-item" onclick="openMap()">
-                    <div class="icon-box ios-maps">🧭</div>
-                    <span>오시는 길</span>
-                </div>
-                <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                    <div class="icon-box ios-photos">📸</div>
-                    <span>갤러리</span>
-                </div>
-                <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                    <div class="icon-box ios-mail">✉️</div>
-                    <span>참석 여부</span>
-                </div>
-            </div>
+.lock-wrapper {
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.15); 
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+    padding: 70px 20px 40px 20px;
+}
 
-            <div class="app-grid row-2">
-                <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
-                    <div class="icon-box ios-stocks">📊</div>
-                    <span>축의금</span>
-                </div>
-                <div class="icon-item" onclick="alert('드레스 코드 페이지로 이동!')">
-                    <div class="icon-box ios-appstore">A</div>
-                    <span>드레스 코드</span>
-                </div>
-                <div class="icon-item" onclick="alert('방명록 페이지로 이동!')">
-                    <div class="icon-box ios-messages">💬</div>
-                    <span>방명록</span>
-                </div>
-                <div class="icon-item empty"></div>
-            </div>
-        </div>
+.top-info { text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }
+.date { font-size: 1.3rem; font-weight: 500; color: #fff; }
+.time { font-size: 4.5rem; font-weight: 700; color: #fff; }
+.swipe-up-text { font-size: 1rem; color: #fff; animation: blink 1.5s infinite; }
+@keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        <div class="ios-dock">
-            <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
-                <div class="icon-box ios-health">❤️</div>
-            </div>
-            <div class="icon-item" onclick="openMap()">
-                <div class="icon-box ios-maps">🧭</div>
-            </div>
-            <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                <div class="icon-box ios-photos">📸</div>
-            </div>
-            <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                <div class="icon-box ios-mail">✉️</div>
-            </div>
-        </div>
-    </div>
+/* 🌟 2. 홈 화면 (블러 효과 완전 제거 + 사진 선명하게) */
+#home-screen {
+    background-image: url('home_photo.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 65px 20px 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
 
-    <div id="map-page" class="detail-page hidden">
-        <div class="page-header">
-            <h3>오시는 길</h3>
-            <button class="close-btn" onclick="closeMap()">✕</button>
-        </div>
-        <div class="page-content">
-            
-            <div class="info-section venue-info">
-                <h4>더아리엘 수원</h4> 
-                <p class="address-text">경기 수원시 팔달구 중부대로 181 (우만동 147-7)</p>
-                
-                <button class="copy-full" onclick="copyAddress()">📋 주소 복사하기</button>
-                
-                <div class="btn-group">
-                    <a href="https://map.kakao.com/link/search/더아리엘 수원" target="_blank" class="action-btn kakao">🗺️ 카카오맵</a>
-                    <a href="https://map.naver.com/v5/search/더아리엘 수원" target="_blank" class="action-btn naver">🗺️ 네이버 지도</a>
-                </div>
-            </div>
+#home-screen::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.15); /* 글자 가독성을 위한 최소한의 어두운 톤 (블러 효과 없음) */
+    z-index: 1;
+}
 
-            <div class="info-section">
-                <h5>🚇 지하철 이용 시</h5>
-                <p>• <strong>1호선 수원역</strong> 4번 출구에서 버스 환승</p>
-                <p>• <strong>신분당선 광교중앙역</strong>에서 도보 약 15분 또는 버스 환승</p>
-            </div>
+.hidden { display: none !important; }
 
-            <div class="info-section">
-                <h5>🚌 버스 이용 시</h5>
-                <p class="sub-title"><strong>[동수원병원·라마다호텔] 정류장 하차 (도보 1분)</strong></p>
-                <p>• <strong>일반버스:</strong> 10, 10-2, 11-1, 13-4,
+/* 🌟 잠금화면이 위로 스르륵 올라가는 슬라이드 효과 클래스 */
+.slide-up { 
+    transform: translateY(-100%); 
+}
+
+/* 배경음악 온/오프 버튼 */
+#music-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+    backdrop-filter: blur(5px);
+}
+
+#music-btn.playing {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* 홈 화면 콘텐츠 정렬 wrapper */
+.home-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto 0 auto;
+}
+
+/* 앱 아이콘 공통 그리드 스타일 */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+/* 두 번째 줄 아이콘 3개만 아래로 살짝 내리기 */
+.row-2 {
+    margin-top: 40px; 
+}
+
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.icon-item.empty {
+    cursor: default;
+    pointer-events: none;
+}
+
+.icon-box {
+    width: 60px; height: 60px; border-radius: 13.5px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.icon-item span {
+    color: #fff; font-size: 0.75rem; font-weight: 500;
+    margin-top: 6px; text-shadow: 0 1px 5px rgba(0,0,0,0.9);
+    text-align: center;
+}
+
+/* 아이폰 순정 스타일 색상 */
+.ios-health { background: #fff; }
+.ios-maps { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }
+.ios-photos { background: #fff; }
+.ios-mail { background: linear-gradient(180deg, #2980b9, #3498db); }
+.ios-stocks { background: #2c3e50; }
+.ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }
+.ios-messages { background: linear-gradient(180deg, #4cd137, #44bd32); }
+
+/* 하단 독 바 */
+.ios-dock {
+    position: relative; z-index: 2; width: 100%; max-width: 400px;
+    background: rgba(255, 255, 255, 0.25); border-radius: 24px; padding: 12px 15px;
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 15px;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    margin: 0 auto;
+}
+
+.ios-dock .icon-box { width: 55px; height: 55px; }
+
+/* 상세 페이지 팝업 */
+.detail-page {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 85%; 
+    background: #fff; border-radius: 25px 25px 0 0; z-index: 20;
+    display: flex; flex-direction: column; animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.page-header { display: flex; justify-content: space-between; padding: 20px; border-bottom: 1px solid #eee; }
+.close-btn { background: none; border: none; font-size: 1.2rem; color: #999; }
+.page-content { padding: 20px; }
