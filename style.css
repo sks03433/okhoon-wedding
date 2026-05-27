@@ -52,7 +52,7 @@
 }@keyframes blink {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
-}/* 2. 홈 화면 - 배경 투명도 조절하여 사진이 완전 선명하게 나오도록 함 */#home-screen {
+}/* 2. 홈 화면 */#home-screen {
     background-image: url('main_wedding_photo.jpg');
     background-size: cover;
     background-position: center;
@@ -65,7 +65,7 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.15); /* 캡처본처럼 인물 사진이 깨끗하게 잘 보이도록 조정 */
+    background: rgba(0, 0, 0, 0.15); 
     z-index: 1;
 }.hidden {
     display: none !important;
@@ -101,31 +101,94 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-}/* 아이폰 순정 이미지 전용 아이콘 박스 */.icon-box {
+}/* 🌟 절대 깨지지 않는 무적의 아이폰 순정 템플릿 아이콘 디자인 */.icon-box {
     width: 60px;
     height: 60px;
-    border-radius: 13.5px; /* 실제 아이폰의 둥근 모서리 디자인 */
+    border-radius: 13.5px; /* 아이폰 전용 곡률 */
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 6px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     overflow: hidden;
-    background-color: transparent;
-}.icon-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 이미지가 아이콘 박스 크기에 꽉 차도록 채움 */
-}.icon-item:active .icon-box {
-    transform: scale(0.9);
+    position: relative;
+}.icon-emoji {
+    font-size: 1.8rem;
+    z-index: 2;
 }.icon-item span {
     color: #ffffff;
     font-size: 0.75rem;
     font-weight: 500;
     text-align: center;
     letter-spacing: -0.3px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8); /* 글자가 영화관 사진 배경에 묻히지 않게 그림자 처리 */
-}/* 하단 독(Dock) 바 스타일 */.ios-dock {
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}.icon-item:active .icon-box {
+    transform: scale(0.9);
+}/* 🎨 [디자인 세팅] CSS 코드로 강제 구현한 아이폰 순정 스타일 배경색 */
+/* 1. 우리 이야기 (건강 앱 - 흰 바탕에 붉은 그라데이션 포인트) */
+.ios-health {
+    background: #ffffff;
+}
+.ios-health .icon-emoji { font-size: 2rem; }
+
+/* 2. 오시는 길 (지도 앱 - 연두/하늘색 지도 격자 베이스) */
+.ios-maps {
+    background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+}
+.map-grid-lines {
+    position: absolute; width: 100%; height: 100%;
+    border-right: 2px solid rgba(255,255,255,0.4);
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+    background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+.ios-maps .icon-emoji { font-size: 1.6rem; color: #ff7675; }
+
+/* 3. 갤러리 (사진 앱 - 흰 바탕에 알록달록 꽃잎 레이아웃) */
+.ios-photos {
+    background: #ffffff;
+}
+.flower-petal {
+    position: absolute; width: 22px; height: 22px; border-radius: 50%; opacity: 0.5; filter: blur(1px);
+}
+.pt-1 { background: #ff7675; top: 12px; left: 12px; }
+.pt-2 { background: #74b9ff; top: 12px; right: 12px; }
+.pt-3 { background: #ffeaa7; bottom: 12px; left: 12px; }
+.pt-4 { background: #55efc4; bottom: 12px; right: 12px; }
+.ios-photos .icon-emoji { font-size: 1.4rem; opacity: 0.9; }
+
+/* 4. 참석 여부 (메일 앱 - 순정 시그니처 블루 그라데이션) */
+.ios-mail {
+    background: linear-gradient(180deg, #2980b9, #3498db);
+}
+.ios-mail .icon-emoji { color: white; font-size: 1.5rem; }
+
+/* 5. 축의금 (주식 앱 - 어두운 다크그레이에 파란 등락 선트랙) */
+.ios-stocks {
+    background: #2c3e50;
+}
+.stock-line {
+    position: absolute; width: 100%; height: 2px; background: #00d2d3; top: 50%; transform: rotate(-15px);
+}
+.ios-stocks .icon-emoji { font-size: 1.5rem; }
+
+/* 6. 드레스 코드 (App Store - 청량한 스카이블루에 메탈릭 텍스트) */
+.ios-appstore {
+    background: linear-gradient(180deg, #38ef7d, #11998e); /* 캡처본 스토어 고유 컬러 매칭 */
+}
+.ios-appstore .icon-emoji {
+    font-family: 'Arial', sans-serif; font-weight: bold; color: white; font-size: 2.2rem;
+}
+
+/* 7. 방명록 (메시지 앱 - 순정 시그니처 그린) */
+.ios-messages {
+    background: linear-gradient(180deg, #4cd137, #44bd32);
+}
+.ios-messages .icon-emoji { font-size: 1.6rem; color: white; }
+
+
+/* 하단 독(Dock) 바 스타일 */
+.ios-dock {
     position: relative;
     z-index: 2;
     width: 100%;
