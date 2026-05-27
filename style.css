@@ -24,7 +24,7 @@
 }.lock-wrapper {
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.25); 
+    background: rgba(0, 0, 0, 0.2); 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -52,21 +52,32 @@
 }@keyframes blink {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
-}/* [대폭 수정] 아이폰 홈 화면 스타일 - 배경을 어두운 그라데이션 우주 느낌으로 변경 */#home-screen {
-    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
-    padding: 60px 25px;
+}/* 홈 화면 스타일 - 배경에 영화관 사진을 깔고 블러 처리 */#home-screen {
+    background-image: url('main_wedding_photo.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 65px 20px 30px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 앱 그리드와 독 바를 위아래로 분리 */
+    justify-content: space-between;
+    position: relative;
+}/* 홈 화면에 흐림 효과 필터 적용 */#home-screen::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 1;
 }.hidden {
     display: none !important;
 }.slide-up {
     transform: translateY(-100%);
-}/* 음악 재생 버튼 */#music-btn {
+}/* 음악 버튼 */#music-btn {
     position: absolute;
     top: 25px;
     right: 25px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
     width: 38px;
@@ -78,14 +89,12 @@
     justify-content: center;
     align-items: center;
     z-index: 15;
-    backdrop-filter: blur(10px);
-}#music-btn.off {
-    background: rgba(0, 0, 0, 0.4);
-    opacity: 0.5;
-}/* [신규] 아이폰 앱 그리드 (상단 3개 아이콘) */.app-grid {
+}/* 앱 아이콘 배치 그리드 */.app-grid {
+    position: relative;
+    z-index: 2;
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4열 유지 */
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px 15px;
     width: 100%;
     max-width: 400px;
     margin-top: 30px;
@@ -94,53 +103,43 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-}/* [신규] 아이폰 전용 스쿼클(둥근 사각형) 아이콘 박스 정의 */.icon-box {
+}.icon-box {
     width: 60px;
     height: 60px;
-    border-radius: 14px; /* 아이폰 특유의 둥근 모서리 비율 */
+    border-radius: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.8rem;
     margin-bottom: 6px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform 0.1s;
 }.icon-item:active .icon-box {
-    transform: scale(0.9); /* 눌렀을 때 슥 작아지는 아이폰 링크 효과 */
-}.emoji {
-    font-size: 1.8rem;
-}/* [아이폰 스타일 각 앱 색상 그라데이션 적용] */.ios-heart {
-    background: linear-gradient(135deg, #ff5e62, #ff9966); /* 핑크/오렌지 건강 앱 느낌 */
-}.ios-gallery {
-    background: #ffffff; /* 하얀 바탕에 무지개색 느낌 대신 깔끔한 화이트 */
-}.ios-guestbook {
-    background: linear-gradient(135deg, #2af598, #009efd); /* 산뜻한 메시지 앱 초록/파랑 */
-}.ios-map {
-    background: linear-gradient(135deg, #4facfe, #00f2fe); /* 아이폰 지도 앱 하늘색 그라데이션 */
-}.icon-item span {
+    transform: scale(0.9);
+}/* 캡처 화면과 똑같은 아이폰 앱 그라데이션 스타일 */.ios-heart { background: linear-gradient(135deg, #ff5e62, #ff9966); }.ios-map { background: linear-gradient(135deg, #4facfe, #00f2fe); }.ios-gallery { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }.ios-envelope { background: linear-gradient(135deg, #1e3c72, #2a5298); }.ios-bank { background: linear-gradient(135deg, #e14eca, #ba54f5); }.ios-dress { background: linear-gradient(135deg, #ff9a9e, #fecfef); }.ios-guestbook { background: linear-gradient(135deg, #00b09b, #96c93d); }.icon-item span {
     color: #ffffff;
     font-size: 0.75rem;
     font-weight: 500;
     text-align: center;
     letter-spacing: -0.3px;
-    opacity: 0.9;
-}/* [신규] 아이폰 하단 투명 독(Dock) 바 */.ios-dock {
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}/* 하단 독(Dock) 바 스타일 */.ios-dock {
+    position: relative;
+    z-index: 2;
     width: 100%;
     max-width: 400px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: center; /* 오시는 길 아이콘을 가운데에 예쁘게 배치 */
-    backdrop-filter: blur(20px); /* 아이폰 독 바 특유의 유리를 투과하는 듯한 블러 효과 */
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    margin-bottom: 10px;
-}/* 독 바 안의 글자 색상 수정 */.ios-dock .icon-item span {
-    color: #ffffff;
+    padding: 12px 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }.ios-dock .icon-box {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin-bottom: 0;
+    width: 55px;
+    height: 55px;
 }/* --- 오시는 길 상세 창 스타일 --- */.detail-page {
     position: absolute;
     bottom: 0;
