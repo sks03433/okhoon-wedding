@@ -5,8 +5,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css"></head><body>
 
+    <!-- 배경음악 오디오 태그 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
+    <!-- 1. 잠금 화면 -->
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
@@ -17,12 +19,16 @@
         </div>
     </div>
 
+    <!-- 2. 홈 화면 -->
     <div id="home-screen" class="screen hidden">
+        <!-- 상단 음악 제어 버튼 -->
         <button id="music-btn" onclick="toggleMusic()">
             <i id="music-icon" class="fa-solid fa-music"></i>
         </button>
 
+        <!-- 메인 콘텐츠 영역 -->
         <div class="home-content">
+            <!-- 첫 번째 줄 (4개 아이콘) -->
             <div class="app-grid row-1">
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                     <div class="icon-box ios-health">❤️</div>
@@ -43,6 +49,7 @@
                     </div>
                     <span>갤러리</span>
                 </div>
+                <!-- 🔔 아이폰 순정 미리 알림 앱 반영 -->
                 <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
                     <div class="icon-box ios-reminders">
                         <div class="rem-bullet rb1"></div><div class="rem-line"></div>
@@ -53,7 +60,9 @@
                 </div>
             </div>
 
+            <!-- 두 번째 줄 (살짝 아래로 내려간 3개 아이콘) -->
             <div class="app-grid row-2">
+                <!-- 💳 아이폰 순정 지갑(Wallet) 앱 반영 -->
                 <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
                     <div class="icon-box ios-wallet">
                         <div class="wallet-card wc1"></div>
@@ -66,7 +75,8 @@
                     <div class="icon-box ios-appstore">A</div>
                     <span>드레스 코드</span>
                 </div>
-                <div class="icon-item" onclick="openGuestbook()">
+                <!-- 📝 아이폰 순정 메모 앱 반영 -->
+                <div class="icon-item" onclick="alert('방명록 페이지로 이동!')">
                     <div class="icon-box ios-notes">
                         <div class="notes-top"></div>
                         <div class="notes-line nl1"></div>
@@ -78,6 +88,7 @@
             </div>
         </div>
 
+        <!-- 3. 하단 독 바 -->
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                 <div class="icon-box ios-health">❤️</div>
@@ -95,6 +106,7 @@
                     <div class="petal p7"></div><div class="petal p8"></div>
                 </div>
             </div>
+            <!-- 독바에도 미리 알림 앱 아이콘 적용 -->
             <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
                 <div class="icon-box ios-reminders">
                     <div class="rem-bullet rb1"></div><div class="rem-line"></div>
@@ -105,63 +117,70 @@
         </div>
     </div>
 
+    <!-- 3. 오시는 길 팝업 상세 화면 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
             <h3>오시는 길</h3>
             <button class="close-btn" onclick="closeMap()">✕</button>
         </div>
+        
         <div class="page-content">
             <div class="venue-card">
                 <h4 class="venue-name">더아리엘 수원</h4> 
                 <p class="venue-address">경기 수원시 팔달구 중부대로 181<br><span class="sub-addr">(우만동 147-7)</span></p>
-                <button class="copy-full" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> 주소 복사하기</button>
+                
+                <button class="copy-full" onclick="copyAddress()">
+                    <i class="fa-regular fa-copy"></i> 주소 복사하기
+                </button>
+                
                 <div class="btn-group">
-                    <a href="https://map.kakao.com/link/search/더아리엘 수원" target="_blank" class="action-btn kakao"><i class="fa-solid fa-comment"></i> 카카오맵</a>
-                    <a href="https://map.naver.com/v5/search/더아리엘 수원" target="_blank" class="action-btn naver"><span class="naver-icon">N</span> 네이버 지도</a>
+                    <a href="https://map.kakao.com/link/search/더아리엘 수원" target="_blank" class="action-btn kakao">
+                        <i class="fa-solid fa-comment"></i> 카카오맵
+                    </a>
+                    <a href="https://map.naver.com/v5/search/더아리엘 수원" target="_blank" class="action-btn naver">
+                        <span class="naver-icon">N</span> 네이버 지도
+                    </a>
                 </div>
             </div>
-            </div>
-    </div>
 
-    <div id="guestbook-page" class="detail-page hidden">
-        <div class="page-header">
-            <div class="header-bar"></div>
-            <h3>메모 (방명록)</h3>
-            <button class="close-btn" onclick="closeGuestbook()">✕</button>
-        </div>
-        <div class="page-content">
-            <div class="gb-form-card">
-                <div class="gb-input-row">
-                    <input type="text" id="gb-name" placeholder="이름" maxlength="10">
-                    <input type="password" id="gb-password" placeholder="비밀번호(4자리)" maxlength="4">
+            <div class="transport-section">
+                <div class="info-block">
+                    <h5 class="sub-title sub-subway">
+                        <i class="fa-solid fa-subway"></i> 지하철 안내
+                    </h5>
+                    <div class="info-details">
+                        <p><span class="badge line-1">1호선</span> <strong>수원역</strong> 4번 출구에서 버스 환승</p>
+                        <p><span class="badge line-sin">신분당선</span> <strong>광교중앙역</strong>에서 도보 약 15분 또는 버스 환승</p>
+                    </div>
                 </div>
-                <textarea id="gb-content" placeholder="신랑 신부에게 축하의 한마디를 남겨주세요." rows="3"></textarea>
-                <button class="gb-submit-btn" onclick="addComment()">메모 저장하기</button>
-            </div>
 
-            <div class="gb-list-title">저장된 메모 <span id="gb-count">0</span></div>
-            <div id="guestbook-list" class="gb-list-container"></div>
+                <div class="info-block">
+                    <h5 class="sub-title sub-bus">
+                        <i class="fa-solid fa-bus"></i> 버스 안내
+                    </h5>
+                    <div class="info-details">
+                        <p class="station-highlight">📍 [동수원병원·라마다호텔] 정류장 하차 (도보 1분)</p>
+                        <div class="bus-list">
+                            <p><strong>• 일반버스 :</strong> <span class="bus-numbers blue">10, 10-2, 11-1, 13-4, 27, 37, 62-1, 66, 82-1, 83-1</span></p>
+                            <p><strong>• 직행버스 :</strong> <span class="bus-numbers red">3002, 4000, 7002</span></p>
+                            <p><strong>• 시외버스 :</strong> <span class="bus-numbers green">8443, 8424</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <h5 class="sub-title sub-parking">
+                        <i class="fa-solid fa-car"></i> 주차 안내
+                    </h5>
+                    <div class="info-details">
+                        <p>• 웨딩홀 내부 및 외부 전용 주차장 보유</p>
+                        <p class="parking-highlight">• 동시 주차 <span class="emp-text">1,000대</span>까지 여유롭게 가능합니다.</p>
+                        <p>• 축하해주러 오신 하객분들은 <strong>2시간 무료 주차</strong>가 가능합니다.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
-    <script>
-        // 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
-            authDomain: "okhoon-wedding.firebaseapp.com",
-            databaseURL: "https://okhoon-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "okhoon-wedding",
-            storageBucket: "okhoon-wedding.firebasestorage.app",
-            messagingSenderId: "983524797177",
-            appId: "1:983524797177:web:cefd13ac75ae9e44da1028"
-        };
-        // 파이어베이스 초기화
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-    </script>
 
     <script src="script.js"></script></body></html>
