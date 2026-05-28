@@ -122,6 +122,8 @@ body, html {
     width: 60px; height: 60px; border-radius: 13.5px;
     display: flex; justify-content: center; align-items: center;
     font-size: 1.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
 }
 
 .icon-item span {
@@ -130,14 +132,77 @@ body, html {
     text-align: center;
 }
 
+/* 일반 기존 스타일 아이콘 */
 .ios-health { background: #fff; }
-.ios-maps { background: linear-gradient(135deg, #a8e6cf, #dcedc1); }
-.ios-photos { background: #fff; }
 .ios-mail { background: linear-gradient(180deg, #2980b9, #3498db); }
 .ios-stocks { background: #2c3e50; }
 .ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }
-.ios-messages { background: linear-gradient(180deg, #4cd137, #44bd32); }
 
+
+/* 🗺️ 1. 순정 아이폰 지도 앱 그래픽 구현 */
+.ios-maps {
+    background: #e5e5ea;
+    background-image: 
+        linear-gradient(90deg, transparent 48%, #ffcc00 48%, #ffcc00 52%, transparent 52%),
+        linear-gradient(0deg, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%),
+        linear-gradient(45deg, #a8e6cf 35%, #dcedc1 35%);
+    background-size: 100% 100%;
+}
+.maps-indicator {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: #007aff;
+    border: 2px solid #fff;
+    border-radius: 50% 50% 0 50%;
+    transform: rotate(45deg);
+    box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
+}
+
+
+/* 📸 2. 순정 아이폰 사진(바람개비) 앱 그래픽 구현 */
+.ios-photos {
+    background: #ffffff;
+}
+.petal {
+    position: absolute;
+    width: 13px; height: 24px;
+    border-radius: 10px;
+    opacity: 0.85;
+    transform-origin: center bottom;
+    top: 6px; left: 23.5px;
+}
+.p1 { background: #ff3b30; transform: rotate(0deg); }
+.p2 { background: #ff9500; transform: rotate(45deg); }
+.p3 { background: #ffcc00; transform: rotate(90deg); }
+.p4 { background: #4cd964; transform: rotate(135deg); }
+.p5 { background: #5ac8fa; transform: rotate(180deg); }
+.p6 { background: #007aff; transform: rotate(225deg); }
+.p7 { background: #5856d6; transform: rotate(270deg); }
+.p8 { background: #ff2d55; transform: rotate(315deg); }
+
+
+/* 💬 3. 순정 아이폰 메시지 앱 그래픽 구현 */
+.ios-messages {
+    background: linear-gradient(180deg, #34c759, #24b04b);
+}
+.message-bubble {
+    position: absolute;
+    width: 34px; height: 26px;
+    background: #ffffff;
+    border-radius: 16px;
+}
+.message-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: -4px;
+    width: 12px; height: 12px;
+    background: #ffffff;
+    border-radius: 50%;
+    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+
+
+/* 하단 독 바 */
 .ios-dock {
     position: relative; z-index: 2; width: 100%; max-width: 400px;
     background: rgba(255, 255, 255, 0.25); border-radius: 24px; padding: 12px 15px;
@@ -148,229 +213,45 @@ body, html {
 .ios-dock .icon-box { width: 55px; height: 55px; }
 
 
-/* 💎 [대폭 업그레이드] 오시는 길 상세 페이지 디자인 */
+/* 오시는 길 상세 페이지 */
 .detail-page {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 88%; /* 카드 뷰가 더 시원하게 보이도록 높이 소폭 상향 */
-    background: #f4f5f7; /* 모던하고 깔끔한 아이폰 설정창 느낌의 연그레이 배경색 변경 */
-    border-radius: 30px 30px 0 0;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 88%; 
+    background: #f4f5f7; border-radius: 30px 30px 0 0; z-index: 20;
+    display: flex; flex-direction: column; box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
     animation: slideIn 0.4s cubic-bezier(0.1, 0.8, 0.3, 1);
 }
-
-.page-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px 20px 14px 20px;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e5e5;
-    position: relative;
-    border-radius: 30px 30px 0 0;
-}
-
-.header-bar {
-    position: absolute;
-    top: 10px;
-    width: 40px;
-    height: 5px;
-    background: #d1d1d6;
-    border-radius: 3px;
-}
-
-.page-header h3 {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #1c1c1e;
-}
-
-.close-btn {
-    position: absolute;
-    right: 20px;
-    background: #e5e5ea;
-    border: none;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #8e8e93;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.page-content {
-    padding: 20px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* 🏢 메인 웨딩홀 네임 카드 컴포넌트 디자인 */
-.venue-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 24px 20px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-}
-
-.venue-name {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #1c1c1e;
-    margin-bottom: 8px;
-}
-
-.venue-address {
-    font-size: 0.95rem;
-    color: #48484a;
-    line-height: 1.5;
-    margin-bottom: 18px;
-}
-
-.sub-addr {
-    font-size: 0.85rem;
-    color: #8e8e93;
-}
-
-/* 주소 복사 버튼 */
-.copy-full {
-    width: 100%;
-    padding: 13px;
-    border-radius: 12px;
-    border: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    background-color: #f2f2f7;
-    color: #007aff; /* 애플 시그니처 블루 */
-    cursor: pointer;
-    margin-bottom: 12px;
-    transition: background 0.2s;
-}
+@keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.page-header { display: flex; justify-content: center; align-items: center; padding: 24px 20px 14px 20px; background: #ffffff; border-bottom: 1px solid #e5e5e5; position: relative; border-radius: 30px 30px 0 0; }
+.header-bar { position: absolute; top: 10px; width: 40px; height: 5px; background: #d1d1d6; border-radius: 3px; }
+.page-header h3 { font-size: 1.15rem; font-weight: 600; color: #1c1c1e; }
+.close-btn { position: absolute; right: 20px; background: #e5e5ea; border: none; font-size: 0.9rem; font-weight: bold; color: #8e8e93; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+.page-content { padding: 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.venue-card { background: #ffffff; border-radius: 20px; padding: 24px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+.venue-name { font-size: 1.4rem; font-weight: 700; color: #1c1c1e; margin-bottom: 8px; }
+.venue-address { font-size: 0.95rem; color: #48484a; line-height: 1.5; margin-bottom: 18px; }
+.sub-addr { font-size: 0.85rem; color: #8e8e93; }
+.copy-full { width: 100%; padding: 13px; border-radius: 12px; border: none; font-size: 0.9rem; font-weight: 600; background-color: #f2f2f7; color: #007aff; cursor: pointer; margin-bottom: 12px; transition: background 0.2s; }
 .copy-full:active { background: #e5e5ea; }
-
-/* 지도 연결 버튼 그룹 */
-.btn-group {
-    display: flex;
-    gap: 10px;
-}
-
-.action-btn {
-    flex: 1;
-    padding: 13px;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
+.btn-group { display: flex; gap: 10px; }
+.action-btn { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 .action-btn.kakao { background: #fee500; color: #191919; }
 .action-btn.naver { background: #03c75a; color: #ffffff; }
-.naver-icon {
-    font-family: 'Arial Black', sans-serif;
-    font-weight: 900;
-    font-size: 0.8rem;
-    background: white;
-    color: #03c75a;
-    width: 16px;
-    height: 16px;
-    border-radius: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-}
-
-/* 🚇 🚌 🚗 하단 리스트 영역 스타일 */
-.transport-section {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.info-block {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.sub-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* 교통수단별 메인 컬러 포인트 */
+.naver-icon { font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 0.8rem; background: white; color: #03c75a; width: 16px; height: 16px; border-radius: 2px; display: flex; justify-content: center; align-items: center; line-height: 1; }
+.transport-section { display: flex; flex-direction: column; gap: 16px; }
+.info-block { background: #ffffff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.sub-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
 .sub-subway { color: #007aff; }
 .sub-bus { color: #34c759; }
 .sub-parking { color: #ff9500; }
-
-.info-details {
-    font-size: 0.9rem;
-    color: #3a3a3c;
-    line-height: 1.7;
-}
-
-/* 호선 정보 뱃지 스타일 */
-.badge {
-    display: inline-block;
-    padding: 2px 7px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: white;
-    margin-right: 4px;
-}
+.info-details { font-size: 0.9rem; color: #3a3a3c; line-height: 1.7; }
+.badge { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: white; margin-right: 4px; }
 .badge.line-1 { background-color: #0052A4; }
 .badge.line-sin { background-color: #D4003B; }
-
-/* 버스 및 주차 디테일 가독성 보완 */
-.station-highlight {
-    font-weight: 600;
-    color: #1c1c1e;
-    background: #e5f1ff;
-    padding: 6px 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-}
-
-.bus-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding-left: 4px;
-}
-
-.bus-numbers {
-    font-weight: 500;
-}
+.station-highlight { font-weight: 600; color: #1c1c1e; background: #e5f1ff; padding: 6px 12px; border-radius: 8px; margin-bottom: 12px; }
+.bus-list { display: flex; flex-direction: column; gap: 6px; padding-left: 4px; }
+.bus-numbers { font-weight: 500; }
 .bus-numbers.blue { color: #007aff; }
 .bus-numbers.red { color: #ff3b30; }
 .bus-numbers.green { color: #34c759; }
-
-.parking-highlight {
-    margin: 4px 0;
-}
-.emp-text {
-    color: #ff9500;
-    font-weight: 700;
-}
+.parking-highlight { margin: 4px 0; }
+.emp-text { color: #ff9500; font-weight: 700; }
