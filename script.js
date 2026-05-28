@@ -1,85 +1,45 @@
 let startY = 0;
-let isDragging = false;
 
-// DOM 로드 완료 후 실행
-document.addEventListener("DOMContentLoaded", function() {
+window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
     
-    if (lockScreen) {
-        // [모바일 터치 이벤트 - 감도 대폭 상향]
-        lockScreen.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
-        }, { passive: true });
+    lockScreen.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+    });
 
-        lockScreen.addEventListener('touchend', (e) => {
-            let endY = e.changedTouches[0].clientY;
-            // 10픽셀만 위로 올려도 무조건 열리도록 변경
-            if (startY - endY > 10) {
-                openHome();
-            }
-        }, { passive: true });
+    lockScreen.addEventListener('touchend', (e) => {
+        let endY = e.changedTouches[0].clientY;
+        if (startY - endY > 50) {
+            lockScreen.classList.add('slide-up');
+            setTimeout(() => {
+                lockScreen.classList.add('hidden');
+                document.getElementById('home-screen').classList.remove('hidden');
+            }, 500);
+        }
+    });
+};
 
-        // [PC 마우스 이벤트]
-        lockScreen.addEventListener('mousedown', (e) => {
-            startY = e.clientY;
-            isDragging = true;
-        });
-
-        lockScreen.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            let endY = e.clientY;
-            isDragging = false;
-            if (startY - endY > 10) {
-                openHome();
-            }
-        });
-
-        // [비상구] 혹시나 터치 안 먹힐 때를 대비해 잠금화면 아무 데나 더블 클릭/탭 하면 열리게 처리
-        lockScreen.addEventListener('dblclick', () => {
-            openHome();
-        });
-    }
-});
-
-// 화면 전환 강제 실행 함수
-function openHome() {
-    const lockScreen = document.getElementById('lock-screen');
-    const homeScreen = document.getElementById('home-screen');
-    
-    if (lockScreen) lockScreen.classList.add('slide-up');
-    setTimeout(() => {
-        if (lockScreen) lockScreen.classList.add('hidden');
-        if (homeScreen) homeScreen.classList.remove('hidden');
-    }, 400);
-}
-
+// 배경음악 제어
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const btn = document.getElementById('music-btn');
     const icon = document.getElementById('music-icon');
 
-    if (!bgm) return;
-
     if (bgm.paused) {
         bgm.play().then(() => {
-            if (btn) btn.classList.add('playing');
-            if (icon) icon.className = "fa-solid fa-compact-disc fa-spin"; 
+            btn.classList.add('playing');
+            icon.className = "fa-solid fa-compact-disc fa-spin"; 
         }).catch(err => console.log(err));
     } else {
         bgm.pause();
-        if (btn) btn.classList.remove('playing');
-        if (icon) icon.className = "fa-solid fa-music"; 
+        btn.classList.remove('playing');
+        icon.className = "fa-solid fa-music"; 
     }
 }
 
-function openMap() { 
-    const mapPage = document.getElementById('map-page');
-    if (mapPage) mapPage.classList.remove('hidden'); 
-}
-function closeMap() { 
-    const mapPage = document.getElementById('map-page');
-    if (mapPage) mapPage.classList.add('hidden'); 
-}
+// 오시는 길 창 제어
+function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
+function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
 
 function copyAddress() {
     navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
@@ -87,23 +47,21 @@ function copyAddress() {
     });
 }
 
-/* 🌐 실시간 방명록 연동 로직 */
+/* 🌐 실시간 방명록 서버 연동 로직 */
+
 function openGuestbook() {
-    const gbPage = document.getElementById('guestbook-page');
-    if (gbPage) gbPage.classList.remove('hidden');
-    listenComments(); 
+    document.getElementById('guestbook-page').classList.remove('hidden');
+    listenComments(); // 실시간 데이터 실시간 감시 시작
 }
 function closeGuestbook() {
-    const gbPage = document.getElementById('guestbook-page');
-    if (gbPage) gbPage.classList.add('hidden');
+    document.getElementById('guestbook-page').classList.add('hidden');
 }
 
+// 파이어베이스 데이터베이스로 실시간 전송
 function addComment() {
     const nameInput = document.getElementById('gb-name');
     const pwdInput = document.getElementById('gb-password');
     const contentInput = document.getElementById('gb-content');
-
-    if (!nameInput || !pwdInput || !contentInput) return;
 
     const name = nameInput.value.trim();
     const password = pwdInput.value.trim();
@@ -116,40 +74,38 @@ function addComment() {
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
-    if (typeof database !== 'undefined' && database !== null) {
-        database.ref('guestbook').push({
-            name: name,
-            password: password,
-            content: content,
-            date: dateStr,
-            timestamp: Date.now()
-        }).then(() => {
-            nameInput.value = '';
-            pwdInput.value = '';
-            contentInput.value = '';
-        }).catch(err => alert("저장 실패: " + err.message));
-    }
+    // Firebase 데이터베이스의 'guestbook' 노드에 push(저장)
+    database.ref('guestbook').push({
+        name: name,
+        password: password,
+        content: content,
+        date: dateStr,
+        timestamp: Date.now()
+    }).then(() => {
+        nameInput.value = '';
+        pwdInput.value = '';
+        contentInput.value = '';
+    }).catch(err => alert("저장 실패: " + err.message));
 }
 
+// 데이터베이스를 실시간으로 Listen 하여 화면에 반영하기
 function listenComments() {
-    if (typeof database === 'undefined' || database === null) return;
-    
+    // 최신 순 정렬을 위해 서버에서 데이터를 실시간으로 받아옴
     database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
         const listContainer = document.getElementById('guestbook-list');
         const countSpan = document.getElementById('gb-count');
-        
-        if (!listContainer || !countSpan) return;
         
         listContainer.innerHTML = '';
         let commentsArray = [];
 
         snapshot.forEach((childSnapshot) => {
-            const key = childSnapshot.key;
+            const key = childSnapshot.key; // 고유 데이터 키값
             const data = childSnapshot.val();
             commentsArray.push({ id: key, ...data });
         });
 
-        commentsArray.reverse(); 
+        // 내림차순 정렬 (최신글 위로)
+        commentsArray.reverse();
         countSpan.innerText = commentsArray.length;
 
         if (commentsArray.length === 0) {
@@ -175,10 +131,12 @@ function listenComments() {
     });
 }
 
+// 삭제 로직 (서버 데이터 삭제 반영)
 function deleteComment(id, targetPassword) {
     const inputPwd = prompt('비밀번호를 입력하세요:');
     if (inputPwd === null) return;
 
+    // 본인 패스워드 검증 혹은 마스터 관리자 번호 통과 권한 완벽 보존!
     if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
         if (confirm('이 메모를 삭제하시겠습니까?')) {
             database.ref('guestbook/' + id).remove()
