@@ -1,14 +1,16 @@
-<!DOCTYPE html><html lang="ko"><head>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 결혼합니다</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css"></head><body>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <!-- 배경음악 오디오 태그 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
-    <!-- 1. 잠금 화면 -->
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
@@ -19,16 +21,12 @@
         </div>
     </div>
 
-    <!-- 2. 홈 화면 -->
     <div id="home-screen" class="screen hidden">
-        <!-- 상단 음악 제어 버튼 -->
         <button id="music-btn" onclick="toggleMusic()">
             <i id="music-icon" class="fa-solid fa-music"></i>
         </button>
 
-        <!-- 메인 콘텐츠 영역 -->
         <div class="home-content">
-            <!-- 첫 번째 줄 (4개 아이콘) -->
             <div class="app-grid row-1">
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                     <div class="icon-box ios-health">❤️</div>
@@ -49,7 +47,6 @@
                     </div>
                     <span>갤러리</span>
                 </div>
-                <!-- 🔔 아이폰 순정 미리 알림 앱 반영 -->
                 <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
                     <div class="icon-box ios-reminders">
                         <div class="rem-bullet rb1"></div><div class="rem-line"></div>
@@ -60,9 +57,7 @@
                 </div>
             </div>
 
-            <!-- 두 번째 줄 (살짝 아래로 내려간 3개 아이콘) -->
             <div class="app-grid row-2">
-                <!-- 💳 아이폰 순정 지갑(Wallet) 앱 반영 -->
                 <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
                     <div class="icon-box ios-wallet">
                         <div class="wallet-card wc1"></div>
@@ -75,8 +70,7 @@
                     <div class="icon-box ios-appstore">A</div>
                     <span>드레스 코드</span>
                 </div>
-                <!-- 📝 아이폰 순정 메모 앱 반영 -->
-                <div class="icon-item" onclick="alert('방명록 페이지로 이동!')">
+                <div class="icon-item" onclick="openGuestbook()">
                     <div class="icon-box ios-notes">
                         <div class="notes-top"></div>
                         <div class="notes-line nl1"></div>
@@ -88,7 +82,6 @@
             </div>
         </div>
 
-        <!-- 3. 하단 독 바 -->
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                 <div class="icon-box ios-health">❤️</div>
@@ -106,7 +99,6 @@
                     <div class="petal p7"></div><div class="petal p8"></div>
                 </div>
             </div>
-            <!-- 독바에도 미리 알림 앱 아이콘 적용 -->
             <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
                 <div class="icon-box ios-reminders">
                     <div class="rem-bullet rb1"></div><div class="rem-line"></div>
@@ -117,7 +109,6 @@
         </div>
     </div>
 
-    <!-- 3. 오시는 길 팝업 상세 화면 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -183,4 +174,23 @@
         </div>
     </div>
 
-    <script src="script.js"></script></body></html>
+    <div id="guestbook-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>축하 방명록 (<span id="gb-count">0</span>)</h3>
+            <button class="close-btn" onclick="closeGuestbook()">✕</button>
+        </div>
+        <div class="page-content">
+            <div class="venue-card" style="text-align: left;">
+                <input type="text" id="gb-name" placeholder="이름" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
+                <input type="password" id="gb-password" placeholder="비밀번호 (4자리)" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
+                <textarea id="gb-content" placeholder="축하 메시지를 남겨주세요." style="width:100%; height:8px0px; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
+                <button class="copy-full" onclick="addComment()" style="background:#ff9500; color:white; margin-bottom:0;">메시지 남기기</button>
+            </div>
+            <div id="guestbook-list" class="transport-section" style="margin-top:15px;"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
