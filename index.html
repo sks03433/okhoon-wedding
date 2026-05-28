@@ -9,10 +9,8 @@
 </head>
 <body>
 
-    <!-- 배경음악 오디오 태그 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
-    <!-- 1. 잠금 화면 -->
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
@@ -23,7 +21,6 @@
         </div>
     </div>
 
-    <!-- 2. 홈 화면 -->
     <div id="home-screen" class="screen hidden">
         <button id="music-btn" onclick="toggleMusic()">
             <i id="music-icon" class="fa-solid fa-music"></i>
@@ -31,66 +28,87 @@
 
         <div class="home-content">
             <div class="app-grid row-1">
-                <!-- 1. 우리 이야기 -->
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                     <div class="icon-box ios-health">❤️</div>
                     <span>우리 이야기</span>
                 </div>
-                <!-- 2. 오시는 길 -->
                 <div class="icon-item" onclick="openMap()">
-                    <div class="icon-box ios-maps">🗺️</div>
+                    <div class="icon-box ios-maps">
+                        <div class="maps-indicator"></div>
+                    </div>
                     <span>오시는 길</span>
                 </div>
-                <!-- 3. 갤러리 -->
                 <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                    <div class="icon-box ios-photos">📸</div>
+                    <div class="icon-box ios-photos">
+                        <div class="petal p1"></div><div class="petal p2"></div>
+                        <div class="petal p3"></div><div class="petal p4"></div>
+                        <div class="petal p5"></div><div class="petal p6"></div>
+                        <div class="petal p7"></div><div class="petal p8"></div>
+                    </div>
                     <span>갤러리</span>
                 </div>
-                <!-- 4. 참석 여부 -->
                 <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                    <div class="icon-box ios-reminders">✍️</div>
+                    <div class="icon-box ios-reminders">
+                        <div class="rem-bullet rb1"></div><div class="rem-line"></div>
+                        <div class="rem-bullet rb2"></div><div class="rem-line"></div>
+                        <div class="rem-bullet rb3"></div><div class="rem-line"></div>
+                    </div>
                     <span>참석 여부</span>
                 </div>
             </div>
 
             <div class="app-grid row-2">
-                <!-- 5. 축의금 -->
                 <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
-                    <div class="icon-box ios-wallet">💸</div>
+                    <div class="icon-box ios-wallet">
+                        <div class="wallet-card wc1"></div>
+                        <div class="wallet-card wc2"></div>
+                        <div class="wallet-card wc3"></div>
+                    </div>
                     <span>축의금</span>
                 </div>
-                <!-- 6. 드레스 코드 -->
                 <div class="icon-item" onclick="alert('드레스 코드 페이지로 이동!')">
-                    <div class="icon-box ios-appstore">👗</div>
+                    <div class="icon-box ios-appstore">A</div>
                     <span>드레스 코드</span>
                 </div>
-                <!-- 7. 방명록 -->
                 <div class="icon-item" onclick="openGuestbook()">
-                    <div class="icon-box ios-notes">✉️</div>
+                    <div class="icon-box ios-notes">
+                        <div class="notes-top"></div>
+                        <div class="notes-line nl1"></div>
+                        <div class="notes-line nl2"></div>
+                    </div>
                     <span>방명록</span>
                 </div>
                 <div class="icon-item empty"></div>
             </div>
         </div>
 
-        <!-- 하단 고정 독(Dock) 바 아이콘도 원래대로 복구 -->
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                 <div class="icon-box ios-health">❤️</div>
             </div>
             <div class="icon-item" onclick="openMap()">
-                <div class="icon-box ios-maps">🗺️</div>
+                <div class="icon-box ios-maps">
+                    <div class="maps-indicator"></div>
+                </div>
             </div>
             <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                <div class="icon-box ios-photos">📸</div>
+                <div class="icon-box ios-photos">
+                    <div class="petal p1"></div><div class="petal p2"></div>
+                    <div class="petal p3"></div><div class="petal p4"></div>
+                    <div class="petal p5"></div><div class="petal p6"></div>
+                    <div class="petal p7"></div><div class="petal p8"></div>
+                </div>
             </div>
             <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                <div class="icon-box ios-reminders">✍️</div>
+                <div class="icon-box ios-reminders">
+                    <div class="rem-bullet rb1"></div><div class="rem-line"></div>
+                    <div class="rem-bullet rb2"></div><div class="rem-line"></div>
+                    <div class="rem-bullet rb3"></div><div class="rem-line"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 오시는 길 팝업 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -106,7 +124,6 @@
         </div>
     </div>
 
-    <!-- 방명록 팝업 (깔끔한 세로형) -->
     <div id="guestbook-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -129,11 +146,9 @@
         </div>
     </div>
 
-    <!-- 🌐 구글 파이어베이스 라이브러리 로드 -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
-    <!-- 스크립트 기능 통합 유지 -->
     <script>
         var firebaseConfig = {
             apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
