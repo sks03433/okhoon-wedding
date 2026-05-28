@@ -109,6 +109,7 @@
         </div>
     </div>
 
+    <!-- 오시는 길 팝업 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -116,10 +117,51 @@
             <button class="close-btn" onclick="closeMap()">✕</button>
         </div>
         <div class="page-content">
+            <!-- 1. 예식장 기본 정보 카드 -->
             <div class="venue-card">
                 <h4 class="venue-name">더아리엘 수원</h4> 
                 <p class="venue-address">경기 수원시 팔달구 중부대로 181<br><span class="sub-addr">(우만동 147-7)</span></p>
                 <button class="copy-full" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> 주소 복사하기</button>
+            </div>
+
+            <!-- 2. 내비게이션/지도 바로가기 버튼 (추가됨) -->
+            <div class="map-links-container">
+                <a href="https://map.naver.com/p/entry/place/13149722" target="_blank" class="map-btn naver-map">
+                    <span class="map-icon">N</span> 네이버 지도 열기
+                </a>
+                <a href="https://map.kakao.com/link/to/더아리엘수원,37.2798,127.0427" target="_blank" class="map-btn kakao-map">
+                    <span class="map-icon">K</span> 카카오맵 열기
+                </a>
+            </div>
+
+            <!-- 3. 대중교통 안내 섹션 (추가됨) -->
+            <div class="transport-section">
+                <div class="transport-row">
+                    <div class="transport-badge sub-line">🚇 지하철</div>
+                    <div class="transport-info">
+                        <strong>수원역 (1호선 / 수인분당선)</strong><br>
+                        - 4번 출구 앞 버스정류장에서 일반 버스 이용 (약 15분 소요)<br>
+                        <strong>광교중앙역 (신분당선)</strong><br>
+                        - 1번 출구에서 택시 또는 버스 이용 (약 10분 소요)
+                    </div>
+                </div>
+
+                <div class="transport-row">
+                    <div class="transport-badge bus-line">🚌 버스 안내</div>
+                    <div class="transport-info">
+                        <strong>'우만동DM시티.더아리엘' 정류장 하차</strong><br>
+                        - 일반: 10, 10-2, 11-1, 37, 46, 62-1, 82-1, 83-1<br>
+                        - 직행좌석: 3007, 4000, 7002
+                    </div>
+                </div>
+
+                <div class="transport-row">
+                    <div class="transport-badge car-line">🚗 주차 안내</div>
+                    <div class="transport-info">
+                        - 건물 내 자체 주차장 및 외부 연계 주차장 이용 가능<br>
+                        - 하객 분들은 2시간 무료 주차 지원
+                    </div>
+                </div>
             </div>
         </div>
     </div>
