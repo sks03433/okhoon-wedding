@@ -181,12 +181,15 @@
             <button class="close-btn" onclick="closeGuestbook()">✕</button>
         </div>
         <div class="page-content">
+            <!-- 방명록 입력 폼 구성 영역 -->
             <div class="venue-card" style="text-align: left;">
                 <input type="text" id="gb-name" placeholder="이름" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
                 <input type="password" id="gb-password" placeholder="비밀번호 (4자리)" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
-                <textarea id="gb-content" placeholder="축하 메시지를 남겨주세요." style="width:100%; height:8px0px; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
+                <!-- 🛠️ 오타 수정: height:8px0px -> height:80px -->
+                <textarea id="gb-content" placeholder="축하 메시지를 남겨주세요." style="width:100%; height:80px; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
                 <button class="copy-full" onclick="addComment()" style="background:#ff9500; color:white; margin-bottom:0;">메시지 남기기</button>
             </div>
+            <!-- 실시간 댓글 리스트 출력 영역 -->
             <div id="guestbook-list" class="transport-section" style="margin-top:15px;"></div>
         </div>
     </div>
