@@ -1,22 +1,25 @@
 let startY = 0;
 let isDragging = false;
 
-// DOM 로드 완료 후 안전하게 스와이프 바인딩
+// DOM 로드 완료 후 실행
 document.addEventListener("DOMContentLoaded", function() {
     const lockScreen = document.getElementById('lock-screen');
     
     if (lockScreen) {
-        // 모바일 터치
+        // [모바일 터치 이벤트 - 감도 대폭 상향]
         lockScreen.addEventListener('touchstart', (e) => {
             startY = e.touches[0].clientY;
         }, { passive: true });
 
         lockScreen.addEventListener('touchend', (e) => {
             let endY = e.changedTouches[0].clientY;
-            handleSwipe(startY, endY);
+            // 10픽셀만 위로 올려도 무조건 열리도록 변경
+            if (startY - endY > 10) {
+                openHome();
+            }
         }, { passive: true });
 
-        // PC 마우스
+        // [PC 마우스 이벤트]
         lockScreen.addEventListener('mousedown', (e) => {
             startY = e.clientY;
             isDragging = true;
@@ -26,22 +29,28 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!isDragging) return;
             let endY = e.clientY;
             isDragging = false;
-            handleSwipe(startY, endY);
+            if (startY - endY > 10) {
+                openHome();
+            }
+        });
+
+        // [비상구] 혹시나 터치 안 먹힐 때를 대비해 잠금화면 아무 데나 더블 클릭/탭 하면 열리게 처리
+        lockScreen.addEventListener('dblclick', () => {
+            openHome();
         });
     }
 });
 
-function handleSwipe(start, end) {
+// 화면 전환 강제 실행 함수
+function openHome() {
     const lockScreen = document.getElementById('lock-screen');
     const homeScreen = document.getElementById('home-screen');
     
-    if (start - end > 40) { 
-        if (lockScreen) lockScreen.classList.add('slide-up');
-        setTimeout(() => {
-            if (lockScreen) lockScreen.classList.add('hidden');
-            if (homeScreen) homeScreen.classList.remove('hidden');
-        }, 500);
-    }
+    if (lockScreen) lockScreen.classList.add('slide-up');
+    setTimeout(() => {
+        if (lockScreen) lockScreen.classList.add('hidden');
+        if (homeScreen) homeScreen.classList.remove('hidden');
+    }, 400);
 }
 
 function toggleMusic() {
@@ -67,7 +76,6 @@ function openMap() {
     const mapPage = document.getElementById('map-page');
     if (mapPage) mapPage.classList.remove('hidden'); 
 }
-// ✕ 버튼 누르면 닫히도록 완벽 구현 보존
 function closeMap() { 
     const mapPage = document.getElementById('map-page');
     if (mapPage) mapPage.classList.add('hidden'); 
