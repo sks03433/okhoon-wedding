@@ -60,7 +60,7 @@ body, html {
 
 /* 2. 홈 화면 스타일 */
 #home-screen {
-    background-image: url('home_bg.jpg');
+    background-image: url('home_photo.jpg');
     background-color: #f2f2f7;
     padding: 40px 20px 100px 20px;
 }
