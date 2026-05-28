@@ -1,46 +1,46 @@
 let startY = 0;
 let isDragging = false;
 
-window.onload = function() {
+// DOM이 완전히 준비되면 실행
+document.addEventListener("DOMContentLoaded", function() {
     const lockScreen = document.getElementById('lock-screen');
-    if (!lockScreen) return;
     
-    // [모바일] 터치 시작
-    lockScreen.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-    }, { passive: true });
+    if (lockScreen) {
+        // [모바일 터치 이벤트]
+        lockScreen.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
 
-    // [모바일] 터치 끝
-    lockScreen.addEventListener('touchend', (e) => {
-        let endY = e.changedTouches[0].clientY;
-        handleSwipe(startY, endY);
-    }, { passive: true });
+        lockScreen.addEventListener('touchend', (e) => {
+            let endY = e.changedTouches[0].clientY;
+            handleSwipe(startY, endY);
+        }, { passive: true });
 
-    // [PC 컴퓨터] 마우스 클릭 시작
-    lockScreen.addEventListener('mousedown', (e) => {
-        startY = e.clientY;
-        isDragging = true;
-    });
+        // [PC 마우스 이벤트]
+        lockScreen.addEventListener('mousedown', (e) => {
+            startY = e.clientY;
+            isDragging = true;
+        });
 
-    // [PC 컴퓨터] 마우스 뗄 때
-    lockScreen.addEventListener('mouseup', (e) => {
-        if (!isDragging) return;
-        let endY = e.clientY;
-        isDragging = false;
-        handleSwipe(startY, endY);
-    });
-};
+        lockScreen.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            let endY = e.clientY;
+            isDragging = false;
+            handleSwipe(startY, endY);
+        });
+    }
+});
 
-// 위로 스와이프/드래그 시 화면 전환 공통 로직
+// 화면 전환 함수
 function handleSwipe(start, end) {
     const lockScreen = document.getElementById('lock-screen');
     const homeScreen = document.getElementById('home-screen');
     
-    // 50픽셀 이상 위로 올렸을 때 작동
-    if (start - end > 50) { 
-        lockScreen.classList.add('slide-up');
+    // 위로 40픽셀 이상 스와이프/드래그했을 때
+    if (start - end > 40) { 
+        if (lockScreen) lockScreen.classList.add('slide-up');
         setTimeout(() => {
-            lockScreen.classList.add('hidden');
+            if (lockScreen) lockScreen.classList.add('hidden');
             if (homeScreen) homeScreen.classList.remove('hidden');
         }, 500);
     }
@@ -56,19 +56,25 @@ function toggleMusic() {
 
     if (bgm.paused) {
         bgm.play().then(() => {
-            btn.classList.add('playing');
-            icon.className = "fa-solid fa-compact-disc fa-spin"; 
-        }).catch(err => console.log(err));
+            if (btn) btn.classList.add('playing');
+            if (icon) icon.className = "fa-solid fa-compact-disc fa-spin"; 
+        }).catch(err => console.log("오디오 재생 차단 방지: ", err));
     } else {
         bgm.pause();
-        btn.classList.remove('playing');
-        icon.className = "fa-solid fa-music"; 
+        if (btn) btn.classList.remove('playing');
+        if (icon) icon.className = "fa-solid fa-music"; 
     }
 }
 
 // 오시는 길 창 제어
-function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
-function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
+function openMap() { 
+    const mapPage = document.getElementById('map-page');
+    if (mapPage) mapPage.classList.remove('hidden'); 
+}
+function closeMap() { 
+    const mapPage = document.getElementById('map-page');
+    if (mapPage) mapPage.classList.add('hidden'); 
+}
 
 function copyAddress() {
     navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
@@ -78,17 +84,21 @@ function copyAddress() {
 
 /* 🌐 실시간 방명록 연동 로직 */
 function openGuestbook() {
-    document.getElementById('guestbook-page').classList.remove('hidden');
+    const gbPage = document.getElementById('guestbook-page');
+    if (gbPage) gbPage.classList.remove('hidden');
     listenComments(); 
 }
 function closeGuestbook() {
-    document.getElementById('guestbook-page').classList.add('hidden');
+    const gbPage = document.getElementById('guestbook-page');
+    if (gbPage) gbPage.classList.add('hidden');
 }
 
 function addComment() {
     const nameInput = document.getElementById('gb-name');
     const pwdInput = document.getElementById('gb-password');
     const contentInput = document.getElementById('gb-content');
+
+    if (!nameInput || !pwdInput || !contentInput) return;
 
     const name = nameInput.value.trim();
     const password = pwdInput.value.trim();
@@ -101,7 +111,8 @@ function addComment() {
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
-    if (typeof database !== 'undefined') {
+    // database 변수가 존재할 때만 안전하게 실행
+    if (typeof database !== 'undefined' && database !== null) {
         database.ref('guestbook').push({
             name: name,
             password: password,
@@ -114,12 +125,12 @@ function addComment() {
             contentInput.value = '';
         }).catch(err => alert("저장 실패: " + err.message));
     } else {
-        alert("파이어베이스 연결을 확인해주세요.");
+        alert("서버 연결에 문제가 있습니다. 파이어베이스 설정을 확인해 주세요.");
     }
 }
 
 function listenComments() {
-    if (typeof database === 'undefined') return;
+    if (typeof database === 'undefined' || database === null) return;
     
     database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
         const listContainer = document.getElementById('guestbook-list');
