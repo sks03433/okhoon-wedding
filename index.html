@@ -117,16 +117,71 @@
                     <div class="petal p7"></div><div class="petal p8"></div>
                 </div>
             </div>
-            <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
-                <div class="icon-box ios-reminders">
-                    <div class="rem-bullet rb1"></div><div class="rem-line"></div>
-                    <div class="rem-bullet rb2"></div><div class="rem-line"></div>
-                    <div class="rem-bullet rb3"></div><div class="rem-line"></div>
+            <div class="icon-item" onclick="openRSVP()">
+    <div class="icon-box ios-reminders">
+        <div class="rem-bullet rb1"></div><div class="rem-line"></div>
+        <div class="rem-bullet rb2"></div><div class="rem-line"></div>
+        <div class="rem-bullet rb3"></div><div class="rem-line"></div>
+    </div>
+    <span>참석 여부</span>
+</div>
+
+<div id="rsvp-page" class="detail-page hidden">
+    <div class="page-header">
+        <div class="header-bar"></div>
+        <h3>참석 의사 전달</h3>
+        <button class="close-btn" onclick="closeRSVP()">✕</button>
+    </div>
+    <div class="page-content">
+        <div class="venue-card" style="text-align: left; padding: 25px 20px;">
+            <p style="font-size: 0.9rem; color: #8e8e93; margin-bottom: 20px; line-height: 1.4;">
+                축하해 주시는 모든 분들께 감사드립니다.<br>원활한 예식 준비를 위해 참석 여부를 알려주세요.
+            </p>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">성함</label>
+                <input type="text" id="rsvp-name" placeholder="성함을 입력해주세요." style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">구분</label>
+                <div style="display:flex; gap:10px;">
+                    <button class="rsvp-opt-btn active" data-type="side" data-value="신랑측" onclick="selectOpt(this)">신랑측</button>
+                    <button class="rsvp-opt-btn" data-type="side" data-value="신부측" onclick="selectOpt(this)">신부측</button>
                 </div>
             </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">참석 여부</label>
+                <div style="display:flex; gap:10px;">
+                    <button class="rsvp-opt-btn active" data-type="attend" data-value="참석" onclick="selectOpt(this)">참석</button>
+                    <button class="rsvp-opt-btn" data-type="attend" data-value="마음만 함께" onclick="selectOpt(this)">마음만 함께</button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">동반 인원 (본인 포함)</label>
+                <select id="rsvp-count" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; background:white;">
+                    <option value="1명">1명</option>
+                    <option value="2명">2명</option>
+                    <option value="3명">3명</option>
+                    <option value="4명">4명</option>
+                    <option value="5명 이상">5명 이상</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">식사 여부</label>
+                <div style="display:flex; gap:10px;">
+                    <button class="rsvp-opt-btn active" data-type="meal" data-value="예정" onclick="selectOpt(this)">예정</button>
+                    <button class="rsvp-opt-btn" data-type="meal" data-value="안함" onclick="selectOpt(this)">안함</button>
+                </div>
+            </div>
+
+            <button class="copy-full" onclick="submitRSVP()" style="background:#007aff; color:white; margin-bottom:0; font-size:1.05rem;">참석 의사 전달하기</button>
         </div>
     </div>
-
+</div>
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
