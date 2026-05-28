@@ -116,10 +116,6 @@
                 <h4 class="venue-name">더아리엘 수원</h4> 
                 <p class="venue-address">경기 수원시 팔달구 중부대로 181<br><span class="sub-addr">(우만동 147-7)</span></p>
                 <button class="copy-full" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> 주소 복사하기</button>
-                <div class="btn-group">
-                    <a href="https://map.kakao.com/link/search/더아리엘 수원" target="_blank" class="action-btn kakao"><i class="fa-solid fa-comment"></i> 카카오맵</a>
-                    <a href="https://map.naver.com/v5/search/더아리엘 수원" target="_blank" class="action-btn naver"><span class="naver-icon">N</span> 네이버 지도</a>
-                </div>
             </div>
         </div>
     </div>
@@ -136,4 +132,30 @@
                     <input type="text" id="gb-name" placeholder="이름" maxlength="10">
                     <input type="password" id="gb-password" placeholder="비밀번호(4자리)" maxlength="4">
                 </div>
-                <textarea id="gb-content" placeholder="신랑 신부에게 축하의 한마디를 남겨주세요." rows="3"></
+                <textarea id="gb-content" placeholder="신랑 신부에게 축하의 한마디를 남겨주세요." rows="3"></textarea>
+                <button class="gb-submit-btn" onclick="addComment()">메모 저장하기</button>
+            </div>
+            <div class="gb-list-title">저장된 메모 <span id="gb-count">0</span></div>
+            <div id="guestbook-list" class="gb-list-container"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // 전역 변수로 설정하여 script.js에서 안전하게 읽을 수 있도록 조치
+        var firebaseConfig = {
+            apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
+            authDomain: "okhoon-wedding.firebaseapp.com",
+            databaseURL: "https://okhoon-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "okhoon-wedding",
+            storageBucket: "okhoon-wedding.firebasestorage.app",
+            messagingSenderId: "983524797177",
+            appId: "1:983524797177:web:cefd13ac75ae9e44da1028"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+    </script>
+
+    <script src="script.js"></script></body></html>
