@@ -154,24 +154,25 @@ function deleteComment(id, targetPassword) {
         alert('비밀번호가 일치하지 않습니다.');
     }
 }
-// 참석 여부 창 제어
+
+/* 🔔 참석 여부(RSVP) 제어 스크립트 기능 추가 */
+
 function openRSVP() { document.getElementById('rsvp-page').classList.remove('hidden'); }
 function closeRSVP() { document.getElementById('rsvp-page').classList.add('hidden'); }
 
-// 옵션 선택 버튼 처리
+// 옵션 버튼 세그먼트 활성화 함수
 function selectOpt(btn) {
     const type = btn.getAttribute('data-type');
-    // 같은 타입의 다른 버튼들 비활성화
     document.querySelectorAll(`.rsvp-opt-btn[data-type="${type}"]`).forEach(b => {
         b.classList.remove('active');
     });
-    // 클릭한 버튼 활성화
     btn.classList.add('active');
 }
 
-// 참석 의사 저장 (Firebase 연동)
+// 참석 의사 Firebase 연동 저장 함수
 function submitRSVP() {
-    const name = document.getElementById('rsvp-name').value.trim();
+    const nameInput = document.getElementById('rsvp-name');
+    const name = nameInput.value.trim();
     if (!name) { alert('성함을 입력해 주세요.'); return; }
 
     const side = document.querySelector('.rsvp-opt-btn[data-type="side"].active').getAttribute('data-value');
@@ -182,7 +183,7 @@ function submitRSVP() {
     const now = new Date();
     const timeStr = now.toLocaleString();
 
-    // Firebase 'rsvp' 노드에 저장
+    // Firebase 데이터베이스 'rsvp' 노드에 업로드
     database.ref('rsvp').push({
         name: name,
         side: side,
@@ -192,9 +193,8 @@ function submitRSVP() {
         time: timeStr,
         timestamp: Date.now()
     }).then(() => {
-        alert('소중한 의사가 신랑·신부님께 전달되었습니다. 감사합니다!');
+        alert('소중한 참석 의사가 신랑·신부님께 잘 전달되었습니다. 감사합니다!');
         closeRSVP();
-        // 입력값 초기화
-        document.getElementById('rsvp-name').value = '';
+        nameInput.value = ''; // 입력창 초기화
     }).catch(err => alert("전송 실패: " + err.message));
 }
