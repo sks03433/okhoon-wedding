@@ -132,14 +132,11 @@ body, html {
     text-align: center;
 }
 
-/* 일반 기존 스타일 아이콘 */
+/* 공통 고정 스타일 */
 .ios-health { background: #fff; }
-.ios-mail { background: linear-gradient(180deg, #2980b9, #3498db); }
-.ios-stocks { background: #2c3e50; }
 .ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); }
 
-
-/* 🗺️ 1. 순정 아이폰 지도 앱 그래픽 구현 */
+/* 🗺️ 순정 지도 앱 */
 .ios-maps {
     background: #e5e5ea;
     background-image: 
@@ -151,26 +148,13 @@ body, html {
 .maps-indicator {
     position: absolute;
     width: 14px; height: 14px;
-    background: #007aff;
-    border: 2px solid #fff;
-    border-radius: 50% 50% 0 50%;
-    transform: rotate(45deg);
-    box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
+    background: #007aff; border: 2px solid #fff; border-radius: 50% 50% 0 50%;
+    transform: rotate(45deg); box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
 }
 
-
-/* 📸 2. 순정 아이폰 사진(바람개비) 앱 그래픽 구현 */
-.ios-photos {
-    background: #ffffff;
-}
-.petal {
-    position: absolute;
-    width: 13px; height: 24px;
-    border-radius: 10px;
-    opacity: 0.85;
-    transform-origin: center bottom;
-    top: 6px; left: 23.5px;
-}
+/* 📸 순정 사진 앱 */
+.ios-photos { background: #ffffff; }
+.petal { position: absolute; width: 13px; height: 24px; border-radius: 10px; opacity: 0.85; transform-origin: center bottom; top: 6px; left: 23.5px; }
 .p1 { background: #ff3b30; transform: rotate(0deg); }
 .p2 { background: #ff9500; transform: rotate(45deg); }
 .p3 { background: #ffcc00; transform: rotate(90deg); }
@@ -181,25 +165,62 @@ body, html {
 .p8 { background: #ff2d55; transform: rotate(315deg); }
 
 
-/* 💬 3. 순정 아이폰 메시지 앱 그래픽 구현 */
-.ios-messages {
-    background: linear-gradient(180deg, #34c759, #24b04b);
-}
-.message-bubble {
-    position: absolute;
-    width: 34px; height: 26px;
+/* 🔔 [NEW] 순정 미리 알림(Reminders) 앱 그래픽 */
+.ios-reminders {
     background: #ffffff;
-    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 14px;
+    gap: 8px;
 }
-.message-bubble::after {
-    content: '';
+.rem-bullet {
+    width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid transparent;
+}
+.rb1 { border-color: #ff3b30; background: rgba(255,59,48,0.2); }
+.rb2 { border-color: #007aff; background: rgba(0,122,255,0.2); }
+.rb3 { border-color: #ff9500; background: rgba(255,149,0,0.2); }
+.rem-line {
+    position: absolute; left: 26px; width: 22px; height: 2px; background: #e5e5ea;
+}
+.ios-reminders .rem-line:nth-of-type(1) { top: 18px; }
+.ios-reminders .rem-line:nth-of-type(2) { top: 29px; }
+.ios-reminders .rem-line:nth-of-type(3) { top: 40px; }
+
+
+/* 💳 [NEW] 순정 지갑(Wallet) 앱 그래픽 */
+.ios-wallet {
+    background: #1c1c1e;
+}
+.wallet-card {
     position: absolute;
-    bottom: -2px; left: -4px;
-    width: 12px; height: 12px;
-    background: #ffffff;
-    border-radius: 50%;
-    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+    width: 38px; height: 24px;
+    border-radius: 4px;
+    left: 11px;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
 }
+.wc1 { background: linear-gradient(135deg, #ff9500, #ffcc00); top: 12px; z-index: 3; width: 38px;}
+.wc2 { background: linear-gradient(135deg, #5ac8fa, #007aff); top: 19px; z-index: 2; width: 35px; left: 12.5px;}
+.wc3 { background: linear-gradient(135deg, #ff2d55, #ff3b30); top: 26px; z-index: 1; width: 32px; left: 14px;}
+
+
+/* 📝 [NEW] 순정 메모(Notes) 앱 그래픽 */
+.ios-notes {
+    background: #ffffff;
+    background-image: linear-gradient(#f4f4f4 1px, transparent 1px);
+    background-size: 100% 8px;
+}
+.notes-top {
+    position: absolute; top: 0; left: 0; width: 100%; height: 14px;
+    background: #ffcc00; opacity: 0.9;
+    border-bottom: 1px dashed #e5a900;
+}
+.notes-line {
+    position: absolute; left: 10px; width: 40px; height: 1.5px; background: #d1d1d6;
+}
+.nl1 { top: 26px; }
+.nl2 { top: 38px; }
 
 
 /* 하단 독 바 */
