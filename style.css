@@ -254,3 +254,100 @@ body, html {
 .gb-comment-date { font-size: 0.8rem; color: #8e8e93; margin-right: 8px; }
 .gb-delete-btn { background: none; border: none; color: #ff3b30; font-size: 0.8rem; cursor: pointer; font-weight: 500; }
 .gb-comment-text { font-size: 0.95rem; color: #3a3a3c; line-height: 1.4; white-space: pre-wrap; word-break: break-all; }
+/* 🗺️ 오시는 길 내비게이션 및 대중교통 스타일 */
+.map-links-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0 25px 0;
+}
+
+.map-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: background 0.2s;
+}
+
+/* 네이버 지도 버튼 스타일 */
+.naver-map {
+    background-color: #03c75a;
+    color: white;
+}
+.naver-map .map-icon {
+    font-weight: 900;
+    margin-right: 6px;
+    background: white;
+    color: #03c75a;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+
+/* 카카오맵 버튼 스타일 */
+.kakao-map {
+    background-color: #fae100;
+    color: #3c1e1e;
+}
+.kakao-map .map-icon {
+    font-weight: 900;
+    margin-right: 6px;
+    background: #3c1e1e;
+    color: #fae100;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+
+/* 대중교통 리스트 레이아웃 */
+.transport-section {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.transport-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 안내 배지 디자인 */
+.transport-badge {
+    align-self: flex-start;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+.sub-line { background: #e3f2fd; color: #007aff; }
+.bus-line { background: #e8f5e9; color: #4cd964; }
+.car-line { background: #fef3c7; color: #d97706; }
+
+.transport-info {
+    font-size: 0.9rem;
+    color: #48484a;
+    line-height: 1.6;
+    padding-left: 4px;
+}
+.transport-info strong {
+    color: #1c1c1e;
+}
