@@ -5,8 +5,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css"></head><body>
 
+    <!-- 배경음악 오디오 태그 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
+    <!-- 1. 잠금 화면 -->
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
@@ -17,23 +19,36 @@
         </div>
     </div>
 
+    <!-- 2. 홈 화면 -->
     <div id="home-screen" class="screen hidden">
+        <!-- 상단 음악 제어 버튼 -->
         <button id="music-btn" onclick="toggleMusic()">
             <i id="music-icon" class="fa-solid fa-music"></i>
         </button>
 
+        <!-- 메인 콘텐츠 영역 -->
         <div class="home-content">
+            <!-- 첫 번째 줄 (4개 아이콘) -->
             <div class="app-grid row-1">
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                     <div class="icon-box ios-health">❤️</div>
                     <span>우리 이야기</span>
                 </div>
+                <!-- 🗺️ 아이폰 순정 지도 앱 반영 -->
                 <div class="icon-item" onclick="openMap()">
-                    <div class="icon-box ios-maps">🧭</div>
+                    <div class="icon-box ios-maps">
+                        <div class="maps-indicator"></div>
+                    </div>
                     <span>오시는 길</span>
                 </div>
+                <!-- 📸 아이폰 순정 사진 앱 반영 -->
                 <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                    <div class="icon-box ios-photos">📸</div>
+                    <div class="icon-box ios-photos">
+                        <div class="petal p1"></div><div class="petal p2"></div>
+                        <div class="petal p3"></div><div class="petal p4"></div>
+                        <div class="petal p5"></div><div class="petal p6"></div>
+                        <div class="petal p7"></div><div class="petal p8"></div>
+                    </div>
                     <span>갤러리</span>
                 </div>
                 <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
@@ -42,6 +57,7 @@
                 </div>
             </div>
 
+            <!-- 두 번째 줄 (살짝 아래로 내려간 3개 아이콘) -->
             <div class="app-grid row-2">
                 <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
                     <div class="icon-box ios-stocks">📊</div>
@@ -51,23 +67,34 @@
                     <div class="icon-box ios-appstore">A</div>
                     <span>드레스 코드</span>
                 </div>
+                <!-- 💬 아이폰 순정 메시지 앱 반영 -->
                 <div class="icon-item" onclick="alert('방명록 페이지로 이동!')">
-                    <div class="icon-box ios-messages">💬</div>
+                    <div class="icon-box ios-messages">
+                        <div class="message-bubble"></div>
+                    </div>
                     <span>방명록</span>
                 </div>
                 <div class="icon-item empty"></div>
             </div>
         </div>
 
+        <!-- 3. 하단 독 바 -->
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                 <div class="icon-box ios-health">❤️</div>
             </div>
             <div class="icon-item" onclick="openMap()">
-                <div class="icon-box ios-maps">🧭</div>
+                <div class="icon-box ios-maps">
+                    <div class="maps-indicator"></div>
+                </div>
             </div>
             <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                <div class="icon-box ios-photos">📸</div>
+                <div class="icon-box ios-photos">
+                    <div class="petal p1"></div><div class="petal p2"></div>
+                    <div class="petal p3"></div><div class="petal p4"></div>
+                    <div class="petal p5"></div><div class="petal p6"></div>
+                    <div class="petal p7"></div><div class="petal p8"></div>
+                </div>
             </div>
             <div class="icon-item" onclick="alert('참석 여부 페이지로 이동!')">
                 <div class="icon-box ios-mail">✉️</div>
@@ -75,9 +102,11 @@
         </div>
     </div>
 
+    <!-- 3. 오시는 길 팝업 상세 화면 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
-            <div class="header-bar"></div> <h3>오시는 길</h3>
+            <div class="header-bar"></div>
+            <h3>오시는 길</h3>
             <button class="close-btn" onclick="closeMap()">✕</button>
         </div>
         
@@ -136,7 +165,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 
