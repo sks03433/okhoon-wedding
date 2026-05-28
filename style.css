@@ -263,3 +263,22 @@ body, html {
 .bus-numbers.green { color: #34c759; }
 .parking-highlight { margin: 4px 0; }
 .emp-text { color: #ff9500; font-weight: 700; }
+/* 참석 여부 버튼 스타일 */
+.rsvp-opt-btn {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9fb;
+    font-size: 0.95rem;
+    color: #48484a;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.rsvp-opt-btn.active {
+    background: #007aff;
+    color: white;
+    border-color: #007aff;
+    font-weight: 600;
+}
