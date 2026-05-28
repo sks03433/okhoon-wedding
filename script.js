@@ -1,12 +1,12 @@
 let startY = 0;
 let isDragging = false;
 
-// DOM이 완전히 준비되면 실행
+// DOM 로드 완료 후 안전하게 스와이프 바인딩
 document.addEventListener("DOMContentLoaded", function() {
     const lockScreen = document.getElementById('lock-screen');
     
     if (lockScreen) {
-        // [모바일 터치 이벤트]
+        // 모바일 터치
         lockScreen.addEventListener('touchstart', (e) => {
             startY = e.touches[0].clientY;
         }, { passive: true });
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
             handleSwipe(startY, endY);
         }, { passive: true });
 
-        // [PC 마우스 이벤트]
+        // PC 마우스
         lockScreen.addEventListener('mousedown', (e) => {
             startY = e.clientY;
             isDragging = true;
@@ -31,12 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// 화면 전환 함수
 function handleSwipe(start, end) {
     const lockScreen = document.getElementById('lock-screen');
     const homeScreen = document.getElementById('home-screen');
     
-    // 위로 40픽셀 이상 스와이프/드래그했을 때
     if (start - end > 40) { 
         if (lockScreen) lockScreen.classList.add('slide-up');
         setTimeout(() => {
@@ -46,7 +44,6 @@ function handleSwipe(start, end) {
     }
 }
 
-// 배경음악 제어
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const btn = document.getElementById('music-btn');
@@ -58,7 +55,7 @@ function toggleMusic() {
         bgm.play().then(() => {
             if (btn) btn.classList.add('playing');
             if (icon) icon.className = "fa-solid fa-compact-disc fa-spin"; 
-        }).catch(err => console.log("오디오 재생 차단 방지: ", err));
+        }).catch(err => console.log(err));
     } else {
         bgm.pause();
         if (btn) btn.classList.remove('playing');
@@ -66,11 +63,11 @@ function toggleMusic() {
     }
 }
 
-// 오시는 길 창 제어
 function openMap() { 
     const mapPage = document.getElementById('map-page');
     if (mapPage) mapPage.classList.remove('hidden'); 
 }
+// ✕ 버튼 누르면 닫히도록 완벽 구현 보존
 function closeMap() { 
     const mapPage = document.getElementById('map-page');
     if (mapPage) mapPage.classList.add('hidden'); 
@@ -111,7 +108,6 @@ function addComment() {
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
-    // database 변수가 존재할 때만 안전하게 실행
     if (typeof database !== 'undefined' && database !== null) {
         database.ref('guestbook').push({
             name: name,
@@ -124,8 +120,6 @@ function addComment() {
             pwdInput.value = '';
             contentInput.value = '';
         }).catch(err => alert("저장 실패: " + err.message));
-    } else {
-        alert("서버 연결에 문제가 있습니다. 파이어베이스 설정을 확인해 주세요.");
     }
 }
 
