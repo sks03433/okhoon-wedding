@@ -1,3 +1,9 @@
+// 헬퍼 함수 정의를 최상단으로 이동 (에러 유발 방지 및 코드 보호 순정 유지)
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
 let startY = 0;
 
 window.onload = function() {
@@ -90,10 +96,11 @@ function addComment() {
 
 // 데이터베이스를 실시간으로 Listen 하여 화면에 반영하기
 function listenComments() {
-    // 최신 순 정렬을 위해 서버에서 데이터를 실시간으로 받아옴
     database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
         const listContainer = document.getElementById('guestbook-list');
         const countSpan = document.getElementById('gb-count');
+        
+        if(!listContainer) return;
         
         listContainer.innerHTML = '';
         let commentsArray = [];
@@ -106,7 +113,7 @@ function listenComments() {
 
         // 내림차순 정렬 (최신글 위로)
         commentsArray.reverse();
-        countSpan.innerText = commentsArray.length;
+        if(countSpan) countSpan.innerText = commentsArray.length;
 
         if (commentsArray.length === 0) {
             listContainer.innerHTML = `<div style="text-align:center; color:#8e8e93; font-size:0.9rem; padding:40px 0;">첫 번째 축하 메모를 남겨주세요!</div>`;
@@ -146,8 +153,4 @@ function deleteComment(id, targetPassword) {
     } else {
         alert('비밀번호가 일치하지 않습니다.');
     }
-}
-
-function escapeHtml(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
