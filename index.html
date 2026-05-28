@@ -1,22 +1,29 @@
-<!DOCTYPE html><html lang="ko"><head>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>우리 결혼합니다</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css"></head><body>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- 배경음악 오디오 태그 -->
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
+    <!-- 1. 잠금 화면 -->
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
                 <div class="date">2026-10-10 (SAT)</div>
                 <div class="time">14:50</div>
             </div>
-            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
+            <div class="swipe-up-text" style="cursor: pointer; padding: 20px;">▲ 위로 스와이프하거나 [여기]를 누르세요</div>
         </div>
     </div>
 
+    <!-- 2. 홈 화면 -->
     <div id="home-screen" class="screen hidden">
         <button id="music-btn" onclick="toggleMusic()">
             <i id="music-icon" class="fa-solid fa-music"></i>
@@ -105,6 +112,7 @@
         </div>
     </div>
 
+    <!-- 오시는 길 팝업 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -120,6 +128,7 @@
         </div>
     </div>
 
+    <!-- 방명록 팝업 (세로형 구조) -->
     <div id="guestbook-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -142,9 +151,190 @@
         </div>
     </div>
 
+    <!-- 🌐 구글 파이어베이스 라이브러리 로드 -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
+    <!-- 🛠️ 모든 핵심 스크립트를 파일 하나로 전격 통합 -->
     <script>
+        // 1. 파이어베이스 초기화
         var firebaseConfig = {
-            apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwX
+            apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
+            authDomain: "okhoon-wedding.firebaseapp.com",
+            databaseURL: "https://okhoon-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "okhoon-wedding",
+            storageBucket: "okhoon-wedding.firebasestorage.app",
+            messagingSenderId: "983524797177",
+            appId: "1:983524797177:web:cefd13ac75ae9e44da1028"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        // 2. 화면 제어 및 슬라이드 로직
+        let startY = 0;
+        let isDragging = false;
+
+        window.onload = function() {
+            const lockScreen = document.getElementById('lock-screen');
+            if (!lockScreen) return;
+            
+            // 모바일 터치 이벤트
+            lockScreen.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+
+            lockScreen.addEventListener('touchend', (e) => {
+                let endY = e.changedTouches[0].clientY;
+                if (startY - endY > 15) openHome(); // 손가락을 살짝만 올려도 오픈
+            }, { passive: true });
+
+            // PC 마우스 이벤트
+            lockScreen.addEventListener('mousedown', (e) => {
+                startY = e.clientY;
+                isDragging = true;
+            });
+
+            lockScreen.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                let endY = e.clientY;
+                isDragging = false;
+                if (startY - endY > 15) openHome();
+            });
+
+            // 💡 초강력 안전장치: 잠금화면 글씨 부분을 그냥 '터치/클릭'만 해도 무조건 열리게 설계!
+            lockScreen.addEventListener('click', openHome);
+        };
+
+        function openHome() {
+            const lockScreen = document.getElementById('lock-screen');
+            const homeScreen = document.getElementById('home-screen');
+            if (lockScreen) lockScreen.classList.add('slide-up');
+            setTimeout(() => {
+                if (lockScreen) lockScreen.classList.add('hidden');
+                if (homeScreen) homeScreen.classList.remove('hidden');
+            }, 400);
+        }
+
+        // 배경음악 제어
+        function toggleMusic() {
+            const bgm = document.getElementById('bgm');
+            const btn = document.getElementById('music-btn');
+            const icon = document.getElementById('music-icon');
+            if (!bgm) return;
+
+            if (bgm.paused) {
+                bgm.play().then(() => {
+                    if (btn) btn.classList.add('playing');
+                    if (icon) icon.className = "fa-solid fa-compact-disc fa-spin"; 
+                }).catch(err => console.log(err));
+            } else {
+                bgm.pause();
+                if (btn) btn.classList.remove('playing');
+                if (icon) icon.className = "fa-solid fa-music"; 
+            }
+        }
+
+        // 팝업 창 열고 닫기
+        function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
+        function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
+        function openGuestbook() { document.getElementById('guestbook-page').classList.remove('hidden'); listenComments(); }
+        function closeGuestbook() { document.getElementById('guestbook-page').classList.add('hidden'); }
+
+        function copyAddress() {
+            navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
+                alert("주소가 복사되었습니다!");
+            });
+        }
+
+        // 3. 파이어베이스 방명록 기능
+        function addComment() {
+            const nameInput = document.getElementById('gb-name');
+            const pwdInput = document.getElementById('gb-password');
+            const contentInput = document.getElementById('gb-content');
+
+            const name = nameInput.value.trim();
+            const password = pwdInput.value.trim();
+            const content = contentInput.value.trim();
+
+            if (!name) { alert('이름을 입력해 주세요.'); return; }
+            if (!password || password.length < 4) { alert('비밀번호 4자리를 입력해 주세요.'); return; }
+            if (!content) { alert('메시지를 입력해 주세요.'); return; }
+
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+            database.ref('guestbook').push({
+                name: name,
+                password: password,
+                content: content,
+                date: dateStr,
+                timestamp: Date.now()
+            }).then(() => {
+                nameInput.value = '';
+                pwdInput.value = '';
+                contentInput.value = '';
+            }).catch(err => alert("저장 실패: " + err.message));
+        }
+
+        function listenComments() {
+            database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
+                const listContainer = document.getElementById('guestbook-list');
+                const countSpan = document.getElementById('gb-count');
+                if (!listContainer || !countSpan) return;
+                
+                listContainer.innerHTML = '';
+                let commentsArray = [];
+
+                snapshot.forEach((childSnapshot) => {
+                    const key = childSnapshot.key;
+                    const data = childSnapshot.val();
+                    commentsArray.push({ id: key, ...data });
+                });
+
+                commentsArray.reverse(); 
+                countSpan.innerText = commentsArray.length;
+
+                if (commentsArray.length === 0) {
+                    listContainer.innerHTML = `<div style="text-align:center; color:#8e8e93; font-size:0.9rem; padding:40px 0;">첫 번째 축하 메모를 남겨주세요!</div>`;
+                    return;
+                }
+
+                commentsArray.forEach(comment => {
+                    const item = document.createElement('div');
+                    item.className = 'gb-comment-box';
+                    item.innerHTML = `
+                        <div class="gb-comment-header">
+                            <span class="gb-comment-name">${escapeHtml(comment.name)}</span>
+                            <div>
+                                <span class="gb-comment-date">${comment.date}</span>
+                                <button class="gb-delete-btn" onclick="deleteComment('${comment.id}', '${comment.password}')">삭제</button>
+                            </div>
+                        </div>
+                        <div class="gb-comment-text">${escapeHtml(comment.content)}</div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+            });
+        }
+
+        function deleteComment(id, targetPassword) {
+            const inputPwd = prompt('비밀번호를 입력하세요:');
+            if (inputPwd === null) return;
+
+            if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
+                if (confirm('이 메모를 삭제하시겠습니까?')) {
+                    database.ref('guestbook/' + id).remove()
+                        .then(() => alert("삭제되었습니다."))
+                        .catch(err => alert("삭제 실패: " + err.message));
+                }
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
