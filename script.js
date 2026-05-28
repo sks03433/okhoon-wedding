@@ -1,29 +1,58 @@
 let startY = 0;
+let isDragging = false;
 
 window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
+    if (!lockScreen) return;
     
+    // [모바일] 터치 시작
     lockScreen.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
-    });
+    }, { passive: true });
 
+    // [모바일] 터치 끝
     lockScreen.addEventListener('touchend', (e) => {
         let endY = e.changedTouches[0].clientY;
-        if (startY - endY > 50) {
-            lockScreen.classList.add('slide-up');
-            setTimeout(() => {
-                lockScreen.classList.add('hidden');
-                document.getElementById('home-screen').classList.remove('hidden');
-            }, 500);
-        }
+        handleSwipe(startY, endY);
+    }, { passive: true });
+
+    // [PC 컴퓨터] 마우스 클릭 시작
+    lockScreen.addEventListener('mousedown', (e) => {
+        startY = e.clientY;
+        isDragging = true;
+    });
+
+    // [PC 컴퓨터] 마우스 뗄 때
+    lockScreen.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        let endY = e.clientY;
+        isDragging = false;
+        handleSwipe(startY, endY);
     });
 };
+
+// 위로 스와이프/드래그 시 화면 전환 공통 로직
+function handleSwipe(start, end) {
+    const lockScreen = document.getElementById('lock-screen');
+    const homeScreen = document.getElementById('home-screen');
+    
+    // 50픽셀 이상 위로 올렸을 때 작동
+    if (start - end > 50) { 
+        lockScreen.classList.add('slide-up');
+        setTimeout(() => {
+            lockScreen.classList.add('hidden');
+            if (homeScreen) homeScreen.classList.remove('hidden');
+        }, 500);
+    }
+}
 
 // 배경음악 제어
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const btn = document.getElementById('music-btn');
     const icon = document.getElementById('music-icon');
+
+    if (!bgm) return;
 
     if (bgm.paused) {
         bgm.play().then(() => {
@@ -48,16 +77,14 @@ function copyAddress() {
 }
 
 /* 🌐 실시간 방명록 연동 로직 */
-
 function openGuestbook() {
     document.getElementById('guestbook-page').classList.remove('hidden');
-    listenComments(); // 데이터 실시간 감시 및 동기화 시작
+    listenComments(); 
 }
 function closeGuestbook() {
     document.getElementById('guestbook-page').classList.add('hidden');
 }
 
-// 실시간 클라우드로 전송
 function addComment() {
     const nameInput = document.getElementById('gb-name');
     const pwdInput = document.getElementById('gb-password');
@@ -74,24 +101,31 @@ function addComment() {
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
-    database.ref('guestbook').push({
-        name: name,
-        password: password,
-        content: content,
-        date: dateStr,
-        timestamp: Date.now()
-    }).then(() => {
-        nameInput.value = '';
-        pwdInput.value = '';
-        contentInput.value = '';
-    }).catch(err => alert("저장 실패: " + err.message));
+    if (typeof database !== 'undefined') {
+        database.ref('guestbook').push({
+            name: name,
+            password: password,
+            content: content,
+            date: dateStr,
+            timestamp: Date.now()
+        }).then(() => {
+            nameInput.value = '';
+            pwdInput.value = '';
+            contentInput.value = '';
+        }).catch(err => alert("저장 실패: " + err.message));
+    } else {
+        alert("파이어베이스 연결을 확인해주세요.");
+    }
 }
 
-// 실시간 데이터 가져와서 화면에 뿌려주기
 function listenComments() {
+    if (typeof database === 'undefined') return;
+    
     database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
         const listContainer = document.getElementById('guestbook-list');
         const countSpan = document.getElementById('gb-count');
+        
+        if (!listContainer || !countSpan) return;
         
         listContainer.innerHTML = '';
         let commentsArray = [];
@@ -102,7 +136,7 @@ function listenComments() {
             commentsArray.push({ id: key, ...data });
         });
 
-        commentsArray.reverse(); // 최신글이 상단으로
+        commentsArray.reverse(); 
         countSpan.innerText = commentsArray.length;
 
         if (commentsArray.length === 0) {
@@ -128,7 +162,6 @@ function listenComments() {
     });
 }
 
-// 데이터 삭제 로직 (마스터 키 okhoon0719 사용 가능)
 function deleteComment(id, targetPassword) {
     const inputPwd = prompt('비밀번호를 입력하세요:');
     if (inputPwd === null) return;
