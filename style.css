@@ -263,7 +263,8 @@ body, html {
 .bus-numbers.green { color: #34c759; }
 .parking-highlight { margin: 4px 0; }
 .emp-text { color: #ff9500; font-weight: 700; }
-/* 참석 여부 버튼 스타일 */
+
+/* 🔔 참석 여부 세그먼트 전용 디자인 컨트롤 추가 */
 .rsvp-opt-btn {
     flex: 1;
     padding: 12px;
@@ -275,7 +276,6 @@ body, html {
     cursor: pointer;
     transition: all 0.2s;
 }
-
 .rsvp-opt-btn.active {
     background: #007aff;
     color: white;
