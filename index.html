@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 결혼합니다</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css"></head><body>
 
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
@@ -17,7 +13,7 @@
                 <div class="date">2026-10-10 (SAT)</div>
                 <div class="time">14:50</div>
             </div>
-            <div class="swipe-up-text" style="cursor: pointer; padding: 20px;">▲ 위로 스와이프하거나 [여기]를 누르세요</div>
+            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
         </div>
     </div>
 
@@ -109,7 +105,6 @@
         </div>
     </div>
 
-    <!-- 오시는 길 팝업 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -117,53 +112,16 @@
             <button class="close-btn" onclick="closeMap()">✕</button>
         </div>
         <div class="page-content">
-            <!-- 1. 예식장 기본 정보 카드 -->
             <div class="venue-card">
                 <h4 class="venue-name">더아리엘 수원</h4> 
                 <p class="venue-address">경기 수원시 팔달구 중부대로 181<br><span class="sub-addr">(우만동 147-7)</span></p>
                 <button class="copy-full" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> 주소 복사하기</button>
-            </div>
-
-            <!-- 2. 내비게이션/지도 바로가기 버튼 (추가됨) -->
-            <div class="map-links-container">
-                <a href="https://map.naver.com/p/entry/place/13149722" target="_blank" class="map-btn naver-map">
-                    <span class="map-icon">N</span> 네이버 지도 열기
-                </a>
-                <a href="https://map.kakao.com/link/to/더아리엘수원,37.2798,127.0427" target="_blank" class="map-btn kakao-map">
-                    <span class="map-icon">K</span> 카카오맵 열기
-                </a>
-            </div>
-
-            <!-- 3. 대중교통 안내 섹션 (추가됨) -->
-            <div class="transport-section">
-                <div class="transport-row">
-                    <div class="transport-badge sub-line">🚇 지하철</div>
-                    <div class="transport-info">
-                        <strong>수원역 (1호선 / 수인분당선)</strong><br>
-                        - 4번 출구 앞 버스정류장에서 일반 버스 이용 (약 15분 소요)<br>
-                        <strong>광교중앙역 (신분당선)</strong><br>
-                        - 1번 출구에서 택시 또는 버스 이용 (약 10분 소요)
-                    </div>
-                </div>
-
-                <div class="transport-row">
-                    <div class="transport-badge bus-line">🚌 버스 안내</div>
-                    <div class="transport-info">
-                        <strong>'우만동DM시티.더아리엘' 정류장 하차</strong><br>
-                        - 일반: 10, 10-2, 11-1, 37, 46, 62-1, 82-1, 83-1<br>
-                        - 직행좌석: 3007, 4000, 7002
-                    </div>
-                </div>
-
-                <div class="transport-row">
-                    <div class="transport-badge car-line">🚗 주차 안내</div>
-                    <div class="transport-info">
-                        - 건물 내 자체 주차장 및 외부 연계 주차장 이용 가능<br>
-                        - 하객 분들은 2시간 무료 주차 지원
-                    </div>
+                <div class="btn-group">
+                    <a href="https://map.kakao.com/link/search/더아리엘 수원" target="_blank" class="action-btn kakao"><i class="fa-solid fa-comment"></i> 카카오맵</a>
+                    <a href="https://map.naver.com/v5/search/더아리엘 수원" target="_blank" class="action-btn naver"><span class="naver-icon">N</span> 네이버 지도</a>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 
     <div id="guestbook-page" class="detail-page hidden">
@@ -174,15 +132,14 @@
         </div>
         <div class="page-content">
             <div class="gb-form-card">
-                <div class="gb-input-block">
+                <div class="gb-input-row">
                     <input type="text" id="gb-name" placeholder="이름" maxlength="10">
-                </div>
-                <div class="gb-input-block">
                     <input type="password" id="gb-password" placeholder="비밀번호(4자리)" maxlength="4">
                 </div>
                 <textarea id="gb-content" placeholder="신랑 신부에게 축하의 한마디를 남겨주세요." rows="3"></textarea>
                 <button class="gb-submit-btn" onclick="addComment()">메모 저장하기</button>
             </div>
+
             <div class="gb-list-title">저장된 메모 <span id="gb-count">0</span></div>
             <div id="guestbook-list" class="gb-list-container"></div>
         </div>
@@ -192,7 +149,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        var firebaseConfig = {
+        // 
+        const firebaseConfig = {
             apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
             authDomain: "okhoon-wedding.firebaseapp.com",
             databaseURL: "https://okhoon-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -201,167 +159,9 @@
             messagingSenderId: "983524797177",
             appId: "1:983524797177:web:cefd13ac75ae9e44da1028"
         };
+        // 파이어베이스 초기화
         firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
-
-        let startY = 0;
-        let isDragging = false;
-
-        window.onload = function() {
-            const lockScreen = document.getElementById('lock-screen');
-            if (!lockScreen) return;
-            
-            lockScreen.addEventListener('touchstart', (e) => {
-                startY = e.touches[0].clientY;
-            }, { passive: true });
-
-            lockScreen.addEventListener('touchend', (e) => {
-                let endY = e.changedTouches[0].clientY;
-                if (startY - endY > 15) openHome();
-            }, { passive: true });
-
-            lockScreen.addEventListener('mousedown', (e) => {
-                startY = e.clientY;
-                isDragging = true;
-            });
-
-            lockScreen.addEventListener('mouseup', (e) => {
-                if (!isDragging) return;
-                let endY = e.clientY;
-                isDragging = false;
-                if (startY - endY > 15) openHome();
-            });
-
-            lockScreen.addEventListener('click', openHome);
-        };
-
-        function openHome() {
-            const lockScreen = document.getElementById('lock-screen');
-            const homeScreen = document.getElementById('home-screen');
-            if (lockScreen) lockScreen.classList.add('slide-up');
-            setTimeout(() => {
-                if (lockScreen) lockScreen.classList.add('hidden');
-                if (homeScreen) homeScreen.classList.remove('hidden');
-            }, 400);
-        }
-
-        function toggleMusic() {
-            const bgm = document.getElementById('bgm');
-            const btn = document.getElementById('music-btn');
-            const icon = document.getElementById('music-icon');
-            if (!bgm) return;
-
-            if (bgm.paused) {
-                bgm.play().then(() => {
-                    if (btn) btn.classList.add('playing');
-                    if (icon) icon.className = "fa-solid fa-compact-disc fa-spin"; 
-                }).catch(err => console.log(err));
-            } else {
-                bgm.pause();
-                if (btn) btn.classList.remove('playing');
-                if (icon) icon.className = "fa-solid fa-music"; 
-            }
-        }
-
-        function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
-        function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
-        function openGuestbook() { document.getElementById('guestbook-page').classList.remove('hidden'); listenComments(); }
-        function closeGuestbook() { document.getElementById('guestbook-page').classList.add('hidden'); }
-
-        function copyAddress() {
-            navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
-                alert("주소가 복사되었습니다!");
-            });
-        }
-
-        function addComment() {
-            const nameInput = document.getElementById('gb-name');
-            const pwdInput = document.getElementById('gb-password');
-            const contentInput = document.getElementById('gb-content');
-
-            const name = nameInput.value.trim();
-            const password = pwdInput.value.trim();
-            const content = contentInput.value.trim();
-
-            if (!name) { alert('이름을 입력해 주세요.'); return; }
-            if (!password || password.length < 4) { alert('비밀번호 4자리를 입력해 주세요.'); return; }
-            if (!content) { alert('메시지를 입력해 주세요.'); return; }
-
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
-
-            database.ref('guestbook').push({
-                name: name,
-                password: password,
-                content: content,
-                date: dateStr,
-                timestamp: Date.now()
-            }).then(() => {
-                nameInput.value = '';
-                pwdInput.value = '';
-                contentInput.value = '';
-            }).catch(err => alert("저장 실패: " + err.message));
-        }
-
-        function listenComments() {
-            database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
-                const listContainer = document.getElementById('guestbook-list');
-                const countSpan = document.getElementById('gb-count');
-                if (!listContainer || !countSpan) return;
-                
-                listContainer.innerHTML = '';
-                let commentsArray = [];
-
-                snapshot.forEach((childSnapshot) => {
-                    const key = childSnapshot.key;
-                    const data = childSnapshot.val();
-                    commentsArray.push({ id: key, ...data });
-                });
-
-                commentsArray.reverse(); 
-                countSpan.innerText = commentsArray.length;
-
-                if (commentsArray.length === 0) {
-                    listContainer.innerHTML = `<div style="text-align:center; color:#8e8e93; font-size:0.9rem; padding:40px 0;">첫 번째 축하 메모를 남겨주세요!</div>`;
-                    return;
-                }
-
-                commentsArray.forEach(comment => {
-                    const item = document.createElement('div');
-                    item.className = 'gb-comment-box';
-                    item.innerHTML = `
-                        <div class="gb-comment-header">
-                            <span class="gb-comment-name">${escapeHtml(comment.name)}</span>
-                            <div>
-                                <span class="gb-comment-date">${comment.date}</span>
-                                <button class="gb-delete-btn" onclick="deleteComment('${comment.id}', '${comment.password}')">삭제</button>
-                            </div>
-                        </div>
-                        <div class="gb-comment-text">${escapeHtml(comment.content)}</div>
-                    `;
-                    listContainer.appendChild(item);
-                });
-            });
-        }
-
-        function deleteComment(id, targetPassword) {
-            const inputPwd = prompt('비밀번호를 입력하세요:');
-            if (inputPwd === null) return;
-
-            if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
-                if (confirm('이 메모를 삭제하시겠습니까?')) {
-                    database.ref('guestbook/' + id).remove()
-                        .then(() => alert("삭제되었습니다."))
-                        .catch(err => alert("삭제 실패: " + err.message));
-                }
-            } else {
-                alert('비밀번호가 일치하지 않습니다.');
-            }
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+        const database = firebase.database();
     </script>
-</body>
-</html>
+
+    <script src="script.js"></script></body></html>
