@@ -282,3 +282,9 @@ body, html {
     border-color: #007aff;
     font-weight: 600;
 }
+/* ⚡ 오시는 길 버튼 터치 피드백 (기존 레이아웃 틀 유지형 보완) */
+.action-btn:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+    transition: all 0.1s ease;
+}
