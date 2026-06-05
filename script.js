@@ -188,7 +188,7 @@ function submitRSVP() {
     }).catch(err => alert("전송 실패: " + err.message));
 }
 
-// ✉️ 마음 보내기 팝업 제어 함수
+// ✉️ 마음 전하기 팝업 제어 함수
 function openRemittance() {
     document.getElementById('remittance-page').classList.remove('hidden');
     switchRemitTab('groom'); // 열릴 때 기본적으로 신랑측이 보이도록 초기화
