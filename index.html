@@ -74,13 +74,17 @@
             </div>
 
             <div class="app-grid row-2">
-                <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
-                    <div class="icon-box ios-wallet">
-                        <div class="wallet-card wc1"></div>
-                        <div class="wallet-card wc2"></div>
-                        <div class="wallet-card wc3"></div>
+                <!-- ✉️ 1. 축의금 -> '마음 보내기' (구글 메일 아이콘 스타일) -->
+                <div class="icon-item" onclick="openRemittance()">
+                    <div class="icon-box ios-mail" style="background: #ffffff; box-shadow: inset 0 0 1px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" style="width: 65%; height: 65%;">
+                            <path fill="#4285F4" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>
+                            <path fill="#EA4335" d="M22 6v12c0 1.1-.9 2-2 2h-2V8l-6 4-6-4v12H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h16c1.1 0 2-.9 2 2z"/>
+                            <path fill="#FBBC05" d="M18 20h2c1.1 0 2-.9 2-2V8l-4 3v9z"/>
+                            <path fill="#34A853" d="M2 8v10c0 1.1.9 2 2 2h2v-9l-4-3z"/>
+                        </svg>
                     </div>
-                    <span>축의금</span>
+                    <span>마음 보내기</span>
                 </div>
                 
                 <div class="icon-item" onclick="openGuestSnap()">
@@ -110,7 +114,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                 <div class="icon-box ios-health">❤️</div>
@@ -266,6 +270,69 @@
             <a href="https://www.dropbox.com/request/5nmux04hdngwgs6jgcnn" target="_blank" class="copy-full" style="background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d); color: white; text-decoration: none; display: flex; justify-content: center; align-items: center; height: 50px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(225,48,108,0.4); margin-bottom: 0;">
                 사진 업로드하러 가기
             </a>
+        </div>
+    </div>
+
+   <div id="remittance-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>마음 보내기</h3>
+            <button class="close-btn" onclick="closeRemittance()">✕</button>
+        </div>
+        <div class="page-content" style="padding: 20px;">
+            <p style="font-size: 0.9rem; color: #8e8e93; text-align: center; margin-bottom: 20px; line-height: 1.5; word-break: keep-all;">
+                축하의 마음을 전하실 수 있도록 <br> 계좌번호를 안내해 드립니다.
+            </p>
+            
+            <!-- 신랑측 / 신부측 선택 탭 -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button id="tab-groom" class="rsvp-opt-btn active" onclick="switchRemitTab('groom')">신랑측 계좌</button>
+                <button id="tab-bride" class="rsvp-opt-btn" onclick="switchRemitTab('bride')">신부측 계좌</button>
+            </div>
+
+            <!-- 신랑측 계좌 목록 -->
+            <div id="area-groom" class="remit-account-area">
+                <!-- 신랑 -->
+                <div class="venue-card" style="text-align: left; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-size: 0.8rem; color: #007aff; font-weight: 600; display: block; margin-bottom: 2px;">신랑</span>
+                        <strong style="font-size: 1.05rem; color: #1c1c1e;">김욱훈</strong>
+                        <p style="font-size: 0.9rem; color: #48484a; margin-top: 4px; margin-bottom: 0;">신한은행 110-123-456789</p>
+                    </div>
+                    <button class="action-btn naver" style="padding: 6px 12px; font-size: 0.85rem; height: auto;" onclick="copyAccount('신한은행 110-123-456789')">복사</button>
+                </div>
+                <!-- 신랑 아버님 -->
+                <div class="venue-card" style="text-align: left; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-size: 0.8rem; color: #8e8e93; font-weight: 600; display: block; margin-bottom: 2px;">정성 부 (父)</span>
+                        <strong style="font-size: 1.05rem; color: #1c1c1e;">김아버</strong>
+                        <p style="font-size: 0.9rem; color: #48484a; margin-top: 4px; margin-bottom: 0;">국민은행 123456-01-123456</p>
+                    </div>
+                    <button class="action-btn naver" style="padding: 6px 12px; font-size: 0.85rem; height: auto;" onclick="copyAccount('국민은행 123456-01-123456')">복사</button>
+                </div>
+            </div>
+
+            <!-- 신부측 계좌 목록 (기본 숨김) -->
+            <div id="area-bride" class="remit-account-area" style="display: none;">
+                <!-- 신부 -->
+                <div class="venue-card" style="text-align: left; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-size: 0.8rem; color: #ff2d55; font-weight: 600; display: block; margin-bottom: 2px;">신부</span>
+                        <strong style="font-size: 1.05rem; color: #1c1c1e;">신부이름</strong>
+                        <p style="font-size: 0.9rem; color: #48484a; margin-top: 4px; margin-bottom: 0;">우리은행 1002-123-456789</p>
+                    </div>
+                    <button class="action-btn naver" style="padding: 6px 12px; font-size: 0.85rem; height: auto;" onclick="copyAccount('우리은행 1002-123-456789')">복사</button>
+                </div>
+                <!-- 신부 아버님 -->
+                <div class="venue-card" style="text-align: left; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-size: 0.8rem; color: #8e8e93; font-weight: 600; display: block; margin-bottom: 2px;">정성 모/부</span>
+                        <strong style="font-size: 1.05rem; color: #1c1c1e;">신부부모</strong>
+                        <p style="font-size: 0.9rem; color: #48484a; margin-top: 4px; margin-bottom: 0;">농협은행 302-1234-5678-91</p>
+                    </div>
+                    <button class="action-btn naver" style="padding: 6px 12px; font-size: 0.85rem; height: auto;" onclick="copyAccount('농협은행 302-1234-5678-91')">복사</button>
+                </div>
+            </div>
         </div>
     </div>
 
