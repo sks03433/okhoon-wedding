@@ -66,31 +66,6 @@ body, html {
 .hidden { display: none !important; }
 .slide-up { transform: translateY(-100%); }
 
-/* 배경음악 온/오프 버튼 */
-#music-btn {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 15;
-    backdrop-filter: blur(5px);
-}
-
-#music-btn.playing {
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}
-
 /* 홈 화면 콘텐츠 정렬 */
 .home-content {
     position: relative;
@@ -201,6 +176,22 @@ body, html {
 .nl1 { top: 26px; }
 .nl2 { top: 38px; }
 
+/* 🎵 정품 애플 뮤직 스타일 앱 그래픽 */
+.ios-music {
+    background: linear-gradient(145deg, #ff5e62, #ff9966, #ff5e62);
+    color: white !important;
+    font-size: 1.6rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* 음악 재생 중일 때의 부드러운 박동 효과 */
+.ios-music.playing {
+    animation: musicPulse 1.8s infinite ease-in-out;
+}
+@keyframes musicPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(0.96); box-shadow: 0 0 15px rgba(255,94,98,0.6); }
+}
+
 /* 하단 독 바 */
 .ios-dock {
     position: relative; z-index: 2; width: 100%; max-width: 400px;
@@ -264,7 +255,7 @@ body, html {
 .parking-highlight { margin: 4px 0; }
 .emp-text { color: #ff9500; font-weight: 700; }
 
-/* 🔔 참석 여부 세그먼트 전용 디자인 컨트롤 추가 */
+/* 참석 여부 세그먼트 전용 디자인 컨트롤 */
 .rsvp-opt-btn {
     flex: 1;
     padding: 12px;
@@ -283,7 +274,7 @@ body, html {
     font-weight: 600;
 }
 
-/* ⚡ 오시는 길 버튼 터치 피드백 (기존 레이아웃 틀 유지형 보완) */
+/* 오시는 길 버튼 터치 피드백 */
 .action-btn:active {
     opacity: 0.8;
     transform: scale(0.98);
