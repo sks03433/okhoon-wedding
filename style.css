@@ -176,20 +176,36 @@ body, html {
 .nl1 { top: 26px; }
 .nl2 { top: 38px; }
 
-/* 🎵 정품 애플 뮤직 스타일 앱 그래픽 */
+/* 🎵 정품 애플 뮤직 스타일 앱 그래픽 (실제 앱 컬러 매칭) */
 .ios-music {
-    background: linear-gradient(145deg, #ff5e62, #ff9966, #ff5e62);
+    /* 실제 애플 뮤직의 마젠타-레드-플럼 3단 그라데이션 재현 */
+    background: linear-gradient(135deg, #ff2d55 0%, #ff3b30 50%, #b10624 100%);
     color: white !important;
-    font-size: 1.6rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.7rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(255, 45, 85, 0.35), inset 0 1px 1px rgba(255,255,255,0.2);
 }
-/* 음악 재생 중일 때의 부드러운 박동 효과 */
+
+/* 내부 음표 아이콘에 입체감 부여 */
+.ios-music i {
+    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+/* 음악 재생 중일 때의 부드러운 박동 효과 (정품 아이콘의 고급스러움을 유지하도록 미세하게 조정) */
 .ios-music.playing {
-    animation: musicPulse 1.8s infinite ease-in-out;
+    animation: musicPulse 2s infinite ease-in-out;
 }
+
 @keyframes musicPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(0.96); box-shadow: 0 0 15px rgba(255,94,98,0.6); }
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 4px 12px rgba(255, 45, 85, 0.35);
+    }
+    50% { 
+        transform: scale(0.96); 
+        box-shadow: 0 0 18px rgba(255, 45, 85, 0.7);
+        background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 50%, #9e051d 100%); /* 재생 중일 때 미세한 색감 변화 */
+    }
 }
 
 /* 하단 독 바 */
