@@ -3,8 +3,9 @@ function escapeHtml(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-// 🎯 스와이프 제어 전역 변수
+// 🎯 스와이프 및 클릭 제어 전역 변수
 let startY = 0; 
+let isDragging = false;
 
 window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
@@ -12,33 +13,54 @@ window.onload = function() {
     
     if (!lockScreen || !homeScreen) return;
 
-    // 터치 시작
+    // 🔓 화면 전환을 실행하는 핵심 공통 함수
+    function unlock() {
+        lockScreen.classList.add('slide-up');
+        homeScreen.classList.remove('hidden'); 
+        setTimeout(() => {
+            lockScreen.classList.add('hidden');
+        }, 500);
+    }
+
+    // 1. [모바일] 터치 이벤트 처리
     lockScreen.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
     }, { passive: true });
 
-    // 터치 이동 중 브라우저 자체 스크롤 권한 박탈 (터치 씹힘 원천 차단)
     lockScreen.addEventListener('touchmove', (e) => {
-        if (e.cancelable) {
-            e.preventDefault(); 
-        }
+        if (e.cancelable) e.preventDefault(); // 브라우저 스크롤 오작동 차단
     }, { passive: false });
 
-    // 터치 종료시 걷어내기 작동
     lockScreen.addEventListener('touchend', (e) => {
         let endY = e.changedTouches[0].clientY;
-        
-        // 위로 40px 이상 밀었을 때 작동
-        if (startY - endY > 40) {
-            lockScreen.classList.add('slide-up');
-            homeScreen.classList.remove('hidden'); 
-            
-            setTimeout(() => {
-                lockScreen.classList.add('hidden');
-            }, 500);
+        if (startY - endY > 40) { // 40px 이상 위로 밀면 해제
+            unlock();
         }
     }, { passive: true });
+
+    // 2. [PC 크롬 개발자도구/마우스] 드래그 이벤트 처리
+    lockScreen.addEventListener('mousedown', (e) => {
+        startY = e.clientY;
+        isDragging = true;
+    });
+
+    lockScreen.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        let endY = e.clientY;
+        if (startY - endY > 40) { // 마우스로 위로 밀어도 해제
+            unlock();
+        }
+    });
+
+    // 3. [최후의 보루] 스와이프가 아예 안 먹히는 환경용: "그냥 클릭해도 열리기"
+    lockScreen.addEventListener('click', (e) => {
+        // 텍스트나 빈 공간을 그냥 '터치'하거나 '클릭'하기만 해도 열리도록 보장
+        unlock();
+    });
 };
+
+// 이하 기존 다른 함수들(toggleMusic, openMap 등)은 그대로 유지...
 
 // 🎵 음악 재생 제어
 function toggleMusic() {
