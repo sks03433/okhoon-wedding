@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 결혼합니다</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -10,7 +10,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // 파이어베이스 설정 및 초기화 안전 장치
         const firebaseConfig = {
             apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
             authDomain: "okhoon-wedding.firebaseapp.com",
@@ -21,15 +20,11 @@
             appId: "1:983524797177:web:cefd13ac75ae9e44da1028"
         };
 
-        var database;
-        try {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            database = firebase.database();
-        } catch(e) {
-            console.error("Firebase 초기화 에러 무시:", e);
+        // 파이어베이스 초기화
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
+        const database = firebase.database(); // 전역 변수로 database 선언
     </script>
 
     <link rel="stylesheet" href="style.css">
@@ -38,17 +33,21 @@
 
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
-    <div id="lock-screen" class="screen" onclick="if(typeof 도어오픈 === 'function') { 도어오픈(); } else { this.style.display='none'; document.getElementById('home-screen').style.display='block'; }">
+    <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
                 <div class="date">2026-10-10 (SAT)</div>
                 <div class="time">14:50</div>
             </div>
-            <div class="swipe-up-text">▲ 위로 밀거나 화면을 터치해서 열기</div>
+            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
         </div>
     </div>
 
     <div id="home-screen" class="screen hidden">
+        <button id="music-btn" onclick="toggleMusic()">
+            <i id="music-icon" class="fa-solid fa-music"></i>
+        </button>
+
         <div class="home-content">
             <div class="app-grid row-1">
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
@@ -99,12 +98,7 @@
                     </div>
                     <span>방명록</span>
                 </div>
-                <div class="icon-item" id="music-btn" onclick="toggleMusic()">
-                    <div class="icon-box apple-music-box">
-                        <i id="music-icon" class="fa-solid fa-music"></i>
-                    </div>
-                    <span>음악 재생</span>
-                </div>
+                <div class="icon-item empty"></div>
             </div>
         </div>
 
@@ -133,6 +127,7 @@
         </div>
     </div>
 
+    <!-- 오시는 길 팝업 -->
     <div id="map-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -190,14 +185,15 @@
                     </h5>
                     <div class="info-details">
                         <p>• 웨딩홀 건물 내 자체 주차장 및 외부 전용 연계 주차장 보유</p>
-                        <p class="parking-highlight">• 동시 주차 <span class="emp-text">1,000대</span>까지 여유롭게 가능합니다.</p>
-                        <p>• 축하해주러 오신 하객분들은 <strong>2시간 무료 주차</strong>가 가능합니다.</p>
+                        <p class="parking-highlight">• 동시 주차 <span class="emp-text">1,000대</span>까지 여유롭게 주차 가능합니다.</p>
+                        <p>• 축하해주러 오신 하객분들은 <strong>2시간 무료 주차</strong>를 지원합니다.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 방명록 팝업 -->
     <div id="guestbook-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -215,6 +211,7 @@
         </div>
     </div>
 
+    <!-- 참석 여부 팝업 -->
     <div id="rsvp-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -226,10 +223,12 @@
                 <p style="font-size: 0.9rem; color: #8e8e93; margin-bottom: 20px; line-height: 1.4;">
                     축하해 주시는 모든 분들께 감사드립니다.<br>원활한 예식 준비를 위해 참석 여부를 알려주세요.
                 </p>
+
                 <div style="margin-bottom: 18px;">
                     <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">성함</label>
                     <input type="text" id="rsvp-name" placeholder="성함을 입력해주세요." style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; outline: none;">
                 </div>
+
                 <div style="margin-bottom: 18px;">
                     <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">구분</label>
                     <div style="display:flex; gap:10px;">
@@ -237,6 +236,7 @@
                         <button class="rsvp-opt-btn" data-type="side" data-value="신부측" onclick="selectOpt(this)">신부측</button>
                     </div>
                 </div>
+
                 <div style="margin-bottom: 18px;">
                     <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">참석 여부</label>
                     <div style="display:flex; gap:10px;">
@@ -244,6 +244,7 @@
                         <button class="rsvp-opt-btn" data-type="attend" data-value="마음만 함께" onclick="selectOpt(this)">마음만 함께</button>
                     </div>
                 </div>
+
                 <div style="margin-bottom: 18px;">
                     <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">동반 인원 (본인 포함)</label>
                     <select id="rsvp-count" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; background:white; outline: none;">
@@ -251,3 +252,23 @@
                         <option value="2명">2명</option>
                         <option value="3명">3명</option>
                         <option value="4명">4명</option>
+                        <option value="5명 이상">5명 이상</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">식사 여부</label>
+                    <div style="display:flex; gap:10px;">
+                        <button class="rsvp-opt-btn active" data-type="meal" data-value="예정" onclick="selectOpt(this)">예정</button>
+                        <button class="rsvp-opt-btn" data-type="meal" data-value="안함" onclick="selectOpt(this)">안함</button>
+                    </div>
+                </div>
+
+                <button class="copy-full" onclick="submitRSVP()" style="background:#007aff; color:white; margin-bottom:0; font-size:1.05rem; height: 50px;">참석 의사 전달하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
