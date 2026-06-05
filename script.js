@@ -36,8 +36,7 @@ function toggleMusic() {
     if (bgm.paused) {
         bgm.play().then(() => {
             btn.classList.add('playing');
-            // 애플 뮤직 감성에 맞추어 음표가 쿵짝짝 뛰는 고급 애니메이션 적용
-            icon.className = "fa-solid fa-music fa-beat"; 
+            icon.className = "fa-solid fa-music fa-beat"; // 애플 뮤직 비트에 맞춰 뛰는 애니메이션
         }).catch(err => console.log(err));
     } else {
         bgm.pause();
@@ -57,7 +56,6 @@ function copyAddress() {
 }
 
 /* 🌐 실시간 방명록 서버 연동 로직 */
-
 function openGuestbook() {
     document.getElementById('guestbook-page').classList.remove('hidden');
     listenComments(); // 실시간 데이터 실시간 감시 시작
@@ -83,7 +81,6 @@ function addComment() {
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
-    // Firebase 데이터베이스의 'guestbook' 노드에 push(저장)
     database.ref('guestbook').push({
         name: name,
         password: password,
@@ -109,12 +106,11 @@ function listenComments() {
         let commentsArray = [];
 
         snapshot.forEach((childSnapshot) => {
-            const key = childSnapshot.key; // 고유 데이터 키값
+            const key = childSnapshot.key; 
             const data = childSnapshot.val();
             commentsArray.push({ id: key, ...data });
         });
 
-        // 내림차순 정렬 (최신글 위로)
         commentsArray.reverse();
         if(countSpan) countSpan.innerText = commentsArray.length;
 
@@ -146,7 +142,6 @@ function deleteComment(id, targetPassword) {
     const inputPwd = prompt('비밀번호를 입력하세요:');
     if (inputPwd === null) return;
 
-    // 본인 패스워드 검증 혹은 마스터 관리자 번호 통과 권한 완벽 보존!
     if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
         if (confirm('이 메모를 삭제하시겠습니까?')) {
             database.ref('guestbook/' + id).remove()
@@ -158,12 +153,10 @@ function deleteComment(id, targetPassword) {
     }
 }
 
-/* 🔔 참석 여부(RSVP) 제어 스크립트 기능 추가 */
-
+/* 🔔 참석 여부(RSVP) 제어 스크립트 기능 */
 function openRSVP() { document.getElementById('rsvp-page').classList.remove('hidden'); }
 function closeRSVP() { document.getElementById('rsvp-page').classList.add('hidden'); }
 
-// 옵션 버튼 세그먼트 활성화 함수
 function selectOpt(btn) {
     const type = btn.getAttribute('data-type');
     document.querySelectorAll(`.rsvp-opt-btn[data-type="${type}"]`).forEach(b => {
@@ -172,7 +165,6 @@ function selectOpt(btn) {
     btn.classList.add('active');
 }
 
-// 참석 의사 Firebase 연동 저장 함수
 function submitRSVP() {
     const nameInput = document.getElementById('rsvp-name');
     const name = nameInput.value.trim();
@@ -186,7 +178,6 @@ function submitRSVP() {
     const now = new Date();
     const timeStr = now.toLocaleString();
 
-    // Firebase 데이터베이스 'rsvp' 노드에 업로드
     database.ref('rsvp').push({
         name: name,
         side: side,
@@ -198,6 +189,6 @@ function submitRSVP() {
     }).then(() => {
         alert('소중한 참석 의사가 신랑·신부님께 잘 전달되었습니다. 감사합니다!');
         closeRSVP();
-        nameInput.value = ''; // 입력창 초기화
+        nameInput.value = ''; 
     }).catch(err => alert("전송 실패: " + err.message));
 }
