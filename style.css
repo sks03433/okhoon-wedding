@@ -66,48 +66,6 @@ body, html {
 .hidden { display: none !important; }
 .slide-up { transform: translateY(-100%); }
 
-/* 🎵 애플 뮤직 정품 아이콘 스타일 */
-#music-btn {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    z-index: 15;
-    cursor: pointer;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
-    transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-#music-btn:active {
-    transform: scale(0.92); /* 누를 때 햅틱 느낌의 축소 효과 */
-}
-
-.apple-music-box {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
-    /* 애플 뮤직 시그니처 핑크-레드 그라데이션 */
-    background: linear-gradient(135deg, #ff2d55 0%, #ff375f 40%, #fa243c 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-/* 내부 음표 아이콘 스타일 */
-#music-icon {
-    color: white;
-    font-size: 1.5rem;
-    transition: all 0.3s ease;
-}
-
-/* 재생 중일 때 아이콘에 은은한 음악 파동 효과 추가 (기존 틀 유지형 강화) */
-#music-btn.playing .apple-music-box {
-    box-shadow: 0 0 15px rgba(255, 45, 85, 0.6);
-}
-
-
 /* 홈 화면 콘텐츠 정렬 */
 .home-content {
     position: relative;
@@ -153,6 +111,19 @@ body, html {
 .ios-health { background: #fff; }
 .ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); font-family: 'Arial Black', sans-serif; color: white; font-weight: bold; }
 
+/* 🎵 애플 뮤직 홈 화면 앱 아이콘 디자인 */
+.apple-music-box {
+    background: linear-gradient(135deg, #ff2d55 0%, #ff375f 40%, #fa243c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+#music-icon {
+    color: white;
+    font-size: 1.7rem;
+}
+#music-btn.playing .apple-music-box {
+    box-shadow: 0 0 15px rgba(255, 45, 85, 0.6);
+}
+
 /* 🗺️ 순정 지도 앱 */
 .ios-maps {
     background: #e5e5ea;
@@ -181,7 +152,7 @@ body, html {
 .p7 { background: #5856d6; transform: rotate(270deg); }
 .p8 { background: #ff2d55; transform: rotate(315deg); }
 
-/* 🔔 순정 미리 알림(Reminders) 앱 그래픽 */
+/* 🔔 순정 미리 알림 앱 그래픽 */
 .ios-reminders {
     background: #ffffff;
     display: flex;
@@ -191,27 +162,23 @@ body, html {
     padding-left: 14px;
     gap: 8px;
 }
-.rem-bullet {
-    width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid transparent;
-}
+.rem-bullet { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid transparent; }
 .rb1 { border-color: #ff3b30; background: rgba(255,59,48,0.2); }
 .rb2 { border-color: #007aff; background: rgba(0,122,255,0.2); }
 .rb3 { border-color: #ff9500; background: rgba(255,149,0,0.2); }
-.rem-line {
-    position: absolute; left: 26px; width: 22px; height: 2px; background: #e5e5ea;
-}
+.rem-line { position: absolute; left: 26px; width: 22px; height: 2px; background: #e5e5ea; }
 .ios-reminders .rem-line:nth-of-type(1) { top: 18px; }
 .ios-reminders .rem-line:nth-of-type(2) { top: 29px; }
 .ios-reminders .rem-line:nth-of-type(3) { top: 40px; }
 
-/* 💳 순정 지갑(Wallet) 앱 그래픽 */
+/* 💳 순정 지갑 앱 그래픽 */
 .ios-wallet { background: #1c1c1e; }
 .wallet-card { position: absolute; width: 38px; height: 24px; border-radius: 4px; left: 11px; box-shadow: 0 -2px 5px rgba(0,0,0,0.5); }
 .wc1 { background: linear-gradient(135deg, #ff9500, #ffcc00); top: 12px; z-index: 3; width: 38px;}
 .wc2 { background: linear-gradient(135deg, #5ac8fa, #007aff); top: 19px; z-index: 2; width: 35px; left: 12.5px;}
 .wc3 { background: linear-gradient(135deg, #ff2d55, #ff3b30); top: 26px; z-index: 1; width: 32px; left: 14px;}
 
-/* 📝 순정 메모(Notes) 앱 그래픽 */
+/* 📝 순정 메모 앱 그래픽 */
 .ios-notes { background: #ffffff; background-image: linear-gradient(#f4f4f4 1px, transparent 1px); background-size: 100% 8px; }
 .notes-top { position: absolute; top: 0; left: 0; width: 100%; height: 14px; background: #ffcc00; opacity: 0.9; border-bottom: 1px dashed #e5a900; }
 .notes-line { position: absolute; left: 10px; width: 40px; height: 1.5px; background: #d1d1d6; }
@@ -250,7 +217,7 @@ body, html {
 .gb-delete-btn { background: none; border: none; color: #ff3b30; cursor: pointer; font-size: 0.85rem; }
 .gb-comment-text { font-size: 0.95rem; color: #3a3a3c; line-height: 1.4; word-break: break-all; }
 
-/* 오시는 길 내부 디자인 구성 요소들 */
+/* 오시는 길 내부 디자인 */
 .venue-card { background: #ffffff; border-radius: 20px; padding: 24px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
 .venue-name { font-size: 1.4rem; font-weight: 700; color: #1c1c1e; margin-bottom: 8px; }
 .venue-address { font-size: 0.95rem; color: #48484a; line-height: 1.5; margin-bottom: 18px; }
@@ -259,6 +226,7 @@ body, html {
 .copy-full:active { background: #e5e5ea; }
 .btn-group { display: flex; gap: 10px; }
 .action-btn { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.action-btn:active { opacity: 0.8; transform: scale(0.98); transition: all 0.1s ease; }
 .action-btn.kakao { background: #fee500; color: #191919; }
 .action-btn.naver { background: #03c75a; color: #ffffff; }
 .naver-icon { font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 0.8rem; background: white; color: #03c75a; width: 16px; height: 16px; border-radius: 2px; display: flex; justify-content: center; align-items: center; line-height: 1; }
@@ -281,27 +249,11 @@ body, html {
 .parking-highlight { margin: 4px 0; }
 .emp-text { color: #ff9500; font-weight: 700; }
 
-/* 🔔 참석 여부 세그먼트 전용 디자인 컨트롤 추가 */
+/* 참석 여부 전용 스타일 */
 .rsvp-opt-btn {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #f9f9fb;
-    font-size: 0.95rem;
-    color: #48484a;
-    cursor: pointer;
-    transition: all 0.2s;
+    flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px;
+    background: #f9f9fb; font-size: 0.95rem; color: #48484a; cursor: pointer; transition: all 0.2s;
 }
 .rsvp-opt-btn.active {
-    background: #007aff;
-    color: white;
-    border-color: #007aff;
-    font-weight: 600;
-}
-/* ⚡ 오시는 길 버튼 터치 피드백 (기존 레이아웃 틀 유지형 보완) */
-.action-btn:active {
-    opacity: 0.8;
-    transform: scale(0.98);
-    transition: all 0.1s ease;
+    background: #007aff; color: white; border-color: #007aff; font-weight: 600;
 }
