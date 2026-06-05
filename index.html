@@ -87,21 +87,41 @@
                     <span>축의금</span>
                 </div>
                 <!-- 📸 드레스 코드에서 인스타그램 감성의 게스트 스냅으로 교체 -->
-                <div class="icon-item" onclick="alert('게스트 스냅 페이지로 이동!')">
-                    <div class="icon-box ios-instagram">
-                        <div class="insta-camera">
-                            <div class="insta-lens"></div>
-                            <div class="insta-flash"></div>
-                        </div>
-                    </div>
-                    <span>게스트 스냅</span>
-                </div>
-                <div class="icon-item" onclick="openGuestbook()">
-                    <div class="icon-box ios-notes">
-                        <div class="notes-top"></div>
-                        <div class="notes-line nl1"></div>
-                        <div class="notes-line nl2"></div>
-                    </div>
+
+<div class="icon-item" onclick="openGuestSnap()">
+    <div class="icon-box ios-instagram">
+        <div class="insta-camera">
+            <div class="insta-lens"></div>
+            <div class="insta-flash"></div>
+        </div>
+    </div>
+    <span>게스트 스냅</span>
+</div>
+
+<!-- 📸 게스트 스냅 전용 업로드 안내 팝업 -->
+<div id="snap-page" class="detail-page hidden">
+    <div class="page-header">
+        <div class="header-bar"></div>
+        <h3>게스트 스냅 전송</h3>
+        <button class="close-btn" onclick="closeGuestSnap()">✕</button>
+    </div>
+    <div class="page-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
+        <div style="font-size: 3.5rem; margin-bottom: 20px;">📸</div>
+        <h4 style="font-size: 1.3rem; font-weight: 700; color: #1c1c1e; margin-bottom: 12px;">신랑·신부에게 사진 보내기</h4>
+        
+        <p style="font-size: 0.95rem; color: #48484a; line-height: 1.6; margin-bottom: 30px; word-break: keep-all;">
+            오늘 예식장에서 찍으신 예쁘고 소중한 사진들을 <br>
+            신랑·신부에게 직접 보내주세요! <br>
+            <span style="color: #ff3b30; font-weight: 600;">(보내주신 사진은 다른 하객들에게 노출되지 않습니다.)</span>
+        </p>
+
+        <!-- 🔗 실제 생성하신 마이박스나 구글폼 링크를 href에 넣으시면 됩니다 -->
+        <a href="https://naver.me/xqb82Ffc" target="_blank" class="copy-full" style="background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d); color: white; text-decoration: none; display: flex; justify-content: center; align-items: center; height: 50px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(225,48,108,0.4); margin-bottom: 0;">
+            사진 업로드하러 가기
+        </a>
+    </div>
+</div>
+
                     <span>방명록</span>
                 </div>
                 <div class="icon-item" onclick="toggleMusic()">
