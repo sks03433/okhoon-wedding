@@ -1,200 +1,281 @@
-// 헬퍼 함수 정의를 최상단으로 이동 (에러 유발 방지 및 코드 보호 순정 유지)
-function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-
-let startY = 0;
-
-window.onload = function() {
-    const lockScreen = document.getElementById('lock-screen');
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 결혼합니다</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    lockScreen.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-    });
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    lockScreen.addEventListener('touchend', (e) => {
-        let endY = e.changedTouches[0].clientY;
-        if (startY - endY > 50) {
-            lockScreen.classList.add('slide-up');
-            setTimeout(() => {
-                lockScreen.classList.add('hidden');
-                document.getElementById('home-screen').classList.remove('hidden');
-            }, 500);
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFfQJjNYcFYz-Aci26MjwXacXOkHClIR4",
+            authDomain: "okhoon-wedding.firebaseapp.com",
+            databaseURL: "https://okhoon-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "okhoon-wedding",
+            storageBucket: "okhoon-wedding.firebasestorage.app",
+            messagingSenderId: "983524797177",
+            appId: "1:983524797177:web:cefd13ac75ae9e44da1028"
+        };
+
+        // 파이어베이스 초기화
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
-    });
-};
+        const database = firebase.database();
+    </script>
 
-// 배경음악 제어
-function toggleMusic() {
-    const bgm = document.getElementById('bgm');
-    const btn = document.getElementById('music-btn');
-    const icon = document.getElementById('music-icon');
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    if (bgm.paused) {
-        bgm.play().then(() => {
-            btn.classList.add('playing');
-            icon.className = "fa-solid fa-compact-disc fa-spin"; 
-        }).catch(err => console.log(err));
-    } else {
-        bgm.pause();
-        btn.classList.remove('playing');
-        icon.className = "fa-solid fa-music"; 
-    }
-}
+    <audio id="bgm" src="bgm.mp3" loop></audio>
 
-// 오시는 길 창 제어
-function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
-function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
+    <!-- 잠금 화면 -->
+    <div id="lock-screen" class="screen">
+        <div class="lock-wrapper">
+            <div class="top-info">
+                <div class="date">2026-10-10 (SAT)</div>
+                <div class="time">14:50</div>
+            </div>
+            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
+        </div>
+    </div>
 
-function copyAddress() {
-    navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
-        alert("주소가 복사되었습니다!");
-    });
-}
+    <!-- 홈 화면 -->
+    <div id="home-screen" class="screen hidden">
+        <div class="home-content">
+            <!-- 첫 번째 줄 앱 그리드 -->
+            <div class="app-grid row-1">
+                <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
+                    <div class="icon-box ios-health">❤️</div>
+                    <span>우리 이야기</span>
+                </div>
+                <div class="icon-item" onclick="openMap()">
+                    <div class="icon-box ios-maps"><div class="maps-indicator"></div></div>
+                    <span>오시는 길</span>
+                </div>
+                <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
+                    <div class="icon-box ios-photos">
+                        <div class="petal p1"></div><div class="petal p2"></div>
+                        <div class="petal p3"></div><div class="petal p4"></div>
+                        <div class="petal p5"></div><div class="petal p6"></div>
+                        <div class="petal p7"></div><div class="petal p8"></div>
+                    </div>
+                    <span>갤러리</span>
+                </div>
+                <div class="icon-item" onclick="openRSVP()">
+                    <div class="icon-box ios-reminders">
+                        <div class="rem-bullet rb1"></div><div class="rem-line"></div>
+                        <div class="rem-bullet rb2"></div><div class="rem-line"></div>
+                        <div class="rem-bullet rb3"></div><div class="rem-line"></div>
+                    </div>
+                    <span>참석 여부</span>
+                </div>
+            </div>
 
-/* 🌐 실시간 방명록 서버 연동 로직 */
+            <!-- 두 번째 줄 앱 그리드 -->
+            <div class="app-grid row-2">
+                <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
+                    <div class="icon-box ios-wallet">
+                        <div class="wallet-card wc1"></div>
+                        <div class="wallet-card wc2"></div>
+                        <div class="wallet-card wc3"></div>
+                    </div>
+                    <span>축의금</span>
+                </div>
+                <div class="icon-item" onclick="alert('드레스 코드 페이지로 이동!')">
+                    <div class="icon-box ios-appstore">A</div>
+                    <span>드레스 코드</span>
+                </div>
+                <div class="icon-item" onclick="openGuestbook()">
+                    <div class="icon-box ios-notes">
+                        <div class="notes-top"></div>
+                        <div class="notes-line nl1"></div>
+                        <div class="notes-line nl2"></div>
+                    </div>
+                    <span>방명록</span>
+                </div>
+                <!-- 🎵 빈자리에 정품 애플 뮤직 스타일 아이콘 배치 -->
+                <div class="icon-item" onclick="toggleMusic()">
+                    <div id="music-app-box" class="icon-box ios-music">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <span>음악 재생</span>
+                </div>
+            </div>
+        </div>
 
-function openGuestbook() {
-    document.getElementById('guestbook-page').classList.remove('hidden');
-    listenComments(); // 실시간 데이터 실시간 감시 시작
-}
-function closeGuestbook() {
-    document.getElementById('guestbook-page').classList.add('hidden');
-}
+        <!-- 하단 독 바 -->
+        <div class="ios-dock">
+            <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
+                <div class="icon-box ios-health">❤️</div>
+            </div>
+            <div class="icon-item" onclick="openMap()">
+                <div class="icon-box ios-maps"><div class="maps-indicator"></div></div>
+            </div>
+            <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
+                <div class="icon-box ios-photos">
+                    <div class="petal p1"></div><div class="petal p2"></div>
+                    <div class="petal p3"></div><div class="petal p4"></div>
+                    <div class="petal p5"></div><div class="petal p6"></div>
+                    <div class="petal p7"></div><div class="petal p8"></div>
+                </div>
+            </div>
+            <div class="icon-item" onclick="openRSVP()">
+                <div class="icon-box ios-reminders">
+                    <div class="rem-bullet rb1"></div><div class="rem-line"></div>
+                    <div class="rem-bullet rb2"></div><div class="rem-line"></div>
+                    <div class="rem-bullet rb3"></div><div class="rem-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-// 파이어베이스 데이터베이스로 실시간 전송
-function addComment() {
-    const nameInput = document.getElementById('gb-name');
-    const pwdInput = document.getElementById('gb-password');
-    const contentInput = document.getElementById('gb-content');
-
-    const name = nameInput.value.trim();
-    const password = pwdInput.value.trim();
-    const content = contentInput.value.trim();
-
-    if (!name) { alert('이름을 입력해 주세요.'); return; }
-    if (!password || password.length < 4) { alert('비밀번호 4자리를 입력해 주세요.'); return; }
-    if (!content) { alert('메시지를 입력해 주세요.'); return; }
-
-    const now = new Date();
-    const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
-
-    // Firebase 데이터베이스의 'guestbook' 노드에 push(저장)
-    database.ref('guestbook').push({
-        name: name,
-        password: password,
-        content: content,
-        date: dateStr,
-        timestamp: Date.now()
-    }).then(() => {
-        nameInput.value = '';
-        pwdInput.value = '';
-        contentInput.value = '';
-    }).catch(err => alert("저장 실패: " + err.message));
-}
-
-// 데이터베이스를 실시간으로 Listen 하여 화면에 반영하기
-function listenComments() {
-    database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
-        const listContainer = document.getElementById('guestbook-list');
-        const countSpan = document.getElementById('gb-count');
+    <!-- 오시는 길 팝업 -->
+    <div id="map-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>오시는 길</h3>
+            <button class="close-btn" onclick="closeMap()">✕</button>
+        </div>
         
-        if(!listContainer) return;
-        
-        listContainer.innerHTML = '';
-        let commentsArray = [];
+        <div class="page-content">
+            <div class="venue-card">
+                <h4 class="venue-name">더아리엘 수원</h4> 
+                <p class="venue-address">경기 수원시 팔달구 중부대로 181<br><span class="sub-addr">(우만동 147-7)</span></p>
+                
+                <button class="copy-full" onclick="copyAddress()">
+                    <i class="fa-regular fa-copy"></i> 주소 복사하기
+                </button>
+                
+                <div class="btn-group">
+                    <a href="https://map.kakao.com/link/to/더아리엘 수원,37.2798,127.0427" target="_blank" class="action-btn kakao">
+                        <i class="fa-solid fa-comment"></i> 카카오맵
+                    </a>
+                    <a href="https://map.naver.com/p/entry/place/13149722" target="_blank" class="action-btn naver">
+                        <span class="naver-icon">N</span> 네이버 지도
+                    </a>
+                </div>
+            </div>
 
-        snapshot.forEach((childSnapshot) => {
-            const key = childSnapshot.key; // 고유 데이터 키값
-            const data = childSnapshot.val();
-            commentsArray.push({ id: key, ...data });
-        });
-
-        // 내림차순 정렬 (최신글 위로)
-        commentsArray.reverse();
-        if(countSpan) countSpan.innerText = commentsArray.length;
-
-        if (commentsArray.length === 0) {
-            listContainer.innerHTML = `<div style="text-align:center; color:#8e8e93; font-size:0.9rem; padding:40px 0;">첫 번째 축하 메모를 남겨주세요!</div>`;
-            return;
-        }
-
-        commentsArray.forEach(comment => {
-            const item = document.createElement('div');
-            item.className = 'gb-comment-box';
-            item.innerHTML = `
-                <div class="gb-comment-header">
-                    <span class="gb-comment-name">${escapeHtml(comment.name)}</span>
-                    <div>
-                        <span class="gb-comment-date">${comment.date}</span>
-                        <button class="gb-delete-btn" onclick="deleteComment('${comment.id}', '${comment.password}')">삭제</button>
+            <div class="transport-section">
+                <div class="info-block">
+                    <h5 class="sub-title sub-subway">
+                        <i class="fa-solid fa-subway"></i> 지하철 안내
+                    </h5>
+                    <div class="info-details">
+                        <p><span class="badge line-bundang" style="background-color: #f5a623;">수인분당선</span> <strong>수원시청역</strong> 6번 출구 앞 정류장에서 일반버스 82-1, 83-1번 환승 (약 7분 소요)</p>
+                        <p><span class="badge line-1">1호선</span> <strong>수원역</strong> 4번 출구 앞 정류장에서 버스 환승 (약 15분 소요)</p>
+                        <p><span class="badge line-sin">신분당선</span> <strong>광교중앙역</strong> 1번 출구에서 버스 또는 택시 이용 (약 10분 소요)</p>
                     </div>
                 </div>
-                <div class="gb-comment-text">${escapeHtml(comment.content)}</div>
-            `;
-            listContainer.appendChild(item);
-        });
-    });
-}
 
-// 삭제 로직 (서버 데이터 삭제 반영)
-function deleteComment(id, targetPassword) {
-    const inputPwd = prompt('비밀번호를 입력하세요:');
-    if (inputPwd === null) return;
+                <div class="info-block">
+                    <h5 class="sub-title sub-bus">
+                        <i class="fa-solid fa-bus"></i> 버스 안내
+                    </h5>
+                    <div class="info-details">
+                        <p class="station-highlight">📍 [우만동DM시티·더아리엘] 정류장 하차 바로 앞</p>
+                        <div class="bus-list">
+                            <p><strong>• 일반버스 :</strong> <span class="bus-numbers blue">10, 10-2, 11-1, 37, 46, 62-1, 82-1, 83-1</span></p>
+                            <p><strong>• 직행좌석 :</strong> <span class="bus-numbers red">3007, 4000, 7002</span></p>
+                        </div>
+                    </div>
+                </div>
 
-    // 본인 패스워드 검증 혹은 마스터 관리자 번호 통과 권한 완벽 보존!
-    if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
-        if (confirm('이 메모를 삭제하시겠습니까?')) {
-            database.ref('guestbook/' + id).remove()
-                .then(() => alert("삭제되었습니다."))
-                .catch(err => alert("삭제 실패: " + err.message));
-        }
-    } else {
-        alert('비밀번호가 일치하지 않습니다.');
-    }
-}
+                <div class="info-block">
+                    <h5 class="sub-title sub-parking">
+                        <i class="fa-solid fa-car"></i> 주차 안내
+                    </h5>
+                    <div class="info-details">
+                        <p>• 웨딩홀 건물 내 자체 주차장 및 외부 전용 연계 주차장 보유</p>
+                        <p class="parking-highlight">• 동시 주차 <span class="emp-text">1,000대</span>까지 여유롭게 주차 가능합니다.</p>
+                        <p>• 축하해주러 오신 하객분들은 <strong>2시간 무료 주차</strong>를 지원합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-/* 🔔 참석 여부(RSVP) 제어 스크립트 기능 추가 */
+    <!-- 방명록 팝업 -->
+    <div id="guestbook-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>축하 방명록 (<span id="gb-count">0</span>)</h3>
+            <button class="close-btn" onclick="closeGuestbook()">✕</button>
+        </div>
+        <div class="page-content">
+            <div class="venue-card" style="text-align: left;">
+                <input type="text" id="gb-name" placeholder="이름" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
+                <input type="password" id="gb-password" placeholder="비밀번호 (4자리)" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
+                <textarea id="gb-content" placeholder="축하 메시지를 남겨주세요." style="width:100%; height:80px; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
+                <button class="copy-full" onclick="addComment()" style="background:#ff9500; color:white; margin-bottom:0;">메시지 남기기</button>
+            </div>
+            <div id="guestbook-list" class="transport-section" style="margin-top:15px;"></div>
+        </div>
+    </div>
 
-function openRSVP() { document.getElementById('rsvp-page').classList.remove('hidden'); }
-function closeRSVP() { document.getElementById('rsvp-page').classList.add('hidden'); }
+    <!-- 참석 여부 팝업 -->
+    <div id="rsvp-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>참석 의사 전달</h3>
+            <button class="close-btn" onclick="closeRSVP()">✕</button>
+        </div>
+        <div class="page-content">
+            <div class="venue-card" style="text-align: left; padding: 25px 20px;">
+                <p style="font-size: 0.9rem; color: #8e8e93; margin-bottom: 20px; line-height: 1.4;">
+                    축하해 주시는 모든 분들께 감사드립니다.<br>원활한 예식 준비를 위해 참석 여부를 알려주세요.
+                </p>
 
-// 옵션 버튼 세그먼트 활성화 함수
-function selectOpt(btn) {
-    const type = btn.getAttribute('data-type');
-    document.querySelectorAll(`.rsvp-opt-btn[data-type="${type}"]`).forEach(b => {
-        b.classList.remove('active');
-    });
-    btn.classList.add('active');
-}
+                <div style="margin-bottom: 18px;">
+                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">성함</label>
+                    <input type="text" id="rsvp-name" placeholder="성함을 입력해주세요." style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; outline: none;">
+                </div>
 
-// 참석 의사 Firebase 연동 저장 함수
-function submitRSVP() {
-    const nameInput = document.getElementById('rsvp-name');
-    const name = nameInput.value.trim();
-    if (!name) { alert('성함을 입력해 주세요.'); return; }
+                <div style="margin-bottom: 18px;">
+                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">구분</label>
+                    <div style="display:flex; gap:10px;">
+                        <button class="rsvp-opt-btn active" data-type="side" data-value="신랑측" onclick="selectOpt(this)">신랑측</button>
+                        <button class="rsvp-opt-btn" data-type="side" data-value="신부측" onclick="selectOpt(this)">신부측</button>
+                    </div>
+                </div>
 
-    const side = document.querySelector('.rsvp-opt-btn[data-type="side"].active').getAttribute('data-value');
-    const attend = document.querySelector('.rsvp-opt-btn[data-type="attend"].active').getAttribute('data-value');
-    const meal = document.querySelector('.rsvp-opt-btn[data-type="meal"].active').getAttribute('data-value');
-    const count = document.getElementById('rsvp-count').value;
+                <div style="margin-bottom: 18px;">
+                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">참석 여부</label>
+                    <div style="display:flex; gap:10px;">
+                        <button class="rsvp-opt-btn active" data-type="attend" data-value="참석" onclick="selectOpt(this)">참석</button>
+                        <button class="rsvp-opt-btn" data-type="attend" data-value="마음만 함께" onclick="selectOpt(this)">마음만 함께</button>
+                    </div>
+                </div>
 
-    const now = new Date();
-    const timeStr = now.toLocaleString();
+                <div style="margin-bottom: 18px;">
+                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">동반 인원 (본인 포함)</label>
+                    <select id="rsvp-count" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; background:white; outline: none;">
+                        <option value="1명">1명</option>
+                        <option value="2명">2명</option>
+                        <option value="3명">3명</option>
+                        <option value="4명">4명</option>
+                        <option value="5명 이상">5명 이상</option>
+                    </select>
+                </div>
 
-    // Firebase 데이터베이스 'rsvp' 노드에 업로드
-    database.ref('rsvp').push({
-        name: name,
-        side: side,
-        attend: attend,
-        meal: meal,
-        count: count,
-        time: timeStr,
-        timestamp: Date.now()
-    }).then(() => {
-        alert('소중한 참석 의사가 신랑·신부님께 잘 전달되었습니다. 감사합니다!');
-        closeRSVP();
-        nameInput.value = ''; // 입력창 초기화
-    }).catch(err => alert("전송 실패: " + err.message));
-}
+                <div style="margin-bottom: 25px;">
+                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">식사 여부</label>
+                    <div style="display:flex; gap:10px;">
+                        <button class="rsvp-opt-btn active" data-type="meal" data-value="예정" onclick="selectOpt(this)">예정</button>
+                        <button class="rsvp-opt-btn" data-type="meal" data-value="안함" onclick="selectOpt(this)">안함</button>
+                    </div>
+                </div>
+
+                <button class="copy-full" onclick="submitRSVP()" style="background:#007aff; color:white; margin-bottom:0; font-size:1.05rem; height: 50px;">참석 의사 전달하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
