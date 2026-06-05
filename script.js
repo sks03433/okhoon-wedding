@@ -187,3 +187,43 @@ function submitRSVP() {
         nameInput.value = '';
     }).catch(err => alert("전송 실패: " + err.message));
 }
+
+// ✉️ 마음 보내기 팝업 제어 함수
+function openRemittance() {
+    document.getElementById('remittance-page').classList.remove('hidden');
+    switchRemitTab('groom'); // 열릴 때 기본적으로 신랑측이 보이도록 초기화
+}
+
+function closeRemittance() {
+    document.getElementById('remittance-page').classList.add('hidden');
+}
+
+// 신랑측 / 신부측 탭 전환 함수
+function switchRemitTab(side) {
+    const tabGroom = document.getElementById('tab-groom');
+    const tabBride = document.getElementById('tab-bride');
+    const areaGroom = document.getElementById('area-groom');
+    const areaBride = document.getElementById('area-bride');
+
+    if (side === 'groom') {
+        tabGroom.classList.add('active');
+        tabBride.classList.remove('active');
+        areaGroom.style.display = 'block';
+        areaBride.style.display = 'none';
+    } else {
+        tabGroom.classList.remove('active');
+        tabBride.classList.add('active');
+        areaGroom.style.display = 'none';
+        areaBride.style.display = 'block';
+    }
+}
+
+// 계좌번호 복사 기능 함수
+function copyAccount(accountInfo) {
+    // 은행명과 계좌번호 숫자만 깔끔하게 추출하여 복사합니다.
+    navigator.clipboard.writeText(accountInfo).then(() => {
+        alert(`계좌번호가 복사되었습니다.\n(${accountInfo})`);
+    }).catch(err => {
+        console.error('복사 실패:', err);
+    });
+}
