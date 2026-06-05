@@ -7,6 +7,7 @@ let startY = 0;
 
 window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
+    const homeScreen = document.getElementById('home-screen');
     
     lockScreen.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
@@ -14,11 +15,15 @@ window.onload = function() {
 
     lockScreen.addEventListener('touchend', (e) => {
         let endY = e.changedTouches[0].clientY;
+        // 위로 50px 이상 스와이프했을 때
         if (startY - endY > 50) {
             lockScreen.classList.add('slide-up');
+            
+            // 🎯 잠금화면이 올라가는 애니메이션 중에 홈화면의 숨김(hidden)을 확실히 제거합니다.
+            homeScreen.classList.remove('hidden'); 
+            
             setTimeout(() => {
                 lockScreen.classList.add('hidden');
-                document.getElementById('home-screen').classList.remove('hidden');
             }, 500);
         }
     });
