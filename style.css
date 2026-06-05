@@ -43,17 +43,21 @@ body, html {
 .swipe-up-text { font-size: 1rem; color: #fff; animation: blink 1.5s infinite; }
 @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-/* 2. 홈 화면 구조 개편 (하단 고정 및 간격 확보) */
+/* 2. 홈 화면 구조 완전히 초기화 및 고정 */
 #home-screen {
+    position: absolute;   /* 화면 전체를 완전히 덮도록 절대 좌표 지정 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;         /* 부모 전체 높이를 강제로 100% 고정 */
     background-image: url('home_photo.jpg');
     background-size: cover;
     background-position: center;
     padding: 65px 20px 30px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* 위에서부터 순서대로 배치 */
-    position: relative;
-    height: 100%; /* 전체 화면 높이 꽉 채우기 */
+    justify-content: flex-start;
+    box-sizing: border-box; /* 패딩이 높이에 영향을 주지 않도록 설정 */
 }
 
 #home-screen::before {
@@ -67,13 +71,13 @@ body, html {
 .hidden { display: none !important; }
 .slide-up { transform: translateY(-100%); }
 
-/* 홈 화면 콘텐츠 컨테이너 */
+/* 홈 화면 콘텐츠 컨테이너 (앱 그리드) */
 .home-content {
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: 400px;
-    margin: 40px auto 0 auto; /* 상단 여백 확보 */
+    margin: 40px auto 0 auto;
 }
 
 .app-grid {
@@ -83,9 +87,9 @@ body, html {
     width: 100%;
 }
 
-/* 1. 두 번째 줄 앱 그리드를 한칸씩 더 낮춰줌 */
+/* 두 번째 줄 앱 그리드 간격 낮춤 */
 .row-2 { 
-    margin-top: 55px; /* 간격을 대폭 늘려 아이콘들을 아래로 더 낮춤 */
+    margin-top: 55px; 
 }
 
 .icon-item {
@@ -252,13 +256,13 @@ body, html {
     }
 }
 
-/* 2. 독바를 진짜 아이폰처럼 화면 맨 하단에 절대 고정 */
+/* 🎯 독바를 진짜 아이폰 최하단 바닥 위치에 강제 고정 */
 .ios-dock {
-    position: absolute; /* 절대 좌표 고정 */
-    bottom: 35px;       /* 화면 맨 아래에서 살짝 띄움 (아이폰 감성 하단 여백) */
-    left: 20px;
-    right: 20px;
-    z-index: 2; 
+    position: absolute;     /* #home-screen 바닥을 기준으로 절대 고정 */
+    bottom: 25px;           /* 화면 맨 아래에서 딱 아이폰 인디케이터만큼만 띄움 */
+    left: 50%;              /* 좌우 중앙 정렬을 위한 50% 이동 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬 보정 */
+    z-index: 5;             /* 다른 어떤 요소보다 위에 오도록 레이어 순위 격상 */
     width: calc(100% - 40px); 
     max-width: 360px;
     background: rgba(255, 255, 255, 0.25); 
@@ -269,7 +273,6 @@ body, html {
     gap: 15px;
     backdrop-filter: blur(20px); 
     -webkit-backdrop-filter: blur(20px);
-    margin: 0 auto; /* 가로 중앙 정렬 */
 }
 
 .ios-dock .icon-box { width: 55px; height: 55px; }
