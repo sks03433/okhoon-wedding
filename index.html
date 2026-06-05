@@ -44,12 +44,7 @@
     </div>
 
     <div id="home-screen" class="screen hidden">
-        <div id="music-btn" onclick="toggleMusic()">
-            <div class="apple-music-box">
-                <i id="music-icon" class="fa-solid fa-music"></i>
-            </div>
-        </div>
-
+        
         <div class="home-content">
             <div class="app-grid row-1">
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
@@ -100,7 +95,12 @@
                     </div>
                     <span>방명록</span>
                 </div>
-                <div class="icon-item empty"></div>
+                <div class="icon-item" id="music-btn" onclick="toggleMusic()">
+                    <div class="icon-box apple-music-box">
+                        <i id="music-icon" class="fa-solid fa-music"></i>
+                    </div>
+                    <span>음악 재생</span>
+                </div>
             </div>
         </div>
 
@@ -186,8 +186,8 @@
                     </h5>
                     <div class="info-details">
                         <p>• 웨딩홀 건물 내 자체 주차장 및 외부 전용 연계 주차장 보유</p>
-                        <p class="parking-highlight">• 동시 주차 <span class="emp-text">1,000대</span>까지 여유롭게 주차 가능합니다.</p>
-                        <p>• 축하해주러 오신 하객분들은 <strong>2시간 무료 주차</strong>를 지원합니다.</p>
+                        <p class="parking-highlight">• 동시 주차 <span class="emp-text">1,000대</span>까지 여유롭게 가능합니다.</p>
+                        <p>• 축하해주러 오신 하객분들은 <strong>2시간 무료 주차</strong>가 가능합니다.</p>
                     </div>
                 </div>
             </div>
@@ -202,72 +202,3 @@
         </div>
         <div class="page-content">
             <div class="venue-card" style="text-align: left;">
-                <input type="text" id="gb-name" placeholder="이름" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
-                <input type="password" id="gb-password" placeholder="비밀번호 (4자리)" style="width:100%; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px;">
-                <textarea id="gb-content" placeholder="축하 메시지를 남겨주세요." style="width:100%; height:80px; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
-                <button class="copy-full" onclick="addComment()" style="background:#ff9500; color:white; margin-bottom:0;">메시지 남기기</button>
-            </div>
-            <div id="guestbook-list" class="transport-section" style="margin-top:15px;"></div>
-        </div>
-    </div>
-
-    <div id="rsvp-page" class="detail-page hidden">
-        <div class="page-header">
-            <div class="header-bar"></div>
-            <h3>참석 의사 전달</h3>
-            <button class="close-btn" onclick="closeRSVP()">✕</button>
-        </div>
-        <div class="page-content">
-            <div class="venue-card" style="text-align: left; padding: 25px 20px;">
-                <p style="font-size: 0.9rem; color: #8e8e93; margin-bottom: 20px; line-height: 1.4;">
-                    축하해 주시는 모든 분들께 감사드립니다.<br>원활한 예식 준비를 위해 참석 여부를 알려주세요.
-                </p>
-
-                <div style="margin-bottom: 18px;">
-                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">성함</label>
-                    <input type="text" id="rsvp-name" placeholder="성함을 입력해주세요." style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; outline: none;">
-                </div>
-
-                <div style="margin-bottom: 18px;">
-                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">구분</label>
-                    <div style="display:flex; gap:10px;">
-                        <button class="rsvp-opt-btn active" data-type="side" data-value="신랑측" onclick="selectOpt(this)">신랑측</button>
-                        <button class="rsvp-opt-btn" data-type="side" data-value="신부측" onclick="selectOpt(this)">신부측</button>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 18px;">
-                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">참석 여부</label>
-                    <div style="display:flex; gap:10px;">
-                        <button class="rsvp-opt-btn active" data-type="attend" data-value="참석" onclick="selectOpt(this)">참석</button>
-                        <button class="rsvp-opt-btn" data-type="attend" data-value="마음만 함께" onclick="selectOpt(this)">마음만 함께</button>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 18px;">
-                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">동반 인원 (본인 포함)</label>
-                    <select id="rsvp-count" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:1rem; background:white; outline: none;">
-                        <option value="1명">1명</option>
-                        <option value="2명">2명</option>
-                        <option value="3명">3명</option>
-                        <option value="4명">4명</option>
-                        <option value="5명 이상">5명 이상</option>
-                    </select>
-                </div>
-
-                <div style="margin-bottom: 25px;">
-                    <label style="display:block; font-size: 0.85rem; font-weight:600; margin-bottom:6px; color:#1c1c1e;">식사 여부</label>
-                    <div style="display:flex; gap:10px;">
-                        <button class="rsvp-opt-btn active" data-type="meal" data-value="예정" onclick="selectOpt(this)">예정</button>
-                        <button class="rsvp-opt-btn" data-type="meal" data-value="안함" onclick="selectOpt(this)">안함</button>
-                    </div>
-                </div>
-
-                <button class="copy-full" onclick="submitRSVP()" style="background:#007aff; color:white; margin-bottom:0; font-size:1.05rem; height: 50px;">참석 의사 전달하기</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
