@@ -24,7 +24,7 @@
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        const database = firebase.database(); // 전역 변수로 database 선언
+        const database = firebase.database();
     </script>
 
     <link rel="stylesheet" href="style.css">
@@ -33,6 +33,7 @@
 
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
+    <!-- 잠금 화면 -->
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
@@ -43,12 +44,10 @@
         </div>
     </div>
 
+    <!-- 홈 화면 -->
     <div id="home-screen" class="screen hidden">
-        <button id="music-btn" onclick="toggleMusic()">
-            <i id="music-icon" class="fa-solid fa-music"></i>
-        </button>
-
         <div class="home-content">
+            <!-- 첫 번째 줄 앱 그리드 -->
             <div class="app-grid row-1">
                 <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                     <div class="icon-box ios-health">❤️</div>
@@ -77,6 +76,7 @@
                 </div>
             </div>
 
+            <!-- 두 번째 줄 앱 그리드 -->
             <div class="app-grid row-2">
                 <div class="icon-item" onclick="alert('축의금 페이지로 이동!')">
                     <div class="icon-box ios-wallet">
@@ -98,10 +98,17 @@
                     </div>
                     <span>방명록</span>
                 </div>
-                <div class="icon-item empty"></div>
+                <!-- 🎵 빈자리에 정품 애플 뮤직 스타일 아이콘 배치 -->
+                <div class="icon-item" onclick="toggleMusic()">
+                    <div id="music-app-box" class="icon-box ios-music">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <span>음악 재생</span>
+                </div>
             </div>
         </div>
 
+        <!-- 하단 독 바 -->
         <div class="ios-dock">
             <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
                 <div class="icon-box ios-health">❤️</div>
