@@ -3,6 +3,7 @@ function escapeHtml(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
+// 🎯 스와이프 제어 전역 변수
 let startY = 0; 
 
 window.onload = function() {
@@ -11,23 +12,23 @@ window.onload = function() {
     
     if (!lockScreen || !homeScreen) return;
 
-    // 1. 터치 시작할 때 좌표 저장
+    // 터치 시작
     lockScreen.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
     }, { passive: true });
 
-    // 🎯 2. 터치 이동 중 브라우저가 화면을 흔들거나 스크롤 하는 것을 강제로 차단 (핵심)
+    // 터치 이동 중 브라우저 자체 스크롤 권한 박탈 (터치 씹힘 원천 차단)
     lockScreen.addEventListener('touchmove', (e) => {
         if (e.cancelable) {
-            e.preventDefault(); // 브라우저 자체 스크롤 이벤트를 씹어버림
+            e.preventDefault(); 
         }
-    }, { passive: false }); // preventDefault를 쓰기 위해 false로 설정해야 합니다.
+    }, { passive: false });
 
-    // 3. 손가락을 뗐을 때 스와이프 판정 및 화면 전환
+    // 터치 종료시 걷어내기 작동
     lockScreen.addEventListener('touchend', (e) => {
         let endY = e.changedTouches[0].clientY;
         
-        // 위로 40px 이상 밀어 올렸다면 (판정 범위를 50에서 40으로 살짝 낮춰 더 잘 열리게 수정)
+        // 위로 40px 이상 밀었을 때 작동
         if (startY - endY > 40) {
             lockScreen.classList.add('slide-up');
             homeScreen.classList.remove('hidden'); 
@@ -39,16 +40,14 @@ window.onload = function() {
     }, { passive: true });
 };
 
-// 이하 기존 다른 함수들(toggleMusic, openMap 등)은 이 아래에 그대로 두시면 됩니다.
-
-// 🎵 음악 재생 제어 함수 (앱 제어식 고도화)
+// 🎵 음악 재생 제어
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const appBox = document.getElementById('music-app-box');
 
     if (bgm.paused) {
         bgm.play().then(() => {
-            appBox.classList.add('playing'); // 음악 재생 시 블링블링 애니메이션 활성화
+            appBox.classList.add('playing');
         }).catch(err => console.log(err));
     } else {
         bgm.pause();
@@ -56,6 +55,7 @@ function toggleMusic() {
     }
 }
 
+// 지도 열고 닫기
 function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
 function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
 
@@ -65,6 +65,7 @@ function copyAddress() {
     });
 }
 
+// 방명록 제어
 function openGuestbook() {
     document.getElementById('guestbook-page').classList.remove('hidden');
     listenComments();
@@ -108,7 +109,6 @@ function listenComments() {
         const countSpan = document.getElementById('gb-count');
         
         if(!listContainer) return;
-        
         listContainer.innerHTML = '';
         let commentsArray = [];
 
@@ -159,6 +159,7 @@ function deleteComment(id, targetPassword) {
     }
 }
 
+// 참석 여부 제어
 function openRSVP() { document.getElementById('rsvp-page').classList.remove('hidden'); }
 function closeRSVP() { document.getElementById('rsvp-page').classList.add('hidden'); }
 
