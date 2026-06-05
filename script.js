@@ -24,14 +24,13 @@ window.onload = function() {
     });
 };
 
-// 🎵 음악 재생 제어 함수 (앱 제어식 고도화)
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const appBox = document.getElementById('music-app-box');
 
     if (bgm.paused) {
         bgm.play().then(() => {
-            appBox.classList.add('playing'); // 음악 재생 시 블링블링 애니메이션 활성화
+            appBox.classList.add('playing');
         }).catch(err => console.log(err));
     } else {
         bgm.pause();
