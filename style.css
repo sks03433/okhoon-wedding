@@ -27,7 +27,9 @@ body, html {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 10;
+    z-index: 100; /* 숫자를 확 높여서 최상단으로 올립니다 */
+    pointer-events: auto !important; /* 터치 이벤트를 강제로 활성화 */
+    touch-action: none; /* 브라우저 자체 제스처와 충돌 방지 */
 }
 
 .lock-wrapper {
