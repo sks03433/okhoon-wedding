@@ -1,64 +1,41 @@
-// 1. 에러 전파 방지용 유틸리티 
+// 헬퍼 함수 정의를 최상단으로 이동 (에러 유발 방지 및 코드 보호 순정 유지)
 function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
 let startY = 0;
-let isUnlocked = false;
 
-// 2. 잠금 해제 실행 코어를 최상단으로 분리 (절대 마비 안 됨)
-function 도어오픈() {
-    if (isUnlocked) return;
-    isUnlocked = true;
-
-    const lockScreen = document.getElementById('lock-screen');
-    const homeScreen = document.getElementById('home-screen');
-    
-    if (lockScreen && homeScreen) {
-        lockScreen.classList.add('slide-up');
-        setTimeout(() => {
-            lockScreen.classList.add('hidden');
-            homeScreen.classList.remove('hidden');
-        }, 500);
-    }
-}
-
-// 3. 브라우저 로드 시 이벤트 바인딩
 window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
-    if (!lockScreen) return;
     
-    // 모바일 터치 스와이프 감지
     lockScreen.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    lockScreen.addEventListener('touchmove', (e) => {
-        if (e.cancelable) e.preventDefault();
-    }, { passive: false });
+    });
 
     lockScreen.addEventListener('touchend', (e) => {
         let endY = e.changedTouches[0].clientY;
-        if (startY - endY > 30) {
-            도어오픈();
+        if (startY - endY > 50) {
+            lockScreen.classList.add('slide-up');
+            setTimeout(() => {
+                lockScreen.classList.add('hidden');
+                document.getElementById('home-screen').classList.remove('hidden');
+            }, 500);
         }
-    }, { passive: true });
+    });
 };
 
-// 4. 배경음악 제어 
+// 배경음악 제어
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const btn = document.getElementById('music-btn');
     const icon = document.getElementById('music-icon');
 
-    if (!bgm || !btn || !icon) return;
-
     if (bgm.paused) {
         bgm.play().then(() => {
             btn.classList.add('playing');
-            icon.className = "fa-solid fa-music fa-beat"; 
-        }).catch(err => console.log("BGM 재생 실패:", err));
+            icon.className = "fa-solid fa-compact-disc fa-spin"; 
+        }).catch(err => console.log(err));
     } else {
         bgm.pause();
         btn.classList.remove('playing');
@@ -66,33 +43,28 @@ function toggleMusic() {
     }
 }
 
-// 5. 오시는 길 내비게이션 창
+// 오시는 길 창 제어
 function openMap() { document.getElementById('map-page').classList.remove('hidden'); }
 function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
 
 function copyAddress() {
     navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
         alert("주소가 복사되었습니다!");
-    }).catch(() => {
-        alert("경기 수원시 팔달구 중부대로 181");
     });
 }
 
-// 6. 방명록 연동 (트라이 캐치로 파이어베이스 마비 시 스크립트 다운 차단)
+/* 🌐 실시간 방명록 서버 연동 로직 */
+
 function openGuestbook() {
     document.getElementById('guestbook-page').classList.remove('hidden');
-    try {
-        listenComments();
-    } catch(e) {
-        console.error("방명록 로딩 실패:", e);
-    }
+    listenComments(); // 실시간 데이터 실시간 감시 시작
 }
 function closeGuestbook() {
     document.getElementById('guestbook-page').classList.add('hidden');
 }
 
+// 파이어베이스 데이터베이스로 실시간 전송
 function addComment() {
-    if (!database) { alert("서버 연결에 실패했습니다."); return; }
     const nameInput = document.getElementById('gb-name');
     const pwdInput = document.getElementById('gb-password');
     const contentInput = document.getElementById('gb-content');
@@ -101,11 +73,14 @@ function addComment() {
     const password = pwdInput.value.trim();
     const content = contentInput.value.trim();
 
-    if (!name || !password || !content) { alert('빈칸을 모두 입력해 주세요.'); return; }
+    if (!name) { alert('이름을 입력해 주세요.'); return; }
+    if (!password || password.length < 4) { alert('비밀번호 4자리를 입력해 주세요.'); return; }
+    if (!content) { alert('메시지를 입력해 주세요.'); return; }
 
     const now = new Date();
     const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
+    // Firebase 데이터베이스의 'guestbook' 노드에 push(저장)
     database.ref('guestbook').push({
         name: name,
         password: password,
@@ -113,24 +88,30 @@ function addComment() {
         date: dateStr,
         timestamp: Date.now()
     }).then(() => {
-        nameInput.value = ''; pwdInput.value = ''; contentInput.value = '';
+        nameInput.value = '';
+        pwdInput.value = '';
+        contentInput.value = '';
     }).catch(err => alert("저장 실패: " + err.message));
 }
 
+// 데이터베이스를 실시간으로 Listen 하여 화면에 반영하기
 function listenComments() {
-    if (!database) return;
     database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
         const listContainer = document.getElementById('guestbook-list');
         const countSpan = document.getElementById('gb-count');
+        
         if(!listContainer) return;
         
         listContainer.innerHTML = '';
         let commentsArray = [];
 
         snapshot.forEach((childSnapshot) => {
-            commentsArray.push({ id: childSnapshot.key, ...childSnapshot.val() });
+            const key = childSnapshot.key; // 고유 데이터 키값
+            const data = childSnapshot.val();
+            commentsArray.push({ id: key, ...data });
         });
 
+        // 내림차순 정렬 (최신글 위로)
         commentsArray.reverse();
         if(countSpan) countSpan.innerText = commentsArray.length;
 
@@ -157,11 +138,12 @@ function listenComments() {
     });
 }
 
+// 삭제 로직 (서버 데이터 삭제 반영)
 function deleteComment(id, targetPassword) {
-    if (!database) return;
     const inputPwd = prompt('비밀번호를 입력하세요:');
     if (inputPwd === null) return;
 
+    // 본인 패스워드 검증 혹은 마스터 관리자 번호 통과 권한 완벽 보존!
     if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
         if (confirm('이 메모를 삭제하시겠습니까?')) {
             database.ref('guestbook/' + id).remove()
@@ -173,18 +155,22 @@ function deleteComment(id, targetPassword) {
     }
 }
 
-// 7. 참석 여부(RSVP) 제어
+/* 🔔 참석 여부(RSVP) 제어 스크립트 기능 추가 */
+
 function openRSVP() { document.getElementById('rsvp-page').classList.remove('hidden'); }
 function closeRSVP() { document.getElementById('rsvp-page').classList.add('hidden'); }
 
+// 옵션 버튼 세그먼트 활성화 함수
 function selectOpt(btn) {
     const type = btn.getAttribute('data-type');
-    document.querySelectorAll(`.rsvp-opt-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.rsvp-opt-btn[data-type="${type}"]`).forEach(b => {
+        b.classList.remove('active');
+    });
     btn.classList.add('active');
 }
 
+// 참석 의사 Firebase 연동 저장 함수
 function submitRSVP() {
-    if (!database) { alert("서버 연결에 실패했습니다."); return; }
     const nameInput = document.getElementById('rsvp-name');
     const name = nameInput.value.trim();
     if (!name) { alert('성함을 입력해 주세요.'); return; }
@@ -194,12 +180,21 @@ function submitRSVP() {
     const meal = document.querySelector('.rsvp-opt-btn[data-type="meal"].active').getAttribute('data-value');
     const count = document.getElementById('rsvp-count').value;
 
+    const now = new Date();
+    const timeStr = now.toLocaleString();
+
+    // Firebase 데이터베이스 'rsvp' 노드에 업로드
     database.ref('rsvp').push({
-        name: name, side: side, attend: attend, meal: meal, count: count,
-        time: new Date().toLocaleString(), timestamp: Date.now()
+        name: name,
+        side: side,
+        attend: attend,
+        meal: meal,
+        count: count,
+        time: timeStr,
+        timestamp: Date.now()
     }).then(() => {
-        alert('소중한 참석 의사가 전달되었습니다. 감사합니다!');
+        alert('소중한 참석 의사가 신랑·신부님께 잘 전달되었습니다. 감사합니다!');
         closeRSVP();
-        nameInput.value = ''; 
+        nameInput.value = ''; // 입력창 초기화
     }).catch(err => alert("전송 실패: " + err.message));
 }
