@@ -25,16 +25,19 @@ window.onload = function() {
     });
 };
 
-// 배경음악 제어
+// 배경음악 제어 (애플 뮤직 컨셉 최적화)
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
     const btn = document.getElementById('music-btn');
     const icon = document.getElementById('music-icon');
 
+    if (!bgm || !btn || !icon) return;
+
     if (bgm.paused) {
         bgm.play().then(() => {
             btn.classList.add('playing');
-            icon.className = "fa-solid fa-compact-disc fa-spin"; 
+            // 애플 뮤직 감성에 맞추어 음표가 쿵짝짝 뛰는 고급 애니메이션 적용
+            icon.className = "fa-solid fa-music fa-beat"; 
         }).catch(err => console.log(err));
     } else {
         bgm.pause();
