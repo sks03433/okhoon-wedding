@@ -5,31 +5,44 @@ function escapeHtml(str) {
 }
 
 let startY = 0;
+let isUnlocked = false; // 중복 실행 방지 플래그
+
+// 잠금 해제 실행 함수 (애니메이션 통합)
+function 도어오픈() {
+    if (isUnlocked) return;
+    isUnlocked = true;
+
+    const lockScreen = document.getElementById('lock-screen');
+    lockScreen.classList.add('slide-up');
+    
+    setTimeout(() => {
+        lockScreen.classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+    }, 500);
+}
+
+// 화면을 그냥 터치/클릭했을 때
+function unlockRequest() {
+    도어오픈();
+}
 
 window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
     
-    // 1. 터치 시작 지점 저장
+    // 모바일 스와이프 정밀 감지
     lockScreen.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
     }, { passive: true });
 
-    // 2. 터치 이동 중 브라우저 기본 스크롤 방지 (아이폰 튕김 방지)
     lockScreen.addEventListener('touchmove', (e) => {
         if (e.cancelable) e.preventDefault();
     }, { passive: false });
 
-    // 3. 터치 끝났을 때 정밀 판정 (위로 50px 이상 스와이프 시 해제)
     lockScreen.addEventListener('touchend', (e) => {
         let endY = e.changedTouches[0].clientY;
-        
-        // startY가 endY보다 크면 '위쪽'으로 드래그한 것입니다.
-        if (startY - endY > 50) {
-            lockScreen.classList.add('slide-up');
-            setTimeout(() => {
-                lockScreen.classList.add('hidden');
-                document.getElementById('home-screen').classList.remove('hidden');
-            }, 500);
+        // 위로 30px만 올려도 시원하게 열리도록 임계값 완화
+        if (startY - endY > 30) {
+            도어오픈();
         }
     }, { passive: true });
 };
