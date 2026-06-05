@@ -179,3 +179,11 @@ function submitRSVP() {
         nameInput.value = '';
     }).catch(err => alert("전송 실패: " + err.message));
 }
+
+function openGuestSnap() {
+    document.getElementById('snap-page').classList.remove('hidden');
+}
+
+function closeGuestSnap() {
+    document.getElementById('snap-page').classList.add('hidden');
+}
