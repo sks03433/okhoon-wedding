@@ -21,15 +21,16 @@ body, html {
     transition: transform 0.5s ease-in-out;
 }
 
-/* 1. 잠금 화면 */
+/* 1. 잠금 화면 최적화 */
 #lock-screen {
     background-image: url('lock_photo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 100; /* 숫자를 확 높여서 최상단으로 올립니다 */
-    pointer-events: auto !important; /* 터치 이벤트를 강제로 활성화 */
-    touch-action: none; /* 브라우저 자체 제스처와 충돌 방지 */
+    z-index: 9999 !important; /* 무조건 최상단 보장 */
+    cursor: pointer;
+    touch-action: none;
+    pointer-events: auto !important;
 }
 
 .lock-wrapper {
@@ -55,6 +56,7 @@ body, html {
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    z-index: 10;
 }
 
 #home-screen::before {
@@ -68,7 +70,6 @@ body, html {
 .hidden { display: none !important; }
 .slide-up { transform: translateY(-100%); }
 
-/* 홈 화면 콘텐츠 정렬 */
 .home-content {
     position: relative;
     z-index: 2;
@@ -93,8 +94,6 @@ body, html {
     cursor: pointer;
 }
 
-.icon-item.empty { cursor: default; pointer-events: none; }
-
 .icon-box {
     width: 60px; height: 60px; border-radius: 13.5px;
     display: flex; justify-content: center; align-items: center;
@@ -109,7 +108,6 @@ body, html {
     text-align: center;
 }
 
-/* 공통 고정 스타일 */
 .ios-health { background: #fff; }
 .ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); font-family: 'Arial Black', sans-serif; color: white; font-weight: bold; }
 
@@ -118,31 +116,12 @@ body, html {
     background: linear-gradient(135deg, #ff2d55 0%, #ff375f 40%, #fa243c 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-#music-icon {
-    color: white;
-    font-size: 1.7rem;
-}
-#music-btn.playing .apple-music-box {
-    box-shadow: 0 0 15px rgba(255, 45, 85, 0.6);
-}
+#music-icon { color: white; font-size: 1.7rem; }
+#music-btn.playing .apple-music-box { box-shadow: 0 0 15px rgba(255, 45, 85, 0.6); }
 
-/* 🗺️ 순정 지도 앱 */
-.ios-maps {
-    background: #e5e5ea;
-    background-image: 
-        linear-gradient(90deg, transparent 48%, #ffcc00 48%, #ffcc00 52%, transparent 52%),
-        linear-gradient(0deg, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%),
-        linear-gradient(45deg, #a8e6cf 35%, #dcedc1 35%);
-    background-size: 100% 100%;
-}
-.maps-indicator {
-    position: absolute;
-    width: 14px; height: 14px;
-    background: #007aff; border: 2px solid #fff; border-radius: 50% 50% 0 50%;
-    transform: rotate(45deg); box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
-}
-
-/* 📸 순정 사진 앱 */
+/* 독 바 및 아이콘 그래픽 에셋 디자인 (생략 없이 보존) */
+.ios-maps { background: #e5e5ea; background-image: linear-gradient(90deg, transparent 48%, #ffcc00 48%, #ffcc00 52%, transparent 52%), linear-gradient(0deg, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%), linear-gradient(45deg, #a8e6cf 35%, #dcedc1 35%); background-size: 100% 100%; }
+.maps-indicator { position: absolute; width: 14px; height: 14px; background: #007aff; border: 2px solid #fff; border-radius: 50% 50% 0 50%; transform: rotate(45deg); box-shadow: -1px 2px 4px rgba(0,0,0,0.3); }
 .ios-photos { background: #ffffff; }
 .petal { position: absolute; width: 13px; height: 24px; border-radius: 10px; opacity: 0.85; transform-origin: center bottom; top: 6px; left: 23.5px; }
 .p1 { background: #ff3b30; transform: rotate(0deg); }
@@ -153,17 +132,7 @@ body, html {
 .p6 { background: #007aff; transform: rotate(225deg); }
 .p7 { background: #5856d6; transform: rotate(270deg); }
 .p8 { background: #ff2d55; transform: rotate(315deg); }
-
-/* 🔔 순정 미리 알림 앱 그래픽 */
-.ios-reminders {
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding-left: 14px;
-    gap: 8px;
-}
+.ios-reminders { background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-left: 14px; gap: 8px; }
 .rem-bullet { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid transparent; }
 .rb1 { border-color: #ff3b30; background: rgba(255,59,48,0.2); }
 .rb2 { border-color: #007aff; background: rgba(0,122,255,0.2); }
@@ -172,38 +141,27 @@ body, html {
 .ios-reminders .rem-line:nth-of-type(1) { top: 18px; }
 .ios-reminders .rem-line:nth-of-type(2) { top: 29px; }
 .ios-reminders .rem-line:nth-of-type(3) { top: 40px; }
-
-/* 💳 순정 지갑 앱 그래픽 */
 .ios-wallet { background: #1c1c1e; }
 .wallet-card { position: absolute; width: 38px; height: 24px; border-radius: 4px; left: 11px; box-shadow: 0 -2px 5px rgba(0,0,0,0.5); }
-.wc1 { background: linear-gradient(135deg, #ff9500, #ffcc00); top: 12px; z-index: 3; width: 38px;}
-.wc2 { background: linear-gradient(135deg, #5ac8fa, #007aff); top: 19px; z-index: 2; width: 35px; left: 12.5px;}
-.wc3 { background: linear-gradient(135deg, #ff2d55, #ff3b30); top: 26px; z-index: 1; width: 32px; left: 14px;}
-
-/* 📝 순정 메모 앱 그래픽 */
+.wc1 { background: linear-gradient(135deg, #ff9500, #ffcc00); top: 12px; z-index: 3; }
+.wc2 { background: linear-gradient(135deg, #5ac8fa, #007aff); top: 19px; z-index: 2; left: 12.5px; width:35px; }
+.wc3 { background: linear-gradient(135deg, #ff2d55, #ff3b30); top: 26px; z-index: 1; left: 14px; width:32px; }
 .ios-notes { background: #ffffff; background-image: linear-gradient(#f4f4f4 1px, transparent 1px); background-size: 100% 8px; }
 .notes-top { position: absolute; top: 0; left: 0; width: 100%; height: 14px; background: #ffcc00; opacity: 0.9; border-bottom: 1px dashed #e5a900; }
 .notes-line { position: absolute; left: 10px; width: 40px; height: 1.5px; background: #d1d1d6; }
 .nl1 { top: 26px; }
 .nl2 { top: 38px; }
 
-/* 하단 독 바 */
 .ios-dock {
     position: relative; z-index: 2; width: 100%; max-width: 400px;
     background: rgba(255, 255, 255, 0.25); border-radius: 24px; padding: 12px 15px;
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    margin: 0 auto;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); margin: 0 auto;
 }
 .ios-dock .icon-box { width: 55px; height: 55px; }
 
-/* 오시는 길 & 방명록 공통 상세 페이지 팝업 */
-.detail-page {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 88%; 
-    background: #f4f5f7; border-radius: 30px 30px 0 0; z-index: 20;
-    display: flex; flex-direction: column; box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
-    animation: slideIn 0.4s cubic-bezier(0.1, 0.8, 0.3, 1);
-}
+/* 팝업 창 인프라 및 대중교통 컴포넌트 */
+.detail-page { position: absolute; bottom: 0; left: 0; width: 100%; height: 88%; background: #f4f5f7; border-radius: 30px 30px 0 0; z-index: 99999; display: flex; flex-direction: column; box-shadow: 0 -10px 30px rgba(0,0,0,0.3); animation: slideIn 0.4s cubic-bezier(0.1, 0.8, 0.3, 1); }
 @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .page-header { display: flex; justify-content: center; align-items: center; padding: 24px 20px 14px 20px; background: #ffffff; border-bottom: 1px solid #e5e5e5; position: relative; border-radius: 30px 30px 0 0; }
 .header-bar { position: absolute; top: 10px; width: 40px; height: 5px; background: #d1d1d6; border-radius: 3px; }
@@ -211,7 +169,6 @@ body, html {
 .close-btn { position: absolute; right: 20px; background: #e5e5ea; border: none; font-size: 0.9rem; font-weight: bold; color: #8e8e93; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 .page-content { padding: 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-/* 방명록 댓글 박스 스타일 */
 .gb-comment-box { background: white; padding: 15px; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 .gb-comment-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
 .gb-comment-name { font-weight: bold; color: #1c1c1e; }
@@ -219,19 +176,16 @@ body, html {
 .gb-delete-btn { background: none; border: none; color: #ff3b30; cursor: pointer; font-size: 0.85rem; }
 .gb-comment-text { font-size: 0.95rem; color: #3a3a3c; line-height: 1.4; word-break: break-all; }
 
-/* 오시는 길 내부 디자인 */
 .venue-card { background: #ffffff; border-radius: 20px; padding: 24px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
 .venue-name { font-size: 1.4rem; font-weight: 700; color: #1c1c1e; margin-bottom: 8px; }
 .venue-address { font-size: 0.95rem; color: #48484a; line-height: 1.5; margin-bottom: 18px; }
 .sub-addr { font-size: 0.85rem; color: #8e8e93; }
-.copy-full { width: 100%; padding: 13px; border-radius: 12px; border: none; font-size: 0.9rem; font-weight: 600; background-color: #f2f2f7; color: #007aff; cursor: pointer; margin-bottom: 12px; transition: background 0.2s; }
-.copy-full:active { background: #e5e5ea; }
+.copy-full { width: 100%; padding: 13px; border-radius: 12px; border: none; font-size: 0.9rem; font-weight: 600; background-color: #f2f2f7; color: #007aff; cursor: pointer; margin-bottom: 12px; }
 .btn-group { display: flex; gap: 10px; }
-.action-btn { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-.action-btn:active { opacity: 0.8; transform: scale(0.98); transition: all 0.1s ease; }
+.action-btn { flex: 1; padding: 13px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 6px; }
 .action-btn.kakao { background: #fee500; color: #191919; }
 .action-btn.naver { background: #03c75a; color: #ffffff; }
-.naver-icon { font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 0.8rem; background: white; color: #03c75a; width: 16px; height: 16px; border-radius: 2px; display: flex; justify-content: center; align-items: center; line-height: 1; }
+.naver-icon { font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 0.8rem; background: white; color: #03c75a; width: 16px; height: 16px; border-radius: 2px; display: flex; justify-content: center; align-items: center; }
 .transport-section { display: flex; flex-direction: column; gap: 16px; }
 .info-block { background: #ffffff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 .sub-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
@@ -243,19 +197,11 @@ body, html {
 .badge.line-1 { background-color: #0052A4; }
 .badge.line-sin { background-color: #D4003B; }
 .station-highlight { font-weight: 600; color: #1c1c1e; background: #e5f1ff; padding: 6px 12px; border-radius: 8px; margin-bottom: 12px; }
-.bus-list { display: flex; flex-direction: column; gap: 6px; padding-left: 4px; }
+.bus-list { display: flex; flex-direction: column; gap: 6px; }
 .bus-numbers { font-weight: 500; }
 .bus-numbers.blue { color: #007aff; }
 .bus-numbers.red { color: #ff3b30; }
-.bus-numbers.green { color: #34c759; }
-.parking-highlight { margin: 4px 0; }
 .emp-text { color: #ff9500; font-weight: 700; }
 
-/* 참석 여부 전용 스타일 */
-.rsvp-opt-btn {
-    flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px;
-    background: #f9f9fb; font-size: 0.95rem; color: #48484a; cursor: pointer; transition: all 0.2s;
-}
-.rsvp-opt-btn.active {
-    background: #007aff; color: white; border-color: #007aff; font-weight: 600;
-}
+.rsvp-opt-btn { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9fb; font-size: 0.95rem; color: #48484a; cursor: pointer; }
+.rsvp-opt-btn.active { background: #007aff; color: white; border-color: #007aff; font-weight: 600; }
