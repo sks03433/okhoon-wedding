@@ -55,6 +55,14 @@ function closeGuestbook() {
     document.getElementById('guestbook-page').classList.add('hidden');
 }
 
+// 📸 게스트 스냅 팝업 제어 함수
+function openGuestSnap() {
+    document.getElementById('snap-page').classList.remove('hidden');
+}
+function closeGuestSnap() {
+    document.getElementById('snap-page').classList.add('hidden');
+}
+
 function addComment() {
     const nameInput = document.getElementById('gb-name');
     const pwdInput = document.getElementById('gb-password');
@@ -178,12 +186,4 @@ function submitRSVP() {
         closeRSVP();
         nameInput.value = '';
     }).catch(err => alert("전송 실패: " + err.message));
-}
-
-function openGuestSnap() {
-    document.getElementById('snap-page').classList.remove('hidden');
-}
-
-function closeGuestSnap() {
-    document.getElementById('snap-page').classList.add('hidden');
 }
