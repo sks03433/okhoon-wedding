@@ -109,7 +109,6 @@ body, html {
 
 /* 공통 고정 스타일 */
 .ios-health { background: #fff; }
-.ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); font-family: 'Arial Black', sans-serif; color: white; font-weight: bold; }
 
 /* 🗺️ 순정 지도 앱 */
 .ios-maps {
@@ -139,7 +138,7 @@ body, html {
 .p7 { background: #5856d6; transform: rotate(270deg); }
 .p8 { background: #ff2d55; transform: rotate(315deg); }
 
-/* 🔔 순정 미리 알림(Reminders) 앱 그래픽 */
+/* 🔔 순정 미리 알림 앱 그래픽 */
 .ios-reminders {
     background: #ffffff;
     display: flex;
@@ -162,14 +161,43 @@ body, html {
 .ios-reminders .rem-line:nth-of-type(2) { top: 29px; }
 .ios-reminders .rem-line:nth-of-type(3) { top: 40px; }
 
-/* 💳 순정 지갑(Wallet) 앱 그래픽 */
+/* 💳 순정 지갑 앱 그래픽 */
 .ios-wallet { background: #1c1c1e; }
 .wallet-card { position: absolute; width: 38px; height: 24px; border-radius: 4px; left: 11px; box-shadow: 0 -2px 5px rgba(0,0,0,0.5); }
 .wc1 { background: linear-gradient(135deg, #ff9500, #ffcc00); top: 12px; z-index: 3; width: 38px;}
 .wc2 { background: linear-gradient(135deg, #5ac8fa, #007aff); top: 19px; z-index: 2; width: 35px; left: 12.5px;}
 .wc3 { background: linear-gradient(135deg, #ff2d55, #ff3b30); top: 26px; z-index: 1; width: 32px; left: 14px;}
 
-/* 📝 순정 메모(Notes) 앱 그래픽 */
+/* 📸 순정 인스타그램 스타일 앱 그래픽 (CSS로 완벽 구현) */
+.ios-instagram {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.insta-camera {
+    width: 28px; height: 28px;
+    border: 2.8px solid #ffffff;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.insta-lens {
+    width: 10px; height: 10px;
+    border: 2.5px solid #ffffff;
+    border-radius: 50%;
+}
+.insta-flash {
+    position: absolute;
+    top: 3px; right: 3px;
+    width: 3px; height: 3px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+/* 📝 순정 메모 앱 그래픽 */
 .ios-notes { background: #ffffff; background-image: linear-gradient(#f4f4f4 1px, transparent 1px); background-size: 100% 8px; }
 .notes-top { position: absolute; top: 0; left: 0; width: 100%; height: 14px; background: #ffcc00; opacity: 0.9; border-bottom: 1px dashed #e5a900; }
 .notes-line { position: absolute; left: 10px; width: 40px; height: 1.5px; background: #d1d1d6; }
@@ -183,7 +211,6 @@ body, html {
     font-size: 1.6rem !important;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
-/* 음악 재생 중일 때의 부드러운 박동 효과 */
 .ios-music.playing {
     animation: musicPulse 1.8s infinite ease-in-out;
 }
@@ -202,7 +229,7 @@ body, html {
 }
 .ios-dock .icon-box { width: 55px; height: 55px; }
 
-/* 오시는 길 & 방명록 공통 상세 페이지 팝업 */
+/* 팝업 공통 구조 */
 .detail-page {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 88%; 
     background: #f4f5f7; border-radius: 30px 30px 0 0; z-index: 20;
