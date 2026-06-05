@@ -111,6 +111,48 @@ body, html {
 .ios-health { background: #fff; }
 .ios-appstore { background: linear-gradient(180deg, #38ef7d, #11998e); font-family: 'Arial Black', sans-serif; color: white; font-weight: bold; }
 
+/* 📸 순정 인스타그램 스타일 '게스트 스냅' 앱 그래픽 */
+.ios-instagram {
+    /* 인스타그램 특유의 노랑-주황-핑크-퍼플-블루로 이어지는 시그니처 그라데이션 */
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 인스타그램 카메라 바디 레일 */
+.ios-instagram::before {
+    content: '';
+    width: 32px;
+    height: 32px;
+    border: 3px solid #ffffff;
+    border-radius: 9px;
+    position: absolute;
+    box-shadow: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+
+/* 카메라 렌즈 정중앙 원 */
+.insta-lens {
+    width: 14px;
+    height: 14px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* 우측 상단 플래시 라이트 */
+.insta-flash {
+    position: absolute;
+    width: 3.5px;
+    height: 3.5px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
 /* 🗺️ 순정 지도 앱 */
 .ios-maps {
     background: #e5e5ea;
