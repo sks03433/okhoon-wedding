@@ -66,30 +66,47 @@ body, html {
 .hidden { display: none !important; }
 .slide-up { transform: translateY(-100%); }
 
-/* 배경음악 온/오프 버튼 */
+/* 🎵 애플 뮤직 정품 아이콘 스타일 */
 #music-btn {
     position: absolute;
     top: 25px;
     right: 25px;
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    font-size: 1.2rem;
+    z-index: 15;
     cursor: pointer;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+#music-btn:active {
+    transform: scale(0.92); /* 누를 때 햅틱 느낌의 축소 효과 */
+}
+
+.apple-music-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    /* 애플 뮤직 시그니처 핑크-레드 그라데이션 */
+    background: linear-gradient(135deg, #ff2d55 0%, #ff375f 40%, #fa243c 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 15;
-    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
 }
 
-#music-btn.playing {
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+/* 내부 음표 아이콘 스타일 */
+#music-icon {
+    color: white;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
 }
+
+/* 재생 중일 때 아이콘에 은은한 음악 파동 효과 추가 (기존 틀 유지형 강화) */
+#music-btn.playing .apple-music-box {
+    box-shadow: 0 0 15px rgba(255, 45, 85, 0.6);
+}
+
 
 /* 홈 화면 콘텐츠 정렬 */
 .home-content {
