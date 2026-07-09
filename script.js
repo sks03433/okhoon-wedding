@@ -238,11 +238,43 @@ function nextGalleryImage(event) {
     updateGalleryLightbox();
 }
 
+function closeTopPopupOnEscape() {
+    const lightbox = document.getElementById('gallery-lightbox');
+    if (lightbox && !lightbox.classList.contains('hidden')) {
+        closeGalleryLightbox();
+        return;
+    }
+
+    const pages = [
+        ['remittance-page', closeRemittance],
+        ['snap-page', closeGuestSnap],
+        ['rsvp-page', closeRSVP],
+        ['notice-page', closeNotice],
+        ['story-page', closeStory],
+        ['guestbook-page', closeGuestbook],
+        ['gallery-page', closeGallery],
+        ['map-page', closeMap],
+    ];
+
+    for (const [id, closeFn] of pages) {
+        const page = document.getElementById(id);
+        if (page && !page.classList.contains('hidden')) {
+            closeFn();
+            return;
+        }
+    }
+}
+
 document.addEventListener('keydown', (e) => {
     const lightbox = document.getElementById('gallery-lightbox');
-    if (!lightbox || lightbox.classList.contains('hidden')) return;
+    const isLightboxOpen = lightbox && !lightbox.classList.contains('hidden');
 
-    if (e.key === 'Escape') closeGalleryLightbox();
+    if (e.key === 'Escape') {
+        closeTopPopupOnEscape();
+        return;
+    }
+
+    if (!isLightboxOpen) return;
     if (e.key === 'ArrowLeft') prevGalleryImage();
     if (e.key === 'ArrowRight') nextGalleryImage();
 });
