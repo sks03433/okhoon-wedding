@@ -133,7 +133,7 @@ body {
 
 /* 2. 홈 화면 */
 #home-screen {
-    background-image: url('home_photo.png');
+    background-image: url('home_photo.jpg');
     background-size: cover;
     background-position: center;
     padding: calc(65px + var(--safe-top)) 20px calc(30px + var(--safe-bottom)) 20px;
@@ -158,29 +158,35 @@ body {
 .home-title-bar {
     position: absolute;
     top: calc(58px + var(--safe-top));
-    left: 50%;
-    transform: translateX(-50%);
+    left: 20px;
+    right: 20px;
+    width: auto;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
     z-index: 3;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
     align-items: flex-start;
-    gap: 10px;
     pointer-events: none;
 }
 
 .home-music-item {
+    grid-column: 1;
+    justify-self: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
     pointer-events: auto;
-    flex-shrink: 0;
 }
 
 .home-music-item span {
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    margin-top: 5px;
+    margin-top: 6px;
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
     text-align: center;
     white-space: nowrap;
@@ -195,7 +201,7 @@ body {
 }
 
 .home-title-spacer {
-    width: clamp(170px, 48vw, 230px);
+    grid-column: 2 / 5;
     height: 38px;
 }
 
@@ -703,6 +709,13 @@ body {
     align-items: center;
     justify-content: center;
     padding: 56px 12px 40px;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+}
+
+.gallery-lightbox:active {
+    cursor: grabbing;
 }
 
 .gallery-lightbox img {
@@ -712,6 +725,7 @@ body {
     border-radius: 6px;
     user-select: none;
     -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .gallery-lightbox-close {
@@ -765,10 +779,15 @@ body {
     }
     .time { font-size: 3.2rem; }
     .date { font-size: 1.1rem; }
-    .home-title-bar { top: calc(42px + var(--safe-top)); }
+    .home-title-bar {
+        top: calc(42px + var(--safe-top));
+        left: 16px;
+        right: 16px;
+        gap: 10px;
+    }
     .home-music-icon { width: 34px; height: 34px; font-size: 0.9rem !important; }
     .home-music-item span { font-size: 0.65rem; margin-top: 4px; }
-    .home-title-spacer { width: 150px; height: 34px; }
+    .home-title-spacer { height: 34px; }
     #home-screen {
         padding: calc(40px + var(--safe-top)) 16px calc(16px + var(--safe-bottom)) 16px;
     }

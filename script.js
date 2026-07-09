@@ -60,6 +60,8 @@ window.onload = function() {
     lockScreen.addEventListener('click', () => {
         unlockScreen();
     });
+
+    initGallerySwipe();
 };
 
 function toggleMusic() {
@@ -117,6 +119,55 @@ const GALLERY_IMAGES = [
 ];
 
 let currentGalleryIndex = 0;
+let gallerySwipeStartX = 0;
+let gallerySwipeStartY = 0;
+let galleryDidDrag = false;
+let gallerySuppressClick = false;
+
+function initGallerySwipe() {
+    const lightbox = document.getElementById('gallery-lightbox');
+    if (!lightbox) return;
+
+    lightbox.addEventListener('pointerdown', (e) => {
+        if (lightbox.classList.contains('hidden')) return;
+        if (e.target.closest('.gallery-lightbox-close, .gallery-lightbox-nav')) return;
+
+        gallerySwipeStartX = e.clientX;
+        gallerySwipeStartY = e.clientY;
+        galleryDidDrag = false;
+        lightbox.setPointerCapture(e.pointerId);
+    });
+
+    lightbox.addEventListener('pointermove', (e) => {
+        if (lightbox.classList.contains('hidden')) return;
+        const deltaX = Math.abs(e.clientX - gallerySwipeStartX);
+        const deltaY = Math.abs(e.clientY - gallerySwipeStartY);
+        if (deltaX > 8 || deltaY > 8) {
+            galleryDidDrag = true;
+        }
+    });
+
+    lightbox.addEventListener('pointerup', (e) => {
+        if (lightbox.classList.contains('hidden')) return;
+
+        const deltaX = e.clientX - gallerySwipeStartX;
+        const deltaY = e.clientY - gallerySwipeStartY;
+
+        if (galleryDidDrag && Math.abs(deltaX) >= 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+            gallerySuppressClick = true;
+            setTimeout(() => { gallerySuppressClick = false; }, 300);
+            if (deltaX > 0) prevGalleryImage();
+            else nextGalleryImage();
+        }
+
+        galleryDidDrag = false;
+        try { lightbox.releasePointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    lightbox.addEventListener('pointercancel', () => {
+        galleryDidDrag = false;
+    });
+}
 
 function openGallery() {
     document.getElementById('gallery-page').classList.remove('hidden');
@@ -155,6 +206,7 @@ function closeGalleryLightbox() {
 }
 
 function closeGalleryLightboxOnBackdrop(event) {
+    if (gallerySuppressClick || galleryDidDrag) return;
     if (event.target.id === 'gallery-lightbox') {
         closeGalleryLightbox();
     }
