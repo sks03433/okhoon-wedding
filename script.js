@@ -4,37 +4,75 @@ function escapeHtml(str) {
 }
 
 let startY = 0;
+let isDragging = false;
+
+function unlockScreen() {
+    const lockScreen = document.getElementById('lock-screen');
+    if (lockScreen.classList.contains('slide-up') || lockScreen.classList.contains('hidden')) return;
+
+    lockScreen.classList.add('slide-up');
+    setTimeout(() => {
+        lockScreen.classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+    }, 500);
+}
+
+function onPointerStart(clientY) {
+    startY = clientY;
+    isDragging = true;
+}
+
+function onPointerEnd(clientY) {
+    if (!isDragging) return;
+    isDragging = false;
+    const deltaY = startY - clientY;
+    // 위로 스와이프하거나, 탭/클릭(거의 움직임 없음)이면 열기
+    if (deltaY > 50 || Math.abs(deltaY) < 10) {
+        unlockScreen();
+    }
+}
 
 window.onload = function() {
     const lockScreen = document.getElementById('lock-screen');
-    
+
+    // 터치 (모바일)
     lockScreen.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-    });
+        onPointerStart(e.touches[0].clientY);
+    }, { passive: true });
 
     lockScreen.addEventListener('touchend', (e) => {
-        let endY = e.changedTouches[0].clientY;
-        if (startY - endY > 50) {
-            lockScreen.classList.add('slide-up');
-            setTimeout(() => {
-                lockScreen.classList.add('hidden');
-                document.getElementById('home-screen').classList.remove('hidden');
-            }, 500);
-        }
+        onPointerEnd(e.changedTouches[0].clientY);
+    }, { passive: true });
+
+    // 마우스 드래그 (PC)
+    lockScreen.addEventListener('mousedown', (e) => {
+        onPointerStart(e.clientY);
+    });
+
+    window.addEventListener('mouseup', (e) => {
+        onPointerEnd(e.clientY);
+    });
+
+    lockScreen.addEventListener('mouseleave', (e) => {
+        if (isDragging) onPointerEnd(e.clientY);
+    });
+
+    lockScreen.addEventListener('click', () => {
+        unlockScreen();
     });
 };
 
 function toggleMusic() {
     const bgm = document.getElementById('bgm');
-    const appBox = document.getElementById('music-app-box');
+    const musicIcon = document.getElementById('music-top-btn');
 
     if (bgm.paused) {
         bgm.play().then(() => {
-            appBox.classList.add('playing');
+            if (musicIcon) musicIcon.classList.add('playing');
         }).catch(err => console.log(err));
     } else {
         bgm.pause();
-        appBox.classList.remove('playing');
+        if (musicIcon) musicIcon.classList.remove('playing');
     }
 }
 
@@ -54,6 +92,108 @@ function openGuestbook() {
 function closeGuestbook() {
     document.getElementById('guestbook-page').classList.add('hidden');
 }
+
+function openNotice() {
+    document.getElementById('notice-page').classList.remove('hidden');
+}
+function closeNotice() {
+    document.getElementById('notice-page').classList.add('hidden');
+}
+
+function openStory() {
+    document.getElementById('story-page').classList.remove('hidden');
+}
+function closeStory() {
+    document.getElementById('story-page').classList.add('hidden');
+}
+
+// 갤러리
+const GALLERY_IMAGES = [
+    'gallery/01.jpg',
+    'gallery/02.jpg',
+    // 사진 추가 시 아래에 경로를 이어서 넣어주세요.
+    // 'gallery/03.jpg',
+    // 'gallery/04.jpg',
+];
+
+let currentGalleryIndex = 0;
+
+function openGallery() {
+    document.getElementById('gallery-page').classList.remove('hidden');
+    renderGallery();
+}
+
+function closeGallery() {
+    document.getElementById('gallery-page').classList.add('hidden');
+    closeGalleryLightbox();
+}
+
+function renderGallery() {
+    const grid = document.getElementById('gallery-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    GALLERY_IMAGES.forEach((src, index) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'gallery-thumb';
+        item.onclick = () => openGalleryLightbox(index);
+        item.innerHTML = `<img src="${src}" alt="갤러리 사진 ${index + 1}" loading="lazy">`;
+        grid.appendChild(item);
+    });
+}
+
+function openGalleryLightbox(index) {
+    currentGalleryIndex = index;
+    updateGalleryLightbox();
+    document.getElementById('gallery-lightbox').classList.remove('hidden');
+}
+
+function closeGalleryLightbox() {
+    const lightbox = document.getElementById('gallery-lightbox');
+    if (lightbox) lightbox.classList.add('hidden');
+}
+
+function closeGalleryLightboxOnBackdrop(event) {
+    if (event.target.id === 'gallery-lightbox') {
+        closeGalleryLightbox();
+    }
+}
+
+function updateGalleryLightbox() {
+    const img = document.getElementById('gallery-lightbox-img');
+    const counter = document.getElementById('gallery-lightbox-counter');
+    if (!img || GALLERY_IMAGES.length === 0) return;
+
+    img.src = GALLERY_IMAGES[currentGalleryIndex];
+    img.alt = `갤러리 사진 ${currentGalleryIndex + 1}`;
+    if (counter) {
+        counter.textContent = `${currentGalleryIndex + 1} / ${GALLERY_IMAGES.length}`;
+    }
+}
+
+function prevGalleryImage(event) {
+    if (event) event.stopPropagation();
+    if (GALLERY_IMAGES.length === 0) return;
+    currentGalleryIndex = (currentGalleryIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+    updateGalleryLightbox();
+}
+
+function nextGalleryImage(event) {
+    if (event) event.stopPropagation();
+    if (GALLERY_IMAGES.length === 0) return;
+    currentGalleryIndex = (currentGalleryIndex + 1) % GALLERY_IMAGES.length;
+    updateGalleryLightbox();
+}
+
+document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('gallery-lightbox');
+    if (!lightbox || lightbox.classList.contains('hidden')) return;
+
+    if (e.key === 'Escape') closeGalleryLightbox();
+    if (e.key === 'ArrowLeft') prevGalleryImage();
+    if (e.key === 'ArrowRight') nextGalleryImage();
+});
 
 // 📸 게스트 스냅 팝업 제어 함수
 function openGuestSnap() {

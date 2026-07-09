@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>우리 결혼합니다</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -33,46 +33,29 @@
 
     <audio id="bgm" src="bgm.mp3" loop></audio>
 
+    <div id="app-frame">
     <div id="lock-screen" class="screen">
         <div class="lock-wrapper">
             <div class="top-info">
                 <div class="date">2026-10-10 (SAT)</div>
                 <div class="time">14:50</div>
             </div>
-            <div class="swipe-up-text">▲ 위로 스와이프해서 열기</div>
+            <div class="swipe-up-text">▲ 스와이프하거나 탭해서 열기</div>
         </div>
     </div>
 
     <div id="home-screen" class="screen hidden">
-        <div class="home-content">
-            <div class="app-grid row-1">
-                <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
-                    <div class="icon-box ios-health">❤️</div>
-                    <span>우리 이야기</span>
+        <div class="home-title-bar">
+            <div class="home-music-item" onclick="toggleMusic()">
+                <div id="music-top-btn" class="icon-box ios-music home-music-icon">
+                    <i class="fa-solid fa-music"></i>
                 </div>
-                <div class="icon-item" onclick="openMap()">
-                    <div class="icon-box ios-maps"><div class="maps-indicator"></div></div>
-                    <span>오시는 길</span>
-                </div>
-                <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
-                    <div class="icon-box ios-photos">
-                        <div class="petal p1"></div><div class="petal p2"></div>
-                        <div class="petal p3"></div><div class="petal p4"></div>
-                        <div class="petal p5"></div><div class="petal p6"></div>
-                        <div class="petal p7"></div><div class="petal p8"></div>
-                    </div>
-                    <span>갤러리</span>
-                </div>
-                <div class="icon-item" onclick="openRSVP()">
-                    <div class="icon-box ios-reminders">
-                        <div class="rem-bullet rb1"></div><div class="rem-line"></div>
-                        <div class="rem-bullet rb2"></div><div class="rem-line"></div>
-                        <div class="rem-bullet rb3"></div><div class="rem-line"></div>
-                    </div>
-                    <span>참석 여부</span>
-                </div>
+                <span>음악 재생</span>
             </div>
+            <div class="home-title-spacer" aria-hidden="true"></div>
+        </div>
 
+        <div class="home-content">
             <div class="app-grid row-2">
                 <!-- ✉️ 1. 축의금 -> '마음 전하기' (구글 메일 아이콘 스타일) -->
                 <div class="icon-item" onclick="openRemittance()">
@@ -106,29 +89,32 @@
                     <span>방명록</span>
                 </div>
 
-                <div class="icon-item" onclick="toggleMusic()">
-                    <div id="music-app-box" class="icon-box ios-music">
-                        <i class="fa-solid fa-music"></i>
+                <div class="icon-item" onclick="openNotice()">
+                    <div class="icon-box ios-settings">
+                        <i class="fa-solid fa-gear"></i>
                     </div>
-                    <span>음악 재생</span>
+                    <span>공지사항</span>
                 </div>
             </div>
         </div>
         
         <div class="ios-dock">
-            <div class="icon-item" onclick="alert('우리 이야기 페이지로 이동!')">
+            <div class="icon-item" onclick="openStory()">
                 <div class="icon-box ios-health">❤️</div>
+                <span>우리 이야기</span>
             </div>
             <div class="icon-item" onclick="openMap()">
                 <div class="icon-box ios-maps"><div class="maps-indicator"></div></div>
+                <span>오시는 길</span>
             </div>
-            <div class="icon-item" onclick="alert('갤러리 페이지로 이동!')">
+            <div class="icon-item" onclick="openGallery()">
                 <div class="icon-box ios-photos">
                     <div class="petal p1"></div><div class="petal p2"></div>
                     <div class="petal p3"></div><div class="petal p4"></div>
                     <div class="petal p5"></div><div class="petal p6"></div>
                     <div class="petal p7"></div><div class="petal p8"></div>
                 </div>
+                <span>갤러리</span>
             </div>
             <div class="icon-item" onclick="openRSVP()">
                 <div class="icon-box ios-reminders">
@@ -136,6 +122,7 @@
                     <div class="rem-bullet rb2"></div><div class="rem-line"></div>
                     <div class="rem-bullet rb3"></div><div class="rem-line"></div>
                 </div>
+                <span>참석 여부</span>
             </div>
         </div>
     </div>
@@ -150,6 +137,9 @@
             <div class="venue-card">
                 <h4 class="venue-name">더아리엘 수원</h4> 
                 <p class="venue-address">경기 수원시 팔달구 중부대로 181<br><span class="sub-addr">(우만동 147-7)</span></p>
+                <div class="venue-map-wrap">
+                    <img src="venue_map.jpg" alt="더아리엘 수원 약도" class="venue-map-image">
+                </div>
                 <button class="copy-full" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> 주소 복사하기</button>
                 <div class="btn-group">
                     <a href="https://map.kakao.com/link/to/더아리엘 수원,37.2775914,127.0362429" target="_blank" class="action-btn kakao">
@@ -193,6 +183,25 @@
         </div>
     </div>
 
+    <div id="gallery-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>갤러리</h3>
+            <button class="close-btn" onclick="closeGallery()">✕</button>
+        </div>
+        <div class="page-content gallery-page-content">
+            <div id="gallery-grid" class="gallery-grid"></div>
+        </div>
+    </div>
+
+    <div id="gallery-lightbox" class="gallery-lightbox hidden" onclick="closeGalleryLightboxOnBackdrop(event)">
+        <button class="gallery-lightbox-close" type="button" onclick="closeGalleryLightbox()" aria-label="닫기">✕</button>
+        <button class="gallery-lightbox-nav prev" type="button" onclick="prevGalleryImage(event)" aria-label="이전 사진">‹</button>
+        <img id="gallery-lightbox-img" src="" alt="갤러리 사진">
+        <button class="gallery-lightbox-nav next" type="button" onclick="nextGalleryImage(event)" aria-label="다음 사진">›</button>
+        <div id="gallery-lightbox-counter" class="gallery-lightbox-counter"></div>
+    </div>
+
     <div id="guestbook-page" class="detail-page hidden">
         <div class="page-header">
             <div class="header-bar"></div>
@@ -207,6 +216,116 @@
                 <button class="copy-full" onclick="addComment()" style="background:#ff9500; color:white; margin-bottom:0;">메시지 남기기</button>
             </div>
             <div id="guestbook-list" class="transport-section" style="margin-top:15px;"></div>
+        </div>
+    </div>
+
+    <div id="story-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>우리 이야기</h3>
+            <button class="close-btn" onclick="closeStory()">✕</button>
+        </div>
+        <div class="page-content story-page-content">
+            <div class="story-hero">
+                <img src="home_photo.png" alt="신랑 신부 사진" class="story-hero-image">
+                <div class="story-hero-overlay">
+                    <p class="story-hero-date">2026. 10. 10</p>
+                    <h4 class="story-hero-names">황지훈 <span>&</span> 조대옥</h4>
+                </div>
+            </div>
+
+            <div class="story-intro venue-card">
+                <p>서로 다른 길을 걸어온 두 사람이<br>우연처럼 만나 운명처럼 사랑하게 되었습니다.</p>
+                <p>이제 한 곳을 바라보며<br>평생의 동반자가 되려 합니다.</p>
+                <p class="story-intro-sign">저희의 새로운 시작을<br>축복해 주시면 감사하겠습니다.</p>
+            </div>
+
+            <div class="story-section-title">Our Timeline</div>
+            <div class="story-timeline">
+                <div class="story-timeline-item">
+                    <div class="story-timeline-date">2020. 03</div>
+                    <div class="story-timeline-card">
+                        <img src="gallery/02.jpg" alt="첫 만남" class="story-timeline-photo">
+                        <h5>첫 만남</h5>
+                        <p>친구의 소개로 처음 만났던 날, 어색한 인사 뒤에도 편안함이 느껴졌습니다.</p>
+                    </div>
+                </div>
+                <div class="story-timeline-item">
+                    <div class="story-timeline-date">2021. 07</div>
+                    <div class="story-timeline-card">
+                        <img src="gallery/01.jpg" alt="연애 시작" class="story-timeline-photo">
+                        <h5>연애 시작</h5>
+                        <p>함께한 시간이 쌓이며 서로에게 가장 편안한 사람이 되었습니다.</p>
+                    </div>
+                </div>
+                <div class="story-timeline-item">
+                    <div class="story-timeline-date">2025. 12</div>
+                    <div class="story-timeline-card">
+                        <h5>프로포즈</h5>
+                        <p>오래 준비한 마음을 전하며, 평생 함께하자고 약속했습니다.</p>
+                    </div>
+                </div>
+                <div class="story-timeline-item">
+                    <div class="story-timeline-date">2026. 10</div>
+                    <div class="story-timeline-card">
+                        <h5>결혼합니다</h5>
+                        <p>사랑하는 사람과 새로운 출발을 앞두고 있습니다. 소중한 분들을 초대합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-section-title">혼주 인사</div>
+            <div class="story-parents">
+                <div class="story-parent-card groom-side">
+                    <span class="story-parent-label">신랑측</span>
+                    <p><strong>황현석 · 강미경</strong> 의 아들</p>
+                    <p class="story-parent-name">황지훈</p>
+                </div>
+                <div class="story-parent-card bride-side">
+                    <span class="story-parent-label">신부측</span>
+                    <p><strong>조기종 · 나유미</strong> 의 딸</p>
+                    <p class="story-parent-name">조대옥</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notice-page" class="detail-page hidden">
+        <div class="page-header">
+            <div class="header-bar"></div>
+            <h3>공지사항</h3>
+            <button class="close-btn" onclick="closeNotice()">✕</button>
+        </div>
+        <div class="page-content">
+            <div class="info-block notice-block">
+                <h5 class="sub-title sub-notice"><i class="fa-solid fa-calendar-day"></i> 예식 안내</h5>
+                <div class="info-details">
+                    <p><strong>일시</strong> 2026년 10월 10일 (토) 오후 2시 50분</p>
+                    <p><strong>장소</strong> 더아리엘 수원</p>
+                    <p><strong>주소</strong> 경기 수원시 팔달구 중부대로 181</p>
+                </div>
+            </div>
+            <div class="info-block notice-block">
+                <h5 class="sub-title sub-notice"><i class="fa-solid fa-car"></i> 주차 안내</h5>
+                <div class="info-details">
+                    <p>웨딩홀 건물 내 자체 주차장 및 외부 전용 연계 주차장을 이용하실 수 있습니다.</p>
+                    <p>하객분들께는 <strong>2시간 무료 주차</strong>를 지원합니다.</p>
+                </div>
+            </div>
+            <div class="info-block notice-block">
+                <h5 class="sub-title sub-notice"><i class="fa-solid fa-utensils"></i> 식사 안내</h5>
+                <div class="info-details">
+                    <p>예식 후 같은 건물 내 연회장에서 식사가 준비되어 있습니다.</p>
+                    <p>참석 여부 전달 시 식사 여부도 함께 알려주시면 감사하겠습니다.</p>
+                </div>
+            </div>
+            <div class="info-block notice-block">
+                <h5 class="sub-title sub-notice"><i class="fa-solid fa-camera"></i> 촬영 안내</h5>
+                <div class="info-details">
+                    <p>예식 진행 중 플래시 촬영은 삼가 부탁드립니다.</p>
+                    <p>게스트 스냅 메뉴를 통해 신랑·신부에게 사진을 직접 보내주실 수 있습니다.</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -356,6 +475,7 @@
             </div>
         </div>
     </div>
+    </div><!-- /#app-frame -->
 
     <script src="script.js"></script>
 </body>
