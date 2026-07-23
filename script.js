@@ -406,6 +406,16 @@ function submitRSVP() {
     const count = document.getElementById('rsvp-count').value;
 
     const now = new Date();
+    const submittedAt = new Intl.DateTimeFormat('sv-SE', {
+        timeZone: 'Asia/Seoul',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).format(now).replace('T', ' ');
     const payload = {
         name: name,
         phone4: phone4,
@@ -413,8 +423,8 @@ function submitRSVP() {
         attend: attend,
         meal: meal,
         count: count,
-        time: now.toLocaleString('ko-KR'),
-        timestamp: Date.now()
+        time: submittedAt,
+        timestamp: now.getTime()
     };
 
     const submitBtn = document.querySelector('#rsvp-page .copy-full');

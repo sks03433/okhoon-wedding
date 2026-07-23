@@ -29,6 +29,10 @@ function ensureHeader_(sheet) {
   }
 }
 
+function formatSeoulDateTime_(date) {
+  return Utilities.formatDate(date, 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss');
+}
+
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -39,15 +43,19 @@ function doPost(e) {
     }
     ensureHeader_(sheet);
 
+    var now = new Date();
+    // 클라이언트 시간대와 무관하게 한국 시간으로 제출시각 기록
+    var submittedAt = formatSeoulDateTime_(now);
+
     sheet.appendRow([
-      data.time || '',
+      submittedAt,
       data.name || '',
       data.phone4 || '',
       data.side || '',
       data.attend || '',
       data.meal || '',
       data.count || '',
-      data.timestamp || ''
+      data.timestamp || now.getTime()
     ]);
 
     return ContentService
