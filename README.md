@@ -83,6 +83,9 @@ okhoon-wedding/
 ├── gallery/            # 갤러리 사진 폴더
 │   ├── 01.jpg
 │   └── 02.jpg
+├── profile/            # 미니 프로필 어린시절 사진
+│   ├── groom-child.jpg
+│   └── bride-child.jpg
 └── 68efc2557f10d891ca18ba81_더아리엘 약도.pdf  # 약도 원본 PDF
 ```
 
@@ -141,6 +144,13 @@ doc.close()
 `index.html` → `#story-page` 섹션
 - 커플 사진: `home_photo.png`
 - 이름·타임라인·혼주 정보 직접 수정
+
+### 미니 프로필 (혼주 인사 아래)
+
+`index.html` → `#story-page` 안 `.story-mini-profile`
+- 어린시절 사진: `profile/groom-child.jpg`, `profile/bride-child.jpg` 같은 이름으로 덮어쓰기
+- 소개·다짐·MBTI 문구는 HTML에서 직접 수정
+- 전화 아이콘: `href="#"` → `href="tel:01012345678"` 형식으로 교체
 
 ### 공지사항 수정
 

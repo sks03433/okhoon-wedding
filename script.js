@@ -386,8 +386,15 @@ function selectOpt(btn) {
 
 function submitRSVP() {
     const nameInput = document.getElementById('rsvp-name');
+    const phoneInput = document.getElementById('rsvp-phone4');
     const name = nameInput.value.trim();
+    const phone4 = (phoneInput.value || '').trim();
+
     if (!name) { alert('성함을 입력해 주세요.'); return; }
+    if (!/^\d{4}$/.test(phone4)) {
+        alert('핸드폰 번호 뒤 4자리를 입력해 주세요.');
+        return;
+    }
 
     const side = document.querySelector('.rsvp-opt-btn[data-type="side"].active').getAttribute('data-value');
     const attend = document.querySelector('.rsvp-opt-btn[data-type="attend"].active').getAttribute('data-value');
@@ -399,6 +406,7 @@ function submitRSVP() {
 
     database.ref('rsvp').push({
         name: name,
+        phone4: phone4,
         side: side,
         attend: attend,
         meal: meal,
@@ -409,6 +417,7 @@ function submitRSVP() {
         alert('소중한 참석 의사가 신랑·신부님께 잘 전달되었습니다. 감사합니다!');
         closeRSVP();
         nameInput.value = '';
+        phoneInput.value = '';
     }).catch(err => alert("전송 실패: " + err.message));
 }
 

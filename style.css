@@ -446,7 +446,8 @@ body {
 .sub-bus { color: #34c759; }
 .sub-parking { color: #ff9500; }
 .sub-notice { color: #8e8e93; }
-.notice-block { margin-bottom: 0; }
+.notice-block { margin-bottom: 12px; }
+.notice-block:last-child { margin-bottom: 0; }
 .info-details { font-size: 0.9rem; color: #3a3a3c; line-height: 1.7; }
 .badge { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: white; margin-right: 4px; }
 .badge.line-1 { background-color: #0052A4; }
@@ -662,6 +663,81 @@ body {
     font-size: 1.15rem !important;
     font-weight: 700;
     color: #1c1c1e !important;
+}
+
+.story-mini-profile {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f2;
+    text-align: center;
+}
+
+.story-profile-photo {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 14px;
+    display: block;
+    margin: 0 auto 14px;
+    background: #f2f2f7;
+}
+
+.story-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.story-profile-role {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.groom-side .story-profile-role { color: #007aff; }
+.bride-side .story-profile-role { color: #ff2d55; }
+
+.story-profile-call {
+    color: #34c759;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(52, 199, 89, 0.12);
+}
+
+.story-profile-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.story-profile-list li {
+    font-size: 0.88rem;
+    color: #48484a;
+    line-height: 1.5;
+}
+
+.story-profile-pledge {
+    font-size: 0.9rem !important;
+    font-weight: 600;
+    color: #1c1c1e !important;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.story-profile-mbti {
+    font-size: 0.8rem !important;
+    color: #8e8e93 !important;
+    letter-spacing: 0.02em;
 }
 
 /* 갤러리 */
