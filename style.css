@@ -277,9 +277,18 @@ body {
     transform: rotate(45deg); box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
 }
 
-/* 📸 순정 사진 앱 */
+/* 📸 순정 사진 앱 — 꽃잎 회전축을 박스 정중앙에 맞춤 */
 .ios-photos { background: #ffffff; }
-.petal { position: absolute; width: 13px; height: 24px; border-radius: 10px; opacity: 0.85; transform-origin: center bottom; top: 6px; left: 23.5px; }
+.petal {
+    position: absolute;
+    width: 13px;
+    height: 24px;
+    border-radius: 10px;
+    opacity: 0.85;
+    transform-origin: center bottom;
+    left: calc(50% - 6.5px);
+    top: calc(50% - 24px);
+}
 .p1 { background: #ff3b30; transform: rotate(0deg); }
 .p2 { background: #ff9500; transform: rotate(45deg); }
 .p3 { background: #ffcc00; transform: rotate(90deg); }
@@ -948,7 +957,7 @@ body {
         height: 44px;
     }
     .icon-item span { font-size: 0.65rem; }
-    .petal { width: 10px; height: 18px; top: 5px; left: 19px; }
+    .petal { width: 10px; height: 18px; left: calc(50% - 5px); top: calc(50% - 18px); }
     .ios-reminders { padding-left: 10px; gap: 6px; }
     .rem-line { left: 20px; width: 18px; }
     .ios-reminders .rem-line:nth-of-type(1) { top: 14px; }
