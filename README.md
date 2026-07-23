@@ -22,6 +22,15 @@ npx serve .
 
 GitHub Pages, Netlify, Firebase Hosting 등 정적 호스팅에 그대로 업로드하면 됩니다.
 
+### 카카오톡 링크 미리보기
+
+카톡에 URL을 보내면 제목·설명·썸네일이 뜨도록 Open Graph 메타 태그가 `index.html`에 설정되어 있습니다.
+
+- **사이트 URL**: https://sks03433.github.io/okhoon-wedding/
+- **미리보기 이미지**: `og-image.jpg` (800×800)
+
+배포 후 미리보기가 안 바뀌면 [카카오 공유하기 디버거](https://developers.kakao.com/tool/debugger/sharing)에서 URL을 넣고 **스크랩 / 캐시 비우기**를 하세요.
+
 ---
 
 ## 하객 사용법
@@ -67,6 +76,7 @@ okhoon-wedding/
 ├── script.js           # 동작·갤러리 목록·Firebase 로직
 ├── lock_photo.png      # 잠금 화면 배경
 ├── home_photo.png      # 홈 화면 배경
+├── og-image.jpg        # 카톡/SNS 링크 미리보기 이미지
 ├── bgm.mp3             # 배경음악
 ├── venue_map.jpg       # 오시는 길 약도 이미지
 ├── venue_map.svg       # 약도 fallback (미사용 시)
