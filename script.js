@@ -82,7 +82,7 @@ function openMap() { document.getElementById('map-page').classList.remove('hidde
 function closeMap() { document.getElementById('map-page').classList.add('hidden'); }
 
 function copyAddress() {
-    navigator.clipboard.writeText("경기 수원시 팔달구 중부대로 181").then(() => {
+    navigator.clipboard.writeText("경기도 수원시 팔달구 중부대로 181").then(() => {
         alert("주소가 복사되었습니다!");
     });
 }

@@ -415,7 +415,17 @@ body {
 /* 오시는 길 내부 디자인 구성 요소들 */
 .venue-card { background: #ffffff; border-radius: 20px; padding: 24px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
 .venue-name { font-size: 1.4rem; font-weight: 700; color: #1c1c1e; margin-bottom: 8px; }
-.venue-address { font-size: 0.95rem; color: #48484a; line-height: 1.5; margin-bottom: 18px; }
+.venue-address { font-size: 0.95rem; color: #48484a; line-height: 1.5; margin-bottom: 8px; }
+.venue-phone {
+    font-size: 0.9rem;
+    color: #007aff;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
 .venue-map-wrap {
     width: 100%;
     margin-bottom: 18px;
@@ -449,15 +459,70 @@ body {
 .notice-block { margin-bottom: 12px; }
 .notice-block:last-child { margin-bottom: 0; }
 .info-details { font-size: 0.9rem; color: #3a3a3c; line-height: 1.7; }
-.badge { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: white; margin-right: 4px; }
+.info-details p + p { margin-top: 12px; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; color: white; margin-right: 2px; vertical-align: middle; }
 .badge.line-1 { background-color: #0052A4; }
+.badge.line-2 { background-color: #00A84D; }
+.badge.line-bundang { background-color: #f5a623; }
 .badge.line-sin { background-color: #D4003B; }
-.station-highlight { font-weight: 600; color: #1c1c1e; background: #e5f1ff; padding: 6px 12px; border-radius: 8px; margin-bottom: 12px; }
-.bus-list { display: flex; flex-direction: column; gap: 6px; padding-left: 4px; }
-.bus-numbers { font-weight: 500; }
+.badge.tip-badge { background-color: #5856d6; }
+.station-highlight { font-weight: 600; color: #1c1c1e; background: #e5f1ff; padding: 10px 12px; border-radius: 10px; margin-bottom: 10px; }
+.parking-box { background: #fff6e8; color: #1c1c1e; }
+.bus-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.bus-numbers { font-weight: 600; font-size: 0.88rem; margin: 6px 0; line-height: 1.5; }
 .bus-numbers.blue { color: #007aff; }
 .bus-numbers.red { color: #ff3b30; }
 .bus-numbers.green { color: #34c759; }
+.bus-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-right: 4px;
+}
+.bus-chip.red { background: #ffe8e8; color: #ff3b30; }
+.bus-chip.blue { background: #e8f2ff; color: #007aff; }
+.route-list { display: flex; flex-direction: column; gap: 10px; }
+.route-card {
+    background: #f7f8fa;
+    border-radius: 14px;
+    padding: 14px;
+    border: 1px solid #eef0f3;
+}
+.route-card.tip { background: #f4f3ff; border-color: #e6e4ff; }
+.route-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.route-head strong {
+    font-size: 0.92rem;
+    color: #1c1c1e;
+}
+.route-arrive {
+    font-size: 0.85rem;
+    color: #48484a;
+    line-height: 1.5;
+}
+.route-note {
+    font-size: 0.82rem;
+    color: #8e8e93;
+    line-height: 1.5;
+    margin: 4px 0;
+}
+.walk-time {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 7px;
+    border-radius: 6px;
+    background: #e8f8ee;
+    color: #248a3d;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
 .parking-highlight { margin: 4px 0; }
 .emp-text { color: #ff9500; font-weight: 700; }
 
