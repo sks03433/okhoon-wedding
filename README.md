@@ -31,6 +31,29 @@ GitHub Pages, Netlify, Firebase Hosting 등 정적 호스팅에 그대로 업로
 
 배포 후 미리보기가 안 바뀌면 [카카오 공유하기 디버거](https://developers.kakao.com/tool/debugger/sharing)에서 URL을 넣고 **스크랩 / 캐시 비우기**를 하세요.
 
+### 참석 의사 → 구글 시트 연동
+
+방명록은 Firebase, **참석 의사(RSVP)는 구글 시트**에 저장됩니다.
+
+1. [Google Sheets](https://sheets.google.com)에서 새 스프레드시트 만들기 (이름 예: `okhoon-wedding-rsvp`)
+2. 메뉴 **확장 프로그램 → Apps Script**
+3. 기본 코드를 지우고 [`google-apps-script/rsvp.gs`](google-apps-script/rsvp.gs) 내용을 붙여넣은 뒤 저장
+4. **배포 → 새 배포 → 유형: 웹 앱**
+   - 설명: `RSVP`
+   - 실행 계정: **나**
+   - 액세스 권한: **모든 사용자**
+5. **배포** 후 나오는 웹 앱 URL 복사
+6. [`script.js`](script.js)에서 아래 값을 그 URL로 교체
+
+```javascript
+const RSVP_SHEET_URL = 'https://script.google.com/macros/s/XXXX/exec';
+```
+
+7. 사이트 배포 후 참석 의사를 한 번 제출해 보고, 시트 `RSVP` 탭에 행이 추가되는지 확인
+
+> 시트 자체는 비공개로 두세요. 공개할 필요는 없습니다.  
+> 웹 앱만 “모든 사용자”로 배포하면 하객 제출이 시트에 쌓입니다.
+
 ---
 
 ## 하객 사용법

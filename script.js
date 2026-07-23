@@ -380,6 +380,10 @@ function selectOpt(btn) {
     btn.classList.add('active');
 }
 
+// 구글 시트 연동: Apps Script 웹 앱 URL을 아래에 붙여넣으세요.
+// 예: 'https://script.google.com/macros/s/XXXX/exec'
+const RSVP_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxqMsGP5Pb5uEmCnEd32nYHChWeuv9TLe4ycoIJVWRdwAQRbTlmyn6zI4oJ2ItCUlvs/exec';
+
 function submitRSVP() {
     const nameInput = document.getElementById('rsvp-name');
     const phoneInput = document.getElementById('rsvp-phone4');
@@ -391,6 +395,10 @@ function submitRSVP() {
         alert('핸드폰 번호 뒤 4자리를 입력해 주세요.');
         return;
     }
+    if (!RSVP_SHEET_URL) {
+        alert('참석 의사 구글 시트 연동이 아직 설정되지 않았습니다.\nApps Script 웹 앱 URL을 script.js 의 RSVP_SHEET_URL 에 넣어 주세요.');
+        return;
+    }
 
     const side = document.querySelector('.rsvp-opt-btn[data-type="side"].active').getAttribute('data-value');
     const attend = document.querySelector('.rsvp-opt-btn[data-type="attend"].active').getAttribute('data-value');
@@ -398,23 +406,43 @@ function submitRSVP() {
     const count = document.getElementById('rsvp-count').value;
 
     const now = new Date();
-    const timeStr = now.toLocaleString();
-
-    database.ref('rsvp').push({
+    const payload = {
         name: name,
         phone4: phone4,
         side: side,
         attend: attend,
         meal: meal,
         count: count,
-        time: timeStr,
+        time: now.toLocaleString('ko-KR'),
         timestamp: Date.now()
+    };
+
+    const submitBtn = document.querySelector('#rsvp-page .copy-full');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '전송 중...';
+    }
+
+    // Google Apps Script는 브라우저 CORS 제한이 있어 no-cors 로 전송합니다.
+    // (응답 본문은 못 읽지만, 시트에는 정상적으로 행이 추가됩니다.)
+    fetch(RSVP_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
     }).then(() => {
         alert('소중한 참석 의사가 신랑·신부님께 잘 전달되었습니다. 감사합니다!');
         closeRSVP();
         nameInput.value = '';
         phoneInput.value = '';
-    }).catch(err => alert("전송 실패: " + err.message));
+    }).catch((err) => {
+        alert('전송 실패: ' + (err.message || err));
+    }).finally(() => {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '참석 의사 전달하기';
+        }
+    });
 }
 
 // ✉️ 마음 전하기 팝업 제어 함수
