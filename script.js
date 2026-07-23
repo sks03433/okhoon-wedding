@@ -110,13 +110,9 @@ function closeStory() {
 }
 
 // 갤러리
-const GALLERY_IMAGES = [
-    'gallery/01.jpg',
-    'gallery/02.jpg',
-    // 사진 추가 시 아래에 경로를 이어서 넣어주세요.
-    // 'gallery/03.jpg',
-    // 'gallery/04.jpg',
-];
+const GALLERY_IMAGES = Array.from({ length: 35 }, (_, i) =>
+    `gallery/${String(i + 1).padStart(2, '0')}.jpg`
+);
 
 let currentGalleryIndex = 0;
 let gallerySwipeStartX = 0;
