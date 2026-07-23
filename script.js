@@ -32,7 +32,24 @@ function onPointerEnd(clientY) {
     }
 }
 
+function disablePageZoom() {
+    const preventGesture = (e) => e.preventDefault();
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach((type) => {
+        document.addEventListener(type, preventGesture, { passive: false });
+    });
+
+    document.addEventListener('wheel', (e) => {
+        if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+}
+
 window.onload = function() {
+    disablePageZoom();
+
     const lockScreen = document.getElementById('lock-screen');
 
     // 터치 (모바일)
