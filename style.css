@@ -694,6 +694,16 @@ body {
     line-height: 1.6;
 }
 
+.story-timeline-card p + p {
+    margin-top: 6px;
+}
+
+.story-dialogue {
+    font-size: 0.84rem !important;
+    color: #48484a !important;
+    word-break: keep-all;
+}
+
 .story-parents {
     padding: 0 16px;
     display: flex;
@@ -754,7 +764,7 @@ body {
     object-fit: cover;
     border-radius: 14px;
     display: block;
-    margin: 0 auto 14px;
+    margin: 0 auto 12px;
     background: #f2f2f7;
 }
 
@@ -804,10 +814,14 @@ body {
 
 .story-profile-pledge {
     font-size: 0.9rem !important;
-    font-weight: 600;
+    font-weight: 700;
     color: #1c1c1e !important;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     line-height: 1.5;
+}
+
+.story-profile-pledge strong {
+    font-weight: 700;
 }
 
 .story-profile-mbti {
