@@ -127,7 +127,7 @@ function closeStory() {
 }
 
 // 갤러리
-const GALLERY_IMAGES = Array.from({ length: 35 }, (_, i) =>
+const GALLERY_IMAGES = Array.from({ length: 36 }, (_, i) =>
     `gallery/${String(i + 1).padStart(2, '0')}.jpg`
 );
 
