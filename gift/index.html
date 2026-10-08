@@ -232,17 +232,19 @@
   </div>
 
   <div class="card">
-    <p class="label">1. 신랑측 / 신부측</p>
-    <div class="row row-2" id="sideGroup">
-      <button class="opt" data-v="신랑측">신랑측</button>
-      <button class="opt" data-v="신부측">신부측</button>
-    </div>
-    <div class="sidelock" id="sideLockedBar" style="display:none;">
-      <span>이 접수처: <strong id="sideLockedLabel"></strong></span>
-      <button id="sideChangeBtn">변경</button>
+    <div style="display:none;">
+      <p class="label">1. 신랑측 / 신부측</p>
+      <div class="row row-2" id="sideGroup">
+        <button class="opt" data-v="신랑측">신랑측</button>
+        <button class="opt" data-v="신부측">신부측</button>
+      </div>
+      <div class="sidelock" id="sideLockedBar" style="display:none;">
+        <span>이 접수처: <strong id="sideLockedLabel"></strong></span>
+        <button id="sideChangeBtn">변경</button>
+      </div>
     </div>
 
-    <p class="label">2. 관계</p>
+    <p class="label">관계</p>
     <div class="row row-3" id="relGroup">
       <button class="opt" data-v="가족/친척">가족/친척</button>
       <button class="opt" data-v="부모님 지인">부모님 지인</button>
@@ -334,7 +336,9 @@ const PENDING_KEY = 'gift_pending_ops';
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxqMsGP5Pb5uEmCnEd32nYHChWeuv9TLe4ycoIJVWRdwAQRbTlmyn6zI4oJ2ItCUlvs/exec';
 let entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 const sheetUrl = SHEET_URL;
-let fixedSide = localStorage.getItem(FIXED_SIDE_KEY) || null;
+// 이 접수처는 신랑측 전용이라 저장된 값과 관계없이 신랑측으로 고정한다
+let fixedSide = '신랑측';
+localStorage.setItem(FIXED_SIDE_KEY, fixedSide);
 let seqCounter = parseInt(localStorage.getItem(SEQ_KEY) || '0', 10);
 if (fixedSide) side = fixedSide;
 
