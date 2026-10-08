@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>축의금 접수</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: #fdf8f5;
+    color: #3a2f2a;
+    padding: 20px 14px 60px;
+  }
+  .wrap { max-width: 460px; margin: 0 auto; }
+  h1 {
+    font-size: 19px;
+    font-weight: 600;
+    text-align: center;
+    margin: 4px 0 16px;
+    color: #7a4a52;
+  }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: 0 2px 10px rgba(122,74,82,0.08);
+    margin-bottom: 16px;
+  }
+  .label {
+    font-size: 13px;
+    color: #8a7570;
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+  .row {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-3 { grid-template-columns: repeat(3, 1fr); }
+  button.opt {
+    padding: 12px 6px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1.5px solid #e7d5cf;
+    background: #fff;
+    color: #4a3a35;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  button.opt:active { transform: scale(0.97); }
+  button.opt.selected {
+    background: #c9707e;
+    border-color: #c9707e;
+    color: #fff;
+    font-weight: 600;
+  }
+  input[type=text], input[type=number], input[type=tel], select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1.5px solid #e7d5cf;
+    background: #fffdfc;
+    color: #3a2f2a;
+  }
+  input:focus, select:focus { outline: none; border-color: #c9707e; }
+  .req { color: #c9707e; font-weight: 700; font-size: 12px; margin-left: 3px; }
+  .chip {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: 1.5px solid #e7d5cf;
+    background: #fff;
+    color: #7a4a52;
+    cursor: pointer;
+  }
+  .chip.active {
+    background: #c9707e;
+    border-color: #c9707e;
+    color: #fff;
+    font-weight: 600;
+  }
+  .addbtn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background: #7a4a52;
+    color: #fff;
+    cursor: pointer;
+  }
+  .addbtn:disabled {
+    background: #d8c8c3;
+    cursor: not-allowed;
+  }
+  .addbtn:active:not(:disabled) { transform: scale(0.98); }
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stat {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(122,74,82,0.06);
+  }
+  .stat .n { font-size: 18px; font-weight: 700; color: #7a4a52; }
+  .stat .l { font-size: 11px; color: #a08a84; margin-top: 2px; }
+  .log { list-style: none; margin: 0; padding: 0; }
+  .log li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    box-shadow: 0 1px 4px rgba(122,74,82,0.06);
+  }
+  .log .info { line-height: 1.5; }
+  .log .tag {
+    display: inline-block;
+    font-size: 11px;
+    background: #f7e8e2;
+    color: #a05a67;
+    padding: 2px 7px;
+    border-radius: 6px;
+    margin-right: 4px;
+  }
+  .log .del {
+    border: none;
+    background: none;
+    color: #b98c8c;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 6px;
+  }
+  .log .edit {
+    border: 1px solid #e7d5cf;
+    background: #fff;
+    color: #7a4a52;
+    font-size: 11px;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .sidelock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #8a7570;
+    margin-bottom: 18px;
+  }
+  .sidelock strong { color: #7a4a52; }
+  .sidelock button {
+    border: none;
+    background: none;
+    color: #c9707e;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .counter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1.5px solid #e7d5cf;
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: #fffdfc;
+  }
+  .counter-l { font-size: 13px; color: #8a7570; }
+  .counter-n { font-size: 16px; font-weight: 700; color: #4a3a35; min-width: 20px; text-align: center; }
+  .ctbtn {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1.5px solid #e7d5cf;
+    background: #fff;
+    color: #7a4a52;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .ctbtn:active { transform: scale(0.94); }
+  .empty { text-align: center; color: #b8a8a2; font-size: 13px; padding: 16px 0; }
+  .toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
+  .toolbar button {
+    flex: 1;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 8px;
+    border: 1px solid #e7d5cf;
+    background: #fff;
+    color: #7a4a52;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>축의금 접수</h1>
+  <p style="text-align:center;font-size:12px;color:#a08a84;margin:-6px 0 12px">Powered by <strong style="color:#c0604a">다미지기</strong> · 그날의 마음을, 온전히</p>
+
+  <div class="card" style="padding:14px 16px;">
+    <p class="label" style="margin-bottom:6px;">실시간 연동</p>
+    <div id="syncStatus" style="font-size:12px;color:#a08a84;"></div>
+  </div>
+
+  <div style="text-align:center;background:#fff5f3;border:1.5px solid #e7c5be;border-radius:14px;padding:10px 0;margin-bottom:12px">
+    <div style="font-size:12px;color:#8a7570;margin-bottom:2px">현재 접수 중인 봉투 번호</div>
+    <div id="nextSeqNum" style="font-size:36px;font-weight:700;color:#c0604a;line-height:1.1">1</div>
+  </div>
+
+  <div class="card">
+    <p class="label">1. 신랑측 / 신부측</p>
+    <div class="row row-2" id="sideGroup">
+      <button class="opt" data-v="신랑측">신랑측</button>
+      <button class="opt" data-v="신부측">신부측</button>
+    </div>
+    <div class="sidelock" id="sideLockedBar" style="display:none;">
+      <span>이 접수처: <strong id="sideLockedLabel"></strong></span>
+      <button id="sideChangeBtn">변경</button>
+    </div>
+
+    <p class="label">2. 관계</p>
+    <div class="row row-3" id="relGroup">
+      <button class="opt" data-v="가족/친척">가족/친척</button>
+      <button class="opt" data-v="부모님 지인">부모님 지인</button>
+      <button class="opt" data-v="__dynamic__" id="relDynamicBtn">신랑/신부 지인</button>
+      <button class="opt" data-v="미수집">미수집</button>
+    </div>
+
+    <p class="label">성함<span class="req">*필수</span></p>
+    <div style="margin-bottom:14px;">
+      <input type="text" id="nameInput" placeholder="예: 홍길동">
+    </div>
+
+    <p class="label">휴대폰번호 (선택)</p>
+    <div style="margin-bottom:14px;">
+      <input type="tel" id="phoneInput" placeholder="예: 010-1234-5678">
+    </div>
+
+    <p class="label">금액<span class="req">*필수</span></p>
+    <div style="margin-bottom:14px;">
+      <select id="amountSelect">
+        <option value="">선택하세요</option>
+        <option value="0">0원</option>
+        <option value="50000">5만원</option>
+        <option value="100000">10만원</option>
+        <option value="150000">15만원</option>
+        <option value="200000">20만원</option>
+        <option value="250000">25만원</option>
+        <option value="300000">30만원</option>
+        <option value="custom">직접 입력</option>
+      </select>
+      <input type="text" inputmode="numeric" id="amountCustom" placeholder="예: 70,000" style="display:none;margin-top:8px;">
+    </div>
+
+    <p class="label">식권 수량</p>
+    <div class="row row-2" style="margin-bottom:18px;">
+      <div class="counter">
+        <span class="counter-l">대인</span>
+        <button class="ctbtn" data-target="adult" data-dir="-1">−</button>
+        <span class="counter-n" id="adultCount">0</span>
+        <button class="ctbtn" data-target="adult" data-dir="1">+</button>
+      </div>
+      <div class="counter">
+        <span class="counter-l">소인</span>
+        <button class="ctbtn" data-target="child" data-dir="-1">−</button>
+        <span class="counter-n" id="childCount">0</span>
+        <button class="ctbtn" data-target="child" data-dir="1">+</button>
+      </div>
+    </div>
+
+    <p class="label">비고 (선택)</p>
+    <div style="margin-bottom:14px;">
+      <input type="text" id="noteInput" placeholder="예: 화환 별도, 카드만 전달 등">
+      <button type="button" id="noteTransferBtn" class="chip">계좌이체</button>
+    </div>
+
+    <button class="addbtn" id="addBtn" disabled>등록하고 다음 손님 받기</button>
+    <button id="cancelEditBtn" style="display:none;width:100%;margin-top:8px;padding:10px;background:#fff;border:1.5px solid #e7d5cf;border-radius:12px;color:#8a7570;cursor:pointer;">취소</button>
+  </div>
+
+  <div class="summary">
+    <div class="stat"><div class="n" id="totalCount">0</div><div class="l">총 인원</div></div>
+    <div class="stat"><div class="n" id="groomCount">0</div><div class="l">신랑측</div></div>
+    <div class="stat"><div class="n" id="brideCount">0</div><div class="l">신부측</div></div>
+  </div>
+  <div class="summary">
+    <div class="stat"><div class="n" id="totalAmount">0원</div><div class="l">총 금액</div></div>
+    <div class="stat"><div class="n" id="totalAdult">0</div><div class="l">식권 대인</div></div>
+    <div class="stat"><div class="n" id="totalChild">0</div><div class="l">식권 소인</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button id="exportBtn">엑셀로 내보내기</button>
+    <button id="clearBtn">전체 초기화</button>
+  </div>
+
+  <input type="text" id="searchInput" placeholder="이름으로 검색" style="margin-bottom:10px;">
+  <ul class="log" id="logList"></ul>
+</div>
+
+<script>
+let side = null, rel = null;
+let adult = 0, child = 0;
+let editingIndex = null;
+const STORAGE_KEY = 'gift_envelope_log_v2';
+const FIXED_SIDE_KEY = 'gift_fixed_side';
+const SEQ_KEY = 'gift_seq_counter';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxqMsGP5Pb5uEmCnEd32nYHChWeuv9TLe4ycoIJVWRdwAQRbTlmyn6zI4oJ2ItCUlvs/exec';
+let entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+const sheetUrl = SHEET_URL;
+let fixedSide = localStorage.getItem(FIXED_SIDE_KEY) || null;
+let seqCounter = parseInt(localStorage.getItem(SEQ_KEY) || '0', 10);
+if (fixedSide) side = fixedSide;
+
+function nextSeq(){
+  seqCounter += 1;
+  localStorage.setItem(SEQ_KEY, String(seqCounter));
+  return seqCounter;
+}
+
+function updateSideUI(){
+  const group = document.getElementById('sideGroup');
+  const bar = document.getElementById('sideLockedBar');
+  if (fixedSide){
+    group.style.display = 'none';
+    bar.style.display = 'flex';
+    document.getElementById('sideLockedLabel').textContent = fixedSide;
+  } else {
+    group.style.display = 'grid';
+    bar.style.display = 'none';
+  }
+}
+
+function updateSyncStatus(){
+  document.getElementById('syncStatus').textContent = sheetUrl
+    ? '✓ 구글 시트 연동됨 - 등록 시 자동 전송됩니다'
+    : '연동 안 함 - 이 기기에만 저장됩니다';
+}
+
+function syncToSheet(entry){
+  if (!sheetUrl) return;
+  fetch(sheetUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ ...entry, type: 'gift' })
+  }).catch(()=>{});
+}
+
+updateSyncStatus();
+
+function fmt(n){ return (n || 0).toLocaleString('ko-KR') + '원'; }
+
+function dynamicRelLabel(){
+  return side === '신부측' ? '신부 지인' : '신랑 지인';
+}
+
+function getAmount(){
+  const sel = document.getElementById('amountSelect').value;
+  if (sel === '') return null;
+  if (sel === 'custom'){
+    const raw = document.getElementById('amountCustom').value.replace(/,/g, '');
+    if (raw === '') return null;
+    const n = parseInt(raw, 10);
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  }
+  const n = parseInt(sel, 10);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+function formatAmountCustom(){
+  const input = document.getElementById('amountCustom');
+  const digits = input.value.replace(/[^0-9]/g, '');
+  input.value = digits === '' ? '' : Number(digits).toLocaleString('ko-KR');
+}
+
+function formatPhoneInput(){
+  const input = document.getElementById('phoneInput');
+  const digits = input.value.replace(/[^0-9]/g, '').slice(0, 11);
+  let formatted = digits;
+  if (digits.length > 7){
+    formatted = digits.slice(0,3) + '-' + digits.slice(3,7) + '-' + digits.slice(7);
+  } else if (digits.length > 3){
+    formatted = digits.slice(0,3) + '-' + digits.slice(3);
+  }
+  input.value = formatted;
+}
+
+function syncTransferChip(){
+  const val = document.getElementById('noteInput').value;
+  document.getElementById('noteTransferBtn').classList.toggle('active', val.includes('계좌이체'));
+}
+
+document.getElementById('noteTransferBtn').onclick = () => {
+  const input = document.getElementById('noteInput');
+  if (input.value.includes('계좌이체')){
+    input.value = input.value.replace(/,?\s*계좌이체/, '').trim();
+  } else {
+    input.value = input.value.trim() ? input.value.trim() + ', 계좌이체' : '계좌이체';
+  }
+  syncTransferChip();
+};
+
+function renderForm(){
+  document.querySelectorAll('#sideGroup .opt').forEach(b=>{
+    b.classList.toggle('selected', b.dataset.v === side);
+  });
+  document.getElementById('relDynamicBtn').textContent = dynamicRelLabel();
+  document.querySelectorAll('#relGroup .opt').forEach(b=>{
+    const val = b.id === 'relDynamicBtn' ? dynamicRelLabel() : b.dataset.v;
+    b.classList.toggle('selected', val === rel);
+  });
+  document.getElementById('adultCount').textContent = adult;
+  document.getElementById('childCount').textContent = child;
+  const name = document.getElementById('nameInput').value.trim();
+  const amount = getAmount();
+  const ready = side && rel && name !== '' && amount !== null;
+
+  document.getElementById('addBtn').disabled = !ready;
+  syncTransferChip();
+}
+
+function renderLog(){
+  const list = document.getElementById('logList');
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const indexed = entries
+    .map((e, i) => ({ e, i }))
+    .filter(({ e }) => !q || (e.name || '').toLowerCase().includes(q));
+  list.innerHTML = '';
+  if (indexed.length === 0){
+    list.innerHTML = `<div class="empty">${entries.length === 0 ? '아직 등록된 손님이 없어요.' : '검색 결과가 없어요.'}</div>`;
+  } else {
+    indexed.slice().reverse().forEach(({ e, i }) => {
+      const li = document.createElement('li');
+      const meal = (e.adult || e.child) ? `· 대인${e.adult||0} 소인${e.child||0}` : '';
+      const note = e.note ? `· ${e.note}` : '';
+      const phone = e.phone ? `· ${e.phone}` : '';
+      const seq = e.seq || (i + 1);
+      li.innerHTML = `<div class="info">
+          <span class="tag">#${seq}</span><span class="tag">${e.side}</span><span class="tag">${e.rel}</span>
+          ${e.name ? e.name : ''} · ${fmt(e.amount)} ${meal} ${phone} ${note}
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0;">
+          <button class="edit" data-idx="${i}">수정</button>
+          <button class="del" data-idx="${i}">✕</button>
+        </div>`;
+      list.appendChild(li);
+    });
+  }
+  document.querySelectorAll('.del').forEach(btn=>{
+    btn.onclick = () => {
+      const idx = parseInt(btn.dataset.idx, 10);
+      const removed = entries[idx];
+      if (editingIndex === idx) cancelEdit();
+      else if (editingIndex !== null && idx < editingIndex) editingIndex--;
+      entries.splice(idx, 1);
+      if (removed && removed.seq){
+        entries.forEach(en => { if (en.seq && en.seq > removed.seq) en.seq -= 1; });
+        seqCounter = Math.max(0, seqCounter - 1);
+        localStorage.setItem(SEQ_KEY, String(seqCounter));
+      }
+      save();
+      if (removed) syncToSheet({ seq: removed.seq, side: removed.side, action: 'delete' });
+      renderLog();
+      renderSummary();
+    };
+  });
+  document.querySelectorAll('.edit').forEach(btn=>{
+    btn.onclick = () => startEdit(parseInt(btn.dataset.idx, 10));
+  });
+}
+
+function startEdit(idx){
+  const e = entries[idx];
+  if (!e) return;
+  editingIndex = idx;
+  side = e.side;
+  rel = e.rel;
+  adult = e.adult || 0;
+  child = e.child || 0;
+  document.getElementById('nameInput').value = e.name || '';
+  document.getElementById('phoneInput').value = e.phone || '';
+  document.getElementById('noteInput').value = e.note || '';
+  const presetValues = ['0','50000','100000','150000','200000','250000','300000'];
+  const amtStr = String(e.amount != null ? e.amount : '');
+  const amountSelect = document.getElementById('amountSelect');
+  const amountCustom = document.getElementById('amountCustom');
+  if (presetValues.includes(amtStr)){
+    amountSelect.value = amtStr;
+    amountCustom.style.display = 'none';
+    amountCustom.value = '';
+  } else {
+    amountSelect.value = 'custom';
+    amountCustom.style.display = 'block';
+    amountCustom.value = (e.amount || 0).toLocaleString('ko-KR');
+  }
+  document.getElementById('addBtn').textContent = '수정 완료';
+  document.getElementById('cancelEditBtn').style.display = 'block';
+  renderForm();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEdit(){
+  editingIndex = null;
+  document.getElementById('nameInput').value = '';
+  document.getElementById('phoneInput').value = '';
+  document.getElementById('amountSelect').value = '';
+  document.getElementById('amountCustom').value = '';
+  document.getElementById('amountCustom').style.display = 'none';
+  document.getElementById('noteInput').value = '';
+  rel = null;
+  adult = 0;
+  child = 0;
+  document.getElementById('addBtn').textContent = '등록하고 다음 손님 받기';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  renderForm();
+}
+
+document.getElementById('cancelEditBtn').onclick = cancelEdit;
+document.getElementById('searchInput').addEventListener('input', renderLog);
+
+function renderSummary(){
+  document.getElementById('totalCount').textContent = entries.length;
+  document.getElementById('groomCount').textContent = entries.filter(e=>e.side==='신랑측').length;
+  document.getElementById('brideCount').textContent = entries.filter(e=>e.side==='신부측').length;
+  const total = entries.reduce((s,e)=>s + (e.amount||0), 0);
+  document.getElementById('totalAmount').textContent = fmt(total);
+  document.getElementById('totalAdult').textContent = entries.reduce((s,e)=>s + (e.adult||0), 0);
+  document.getElementById('totalChild').textContent = entries.reduce((s,e)=>s + (e.child||0), 0);
+  document.getElementById('nextSeqNum').textContent = seqCounter + 1;
+}
+
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+document.querySelectorAll('#sideGroup .opt').forEach(b=>{
+  b.onclick = () => {
+    side = b.dataset.v;
+    fixedSide = side;
+    localStorage.setItem(FIXED_SIDE_KEY, fixedSide);
+    updateSideUI();
+    if (rel === '신랑 지인' || rel === '신부 지인') rel = dynamicRelLabel();
+    renderForm();
+  };
+});
+document.getElementById('sideChangeBtn').onclick = () => {
+  fixedSide = null;
+  localStorage.removeItem(FIXED_SIDE_KEY);
+  side = null;
+  rel = null;
+  updateSideUI();
+  renderForm();
+};
+document.querySelectorAll('#relGroup .opt').forEach(b=>{
+  b.onclick = () => { rel = (b.id === 'relDynamicBtn') ? dynamicRelLabel() : b.dataset.v; renderForm(); };
+});
+document.querySelectorAll('.ctbtn').forEach(b=>{
+  b.onclick = () => {
+    const dir = parseInt(b.dataset.dir, 10);
+    if (b.dataset.target === 'adult') adult = Math.max(0, adult + dir);
+    else child = Math.max(0, child + dir);
+    renderForm();
+  };
+});
+
+document.getElementById('nameInput').addEventListener('input', renderForm);
+document.getElementById('amountSelect').addEventListener('change', () => {
+  const isCustom = document.getElementById('amountSelect').value === 'custom';
+  const customInput = document.getElementById('amountCustom');
+  customInput.style.display = isCustom ? 'block' : 'none';
+  if (!isCustom) customInput.value = '';
+  renderForm();
+});
+document.getElementById('amountCustom').addEventListener('input', () => {
+  formatAmountCustom();
+  renderForm();
+});
+document.getElementById('phoneInput').addEventListener('input', formatPhoneInput);
+document.getElementById('noteInput').addEventListener('input', syncTransferChip);
+
+document.getElementById('addBtn').onclick = () => {
+  const name = document.getElementById('nameInput').value.trim();
+  const amount = getAmount();
+  const note = document.getElementById('noteInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
+  if (!side || !rel || !name || amount === null) return;
+
+  if (editingIndex !== null){
+    const existing = entries[editingIndex];
+    const updated = { ...existing, side, rel, name, amount, adult, child, note, phone };
+    entries[editingIndex] = updated;
+    save();
+    syncToSheet({ ...updated, origSide: existing.side, action: 'update' });
+    editingIndex = null;
+    document.getElementById('addBtn').textContent = '등록하고 다음 손님 받기';
+    document.getElementById('cancelEditBtn').style.display = 'none';
+  } else {
+    const _now = new Date();
+    const _timeStr = `${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}-${String(_now.getDate()).padStart(2,'0')}, ${String(_now.getHours()).padStart(2,'0')}:${String(_now.getMinutes()).padStart(2,'0')}`;
+    const entry = { side, rel, name, amount, adult, child, note, phone, seq: nextSeq(), time: _timeStr };
+    entries.push(entry);
+    save();
+    syncToSheet({ ...entry, action: 'add' });
+  }
+
+  document.getElementById('nameInput').value = '';
+  document.getElementById('phoneInput').value = '';
+  document.getElementById('amountSelect').value = '';
+  document.getElementById('amountCustom').value = '';
+  document.getElementById('amountCustom').style.display = 'none';
+  document.getElementById('noteInput').value = '';
+  rel = null;
+  adult = 0;
+  child = 0;
+  renderForm();
+  renderLog();
+  renderSummary();
+};
+
+function xmlEscape(v){
+  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function cellStr(v, styleId){
+  const style = styleId ? ` ss:StyleID="${styleId}"` : '';
+  return `<Cell${style}><Data ss:Type="String">${xmlEscape(v)}</Data></Cell>`;
+}
+
+function cellNum(v, styleId){
+  const style = styleId ? ` ss:StyleID="${styleId}"` : '';
+  return `<Cell${style}><Data ss:Type="Number">${v}</Data></Cell>`;
+}
+
+function cellFormula(formulaR1C1, cachedNumber, styleId){
+  const style = styleId ? ` ss:StyleID="${styleId}"` : '';
+  return `<Cell${style} ss:Formula="${formulaR1C1}"><Data ss:Type="Number">${cachedNumber}</Data></Cell>`;
+}
+
+document.getElementById('exportBtn').onclick = () => {
+  const rows = entries.map((e, idx) => [
+    e.seq || (idx + 1), e.side, e.rel, e.name || '', e.amount || 0, e.adult || 0, e.child || 0,
+    new Date(e.time).toLocaleString('ko-KR'), e.note || '', e.phone || ''
+  ]);
+  const dataStart = 7;
+  const dataEnd = Math.max(dataStart, 6 + rows.length);
+  const totalAmount = entries.reduce((s,e)=>s + (e.amount||0), 0);
+  const totalAdult = entries.reduce((s,e)=>s + (e.adult||0), 0);
+  const totalChild = entries.reduce((s,e)=>s + (e.child||0), 0);
+
+  const overviewRows = [
+    `<Row>${cellStr('총 접수 금액','sLabel')}${cellFormula(`=SUM(R${dataStart}C5:R${dataEnd}C5)`, totalAmount)}</Row>`,
+    `<Row>${cellStr('접수 봉투 수','sLabel')}${cellFormula(`=COUNTA(R${dataStart}C2:R${dataEnd}C2)`, entries.length)}</Row>`,
+    `<Row>${cellStr('사용 식권(대인)','sLabel')}${cellFormula(`=SUM(R${dataStart}C6:R${dataEnd}C6)`, totalAdult)}</Row>`,
+    `<Row>${cellStr('사용 식권(소인)','sLabel')}${cellFormula(`=SUM(R${dataStart}C7:R${dataEnd}C7)`, totalChild)}</Row>`,
+    `<Row></Row>`
+  ].join('');
+
+  const headerLabels = ['순번','구분','관계','성함','금액','식권_대인','식권_소인','등록시각','비고','휴대폰번호'];
+  const headerRow = `<Row>${headerLabels.map(h=>cellStr(h,'sHeader')).join('')}</Row>`;
+
+  const dataRows = rows.map(r => `<Row>${
+    cellNum(r[0])}${cellStr(r[1])}${cellStr(r[2])}${cellStr(r[3])}${cellNum(r[4])}${cellNum(r[5])}${cellNum(r[6])}${cellStr(r[7])}${cellStr(r[8])}${cellStr(r[9])
+  }</Row>`).join('');
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Styles>
+  <Style ss:ID="sLabel"><Font ss:Bold="1"/></Style>
+  <Style ss:ID="sHeader"><Font ss:Bold="1"/><Interior ss:Color="#F7E8E2" ss:Pattern="Solid"/></Style>
+ </Styles>
+ <Worksheet ss:Name="축의금 장부">
+  <Table>${overviewRows}${headerRow}${dataRows}</Table>
+ </Worksheet>
+</Workbook>`;
+
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth()+1).padStart(2,'0');
+  const d = String(today.getDate()).padStart(2,'0');
+  const filename = `다미지기 축의금 장부_${y}.${m}.${d}.xls`;
+
+  const blob = new Blob([xml], { type: 'application/vnd.ms-excel' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById('clearBtn').onclick = () => {
+  if (confirm('등록된 모든 명단을 삭제할까요? 되돌릴 수 없어요.')){
+    entries = [];
+    seqCounter = 0;
+    localStorage.setItem(SEQ_KEY, '0');
+    save();
+    renderLog();
+    renderSummary();
+  }
+};
+
+updateSideUI();
+renderForm();
+renderLog();
+renderSummary();
+</script>
+</body>
+</html>

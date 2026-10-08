@@ -54,6 +54,16 @@ const RSVP_SHEET_URL = 'https://script.google.com/macros/s/XXXX/exec';
 > 시트 자체는 비공개로 두세요. 공개할 필요는 없습니다.  
 > 웹 앱만 “모든 사용자”로 배포하면 하객 제출이 시트에 쌓입니다.
 
+### 축의금 접수 (직원용) → 구글 시트 연동
+
+- 접수 화면: [`gift/index.html`](gift/index.html) → 배포 주소 `https://sks03433.github.io/okhoon-wedding/gift/`
+- 청첩장 화면에는 링크가 없고, 접수 담당자에게만 주소를 전달합니다.
+- RSVP와 **같은 웹 앱 URL**을 쓰며, 같은 스프레드시트의 `축의금` 탭에 저장됩니다.
+- 등록·수정·삭제가 시트에 그대로 반영됩니다. 행은 `구분 + 순번`으로 찾습니다.
+- 접수 기기 1대당 한쪽(신랑측 또는 신부측)만 받아야 순번이 겹치지 않습니다.
+
+`rsvp.gs`를 수정했다면 Apps Script에 다시 붙여넣고 **배포 관리 → 수정 → 새 버전**으로 재배포해야 반영됩니다.
+
 ---
 
 ## 하객 사용법
@@ -109,6 +119,8 @@ okhoon-wedding/
 ├── profile/            # 미니 프로필 어린시절 사진
 │   ├── groom-child.jpg
 │   └── bride-child.jpg
+├── gift/index.html     # 축의금 접수 (직원용)
+├── google-apps-script/rsvp.gs  # RSVP·축의금 → 구글 시트
 └── 68efc2557f10d891ca18ba81_더아리엘 약도.pdf  # 약도 원본 PDF
 ```
 
