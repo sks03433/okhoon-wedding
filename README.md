@@ -59,8 +59,10 @@ const RSVP_SHEET_URL = 'https://script.google.com/macros/s/XXXX/exec';
 - 접수 화면: [`gift/index.html`](gift/index.html) → 배포 주소 `https://sks03433.github.io/okhoon-wedding/gift/`
 - 청첩장 화면에는 링크가 없고, 접수 담당자에게만 주소를 전달합니다.
 - RSVP와 **같은 웹 앱 URL**을 쓰며, 같은 스프레드시트의 `축의금` 탭에 저장됩니다.
-- 등록·수정·삭제가 시트에 그대로 반영됩니다. 행은 `구분 + 순번`으로 찾습니다.
-- 접수 기기 1대당 한쪽(신랑측 또는 신부측)만 받아야 순번이 겹치지 않습니다.
+- 등록·수정·삭제가 시트에 그대로 반영됩니다. 기기마다 구분값(`D-XXXX`)이 붙고, 행은 `기기 + 순번`으로 찾습니다.
+- 삭제해도 다른 봉투 번호는 바뀌지 않고, 전체 초기화 후에도 번호는 이어서 셉니다. 전체 초기화는 그 기기 화면만 비우고 시트 기록은 남깁니다.
+- 인터넷이 끊겨 전송에 실패하면 화면에 `미전송 N건`이 뜹니다. 연결이 돌아오면 자동으로 다시 보내고, `다시 보내기` 버튼으로 직접 보낼 수도 있습니다.
+- 행사 후 각 접수 기기에서 **엑셀로 내보내기**로 백업해 두세요.
 
 `rsvp.gs`를 수정했다면 Apps Script에 다시 붙여넣고 **배포 관리 → 수정 → 새 버전**으로 재배포해야 반영됩니다.
 
@@ -207,12 +209,12 @@ doc.close()
 
 `index.html` → `#snap-page` 내 Dropbox 업로드 URL 수정
 
-### Firebase (방명록 · 참석 여부)
+### Firebase (방명록)
 
 `index.html` 상단 `firebaseConfig`에 프로젝트 설정이 있습니다.
 
 - **방명록** → Realtime Database `guestbook` 노드
-- **참석 여부** → Realtime Database `rsvp` 노드
+- 참석 여부는 Firebase가 아니라 구글 시트에 저장됩니다. ([참석 의사 → 구글 시트 연동](#참석-의사--구글-시트-연동) 참고)
 
 Firebase Console에서 Realtime Database 규칙을 설정해야 합니다.  
 방명록 삭제용 관리자 비밀번호는 `script.js` → `deleteComment()` 함수에 있습니다.

@@ -27,10 +27,11 @@ var GIFT_HEADER = [
   '식권_대인',
   '식권_소인',
   '비고',
-  '수정시각'
+  '수정시각',
+  '기기'
 ];
 var GIFT_COL_SEQ = 2;
-var GIFT_COL_SIDE = 3;
+var GIFT_COL_DEVICE = 12;
 
 function ensureHeader_(sheet) {
   if (sheet.getLastRow() === 0) {
@@ -55,6 +56,9 @@ function ensureGiftHeader_(sheet) {
     // 휴대폰번호 앞자리 0이 사라지지 않도록 텍스트 서식
     sheet.getRange(1, 6, sheet.getMaxRows(), 1).setNumberFormat('@');
     sheet.setFrozenRows(1);
+  } else if (sheet.getRange(1, GIFT_COL_DEVICE).getValue() === '') {
+    // 이전 버전에서 만든 탭에는 '기기' 열 제목이 없다
+    sheet.getRange(1, GIFT_COL_DEVICE).setValue(GIFT_HEADER[GIFT_COL_DEVICE - 1]).setFontWeight('bold');
   }
 }
 
@@ -84,7 +88,8 @@ function handleRsvp_(data) {
   sheet.appendRow([
     submittedAt,
     data.name || '',
-    data.phone4 || '',
+    // 앞의 ' 는 숫자 변환을 막아 0437 같은 앞자리 0을 유지한다 (시트에는 보이지 않음)
+    data.phone4 ? "'" + data.phone4 : '',
     data.side || '',
     data.attend || '',
     data.meal || '',
@@ -93,13 +98,13 @@ function handleRsvp_(data) {
   ]);
 }
 
-// 신랑측·신부측 접수대가 각각 1번부터 세므로 구분 + 순번으로 행을 찾는다
-function findGiftRow_(sheet, side, seq) {
+// 접수 기기마다 1번부터 세므로 기기 + 순번으로 행을 찾는다
+function findGiftRow_(sheet, device, seq) {
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return -1;
   var values = sheet.getRange(2, 1, lastRow - 1, GIFT_HEADER.length).getValues();
   for (var i = 0; i < values.length; i++) {
-    if (String(values[i][GIFT_COL_SIDE - 1]) === String(side) &&
+    if (String(values[i][GIFT_COL_DEVICE - 1]) === String(device) &&
         Number(values[i][GIFT_COL_SEQ - 1]) === Number(seq)) {
       return i + 2;
     }
@@ -128,35 +133,29 @@ function handleGift_(data) {
     var sheet = getSheet_(GIFT_SHEET_NAME);
     ensureGiftHeader_(sheet);
     var now = formatSeoulDateTime_(new Date());
+    var row = findGiftRow_(sheet, data.device, data.seq);
 
     if (data.action === 'add') {
-      sheet.appendRow([now].concat(giftRowValues_(data), ['']));
+      // 재전송으로 같은 건이 다시 와도 행이 중복되지 않게 한다
+      if (row === -1) {
+        sheet.appendRow([now].concat(giftRowValues_(data), ['', data.device || '']));
+      } else {
+        sheet.getRange(row, 2, 1, 9).setValues([giftRowValues_(data)]);
+      }
       return;
     }
 
-    var keySide = data.origSide || data.side;
-    var row = findGiftRow_(sheet, keySide, data.seq);
     if (row === -1) return;
 
     if (data.action === 'update') {
       sheet.getRange(row, 2, 1, 9).setValues([giftRowValues_(data)]);
-      sheet.getRange(row, GIFT_HEADER.length).setValue(now);
+      sheet.getRange(row, 11).setValue(now);
       return;
     }
 
+    // 봉투에 적은 번호와 맞추기 위해 삭제해도 다른 행의 순번은 바꾸지 않는다
     if (data.action === 'delete') {
       sheet.deleteRow(row);
-      // 접수 화면과 동일하게 같은 구분의 뒷번호를 하나씩 당긴다
-      var lastRow = sheet.getLastRow();
-      if (lastRow < 2) return;
-      var range = sheet.getRange(2, GIFT_COL_SEQ, lastRow - 1, 2);
-      var values = range.getValues();
-      for (var i = 0; i < values.length; i++) {
-        if (String(values[i][1]) === String(keySide) && Number(values[i][0]) > Number(data.seq)) {
-          values[i][0] = Number(values[i][0]) - 1;
-        }
-      }
-      range.setValues(values);
     }
   } finally {
     lock.releaseLock();

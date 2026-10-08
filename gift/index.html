@@ -220,7 +220,10 @@
 
   <div class="card" style="padding:14px 16px;">
     <p class="label" style="margin-bottom:6px;">실시간 연동</p>
-    <div id="syncStatus" style="font-size:12px;color:#a08a84;"></div>
+    <div class="sidelock" style="margin-bottom:0;">
+      <span id="syncStatus" style="font-size:12px;color:#a08a84;"></span>
+      <button id="retryBtn" style="display:none;">다시 보내기</button>
+    </div>
   </div>
 
   <div style="text-align:center;background:#fff5f3;border:1.5px solid #e7c5be;border-radius:14px;padding:10px 0;margin-bottom:12px">
@@ -326,12 +329,23 @@ let editingIndex = null;
 const STORAGE_KEY = 'gift_envelope_log_v2';
 const FIXED_SIDE_KEY = 'gift_fixed_side';
 const SEQ_KEY = 'gift_seq_counter';
+const DEVICE_KEY = 'gift_device_id';
+const PENDING_KEY = 'gift_pending_ops';
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxqMsGP5Pb5uEmCnEd32nYHChWeuv9TLe4ycoIJVWRdwAQRbTlmyn6zI4oJ2ItCUlvs/exec';
 let entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 const sheetUrl = SHEET_URL;
 let fixedSide = localStorage.getItem(FIXED_SIDE_KEY) || null;
 let seqCounter = parseInt(localStorage.getItem(SEQ_KEY) || '0', 10);
 if (fixedSide) side = fixedSide;
+
+// 기기마다 1번부터 세므로 시트에서는 기기 구분값 + 순번으로 행을 찾는다
+let deviceId = localStorage.getItem(DEVICE_KEY);
+if (!deviceId){
+  deviceId = 'D-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  localStorage.setItem(DEVICE_KEY, deviceId);
+}
+let pendingOps = JSON.parse(localStorage.getItem(PENDING_KEY) || '[]');
+let flushing = false;
 
 function nextSeq(){
   seqCounter += 1;
@@ -353,20 +367,59 @@ function updateSideUI(){
 }
 
 function updateSyncStatus(){
-  document.getElementById('syncStatus').textContent = sheetUrl
-    ? '✓ 구글 시트 연동됨 - 등록 시 자동 전송됩니다'
-    : '연동 안 함 - 이 기기에만 저장됩니다';
+  const status = document.getElementById('syncStatus');
+  const retryBtn = document.getElementById('retryBtn');
+  if (pendingOps.length > 0){
+    status.textContent = `미전송 ${pendingOps.length}건 - 인터넷 연결 확인 후 다시 보내주세요`;
+    status.style.color = '#c0604a';
+    retryBtn.style.display = 'inline';
+    retryBtn.disabled = flushing;
+    retryBtn.textContent = flushing ? '전송 중...' : '다시 보내기';
+  } else {
+    status.textContent = `✓ 구글 시트 연동됨 - 등록 시 자동 전송됩니다 (기기 ${deviceId})`;
+    status.style.color = '#a08a84';
+    retryBtn.style.display = 'none';
+  }
+}
+
+function savePending(){
+  localStorage.setItem(PENDING_KEY, JSON.stringify(pendingOps));
+}
+
+// no-cors 라 응답 내용은 못 읽고, 네트워크 실패만 감지된다
+async function flushPending(){
+  if (flushing || pendingOps.length === 0) return;
+  flushing = true;
+  updateSyncStatus();
+  while (pendingOps.length > 0){
+    try {
+      await fetch(sheetUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(pendingOps[0])
+      });
+      pendingOps.shift();
+      savePending();
+    } catch (_) {
+      break;
+    }
+  }
+  flushing = false;
+  updateSyncStatus();
+  renderLog();
 }
 
 function syncToSheet(entry){
   if (!sheetUrl) return;
-  fetch(sheetUrl, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ ...entry, type: 'gift' })
-  }).catch(()=>{});
+  pendingOps.push({ ...entry, type: 'gift', device: deviceId });
+  savePending();
+  flushPending();
 }
+
+document.getElementById('retryBtn').onclick = flushPending;
+window.addEventListener('online', flushPending);
+setInterval(flushPending, 30000);
 
 updateSyncStatus();
 
@@ -447,6 +500,7 @@ function renderLog(){
   const indexed = entries
     .map((e, i) => ({ e, i }))
     .filter(({ e }) => !q || (e.name || '').toLowerCase().includes(q));
+  const pendingSeqs = new Set(pendingOps.map(op => op.seq));
   list.innerHTML = '';
   if (indexed.length === 0){
     list.innerHTML = `<div class="empty">${entries.length === 0 ? '아직 등록된 손님이 없어요.' : '검색 결과가 없어요.'}</div>`;
@@ -457,8 +511,9 @@ function renderLog(){
       const note = e.note ? `· ${e.note}` : '';
       const phone = e.phone ? `· ${e.phone}` : '';
       const seq = e.seq || (i + 1);
+      const pendingTag = pendingSeqs.has(e.seq) ? '<span class="tag" style="background:#c0604a;color:#fff;">미전송</span>' : '';
       li.innerHTML = `<div class="info">
-          <span class="tag">#${seq}</span><span class="tag">${e.side}</span><span class="tag">${e.rel}</span>
+          <span class="tag">#${seq}</span><span class="tag">${e.side}</span><span class="tag">${e.rel}</span>${pendingTag}
           ${e.name ? e.name : ''} · ${fmt(e.amount)} ${meal} ${phone} ${note}
         </div>
         <div style="display:flex;gap:4px;flex-shrink:0;">
@@ -472,16 +527,12 @@ function renderLog(){
     btn.onclick = () => {
       const idx = parseInt(btn.dataset.idx, 10);
       const removed = entries[idx];
+      if (!removed || !confirm(`#${removed.seq} ${removed.name} 님 기록을 삭제할까요?\n봉투 번호는 다시 쓰이지 않습니다.`)) return;
       if (editingIndex === idx) cancelEdit();
       else if (editingIndex !== null && idx < editingIndex) editingIndex--;
       entries.splice(idx, 1);
-      if (removed && removed.seq){
-        entries.forEach(en => { if (en.seq && en.seq > removed.seq) en.seq -= 1; });
-        seqCounter = Math.max(0, seqCounter - 1);
-        localStorage.setItem(SEQ_KEY, String(seqCounter));
-      }
       save();
-      if (removed) syncToSheet({ seq: removed.seq, side: removed.side, action: 'delete' });
+      syncToSheet({ seq: removed.seq, side: removed.side, action: 'delete' });
       renderLog();
       renderSummary();
     };
@@ -612,7 +663,7 @@ document.getElementById('addBtn').onclick = () => {
     const updated = { ...existing, side, rel, name, amount, adult, child, note, phone };
     entries[editingIndex] = updated;
     save();
-    syncToSheet({ ...updated, origSide: existing.side, action: 'update' });
+    syncToSheet({ ...updated, action: 'update' });
     editingIndex = null;
     document.getElementById('addBtn').textContent = '등록하고 다음 손님 받기';
     document.getElementById('cancelEditBtn').style.display = 'none';
@@ -661,7 +712,7 @@ function cellFormula(formulaR1C1, cachedNumber, styleId){
 document.getElementById('exportBtn').onclick = () => {
   const rows = entries.map((e, idx) => [
     e.seq || (idx + 1), e.side, e.rel, e.name || '', e.amount || 0, e.adult || 0, e.child || 0,
-    new Date(e.time).toLocaleString('ko-KR'), e.note || '', e.phone || ''
+    e.time || '', e.note || '', e.phone || ''
   ]);
   const dataStart = 7;
   const dataEnd = Math.max(dataStart, 6 + rows.length);
@@ -714,11 +765,11 @@ document.getElementById('exportBtn').onclick = () => {
   URL.revokeObjectURL(url);
 };
 
+// 시트 기록은 그대로 두고 이 기기 화면 목록만 비운다. 봉투 번호는 이어서 센다.
 document.getElementById('clearBtn').onclick = () => {
-  if (confirm('등록된 모든 명단을 삭제할까요? 되돌릴 수 없어요.')){
+  const pendingNote = pendingOps.length > 0 ? `\n미전송 ${pendingOps.length}건은 계속 전송을 시도합니다.` : '';
+  if (confirm(`이 기기의 명단을 모두 지울까요? 되돌릴 수 없어요.\n구글 시트 기록은 지워지지 않고, 봉투 번호는 이어서 셉니다.${pendingNote}`)){
     entries = [];
-    seqCounter = 0;
-    localStorage.setItem(SEQ_KEY, '0');
     save();
     renderLog();
     renderSummary();
@@ -729,6 +780,7 @@ updateSideUI();
 renderForm();
 renderLog();
 renderSummary();
+flushPending();
 </script>
 </body>
 </html>
