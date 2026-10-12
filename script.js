@@ -329,6 +329,9 @@ function addComment() {
     }).catch(err => alert("저장 실패: " + err.message));
 }
 
+// 삭제 확인용. 비밀번호를 화면 HTML에 넣지 않기 위해 메모리에만 둔다
+let guestbookPasswords = {};
+
 function listenComments() {
     database.ref('guestbook').orderByChild('timestamp').on('value', (snapshot) => {
         const listContainer = document.getElementById('guestbook-list');
@@ -339,9 +342,11 @@ function listenComments() {
         listContainer.innerHTML = '';
         let commentsArray = [];
 
+        guestbookPasswords = {};
         snapshot.forEach((childSnapshot) => {
             const key = childSnapshot.key;
             const data = childSnapshot.val();
+            guestbookPasswords[key] = data.password;
             commentsArray.push({ id: key, ...data });
         });
 
@@ -361,7 +366,7 @@ function listenComments() {
                     <span class="gb-comment-name">${escapeHtml(comment.name)}</span>
                     <div>
                         <span class="gb-comment-date">${comment.date}</span>
-                        <button class="gb-delete-btn" onclick="deleteComment('${comment.id}', '${comment.password}')">삭제</button>
+                        <button class="gb-delete-btn" onclick="deleteComment('${comment.id}')">삭제</button>
                     </div>
                 </div>
                 <div class="gb-comment-text">${escapeHtml(comment.content)}</div>
@@ -371,11 +376,11 @@ function listenComments() {
     });
 }
 
-function deleteComment(id, targetPassword) {
+function deleteComment(id) {
     const inputPwd = prompt('비밀번호를 입력하세요:');
     if (inputPwd === null) return;
 
-    if (inputPwd === targetPassword || inputPwd === 'okhoon0719') {
+    if (inputPwd === guestbookPasswords[id]) {
         if (confirm('이 메모를 삭제하시겠습니까?')) {
             database.ref('guestbook/' + id).remove()
                 .then(() => alert("삭제되었습니다."))
@@ -397,11 +402,16 @@ function selectOpt(btn) {
     btn.classList.add('active');
 }
 
-// 구글 시트 연동: Apps Script 웹 앱 URL을 아래에 붙여넣으세요.
+// 구글 시트 연동: Apps Script 웹 앱 URL을 아래에 붙여넣으세요. 비워두면 접수 마감으로 안내합니다.
 // 예: 'https://script.google.com/macros/s/XXXX/exec'
-const RSVP_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxqMsGP5Pb5uEmCnEd32nYHChWeuv9TLe4ycoIJVWRdwAQRbTlmyn6zI4oJ2ItCUlvs/exec';
+const RSVP_SHEET_URL = '';
 
 function submitRSVP() {
+    if (!RSVP_SHEET_URL) {
+        alert('참석 여부 접수가 마감되었습니다.\n축하해 주셔서 감사합니다.');
+        return;
+    }
+
     const nameInput = document.getElementById('rsvp-name');
     const phoneInput = document.getElementById('rsvp-phone4');
     const name = nameInput.value.trim();
@@ -410,10 +420,6 @@ function submitRSVP() {
     if (!name) { alert('성함을 입력해 주세요.'); return; }
     if (!/^\d{4}$/.test(phone4)) {
         alert('핸드폰 번호 뒤 4자리를 입력해 주세요.');
-        return;
-    }
-    if (!RSVP_SHEET_URL) {
-        alert('참석 의사 구글 시트 연동이 아직 설정되지 않았습니다.\nApps Script 웹 앱 URL을 script.js 의 RSVP_SHEET_URL 에 넣어 주세요.');
         return;
     }
 
@@ -475,39 +481,8 @@ function submitRSVP() {
 // ✉️ 마음 전하기 팝업 제어 함수
 function openRemittance() {
     document.getElementById('remittance-page').classList.remove('hidden');
-    switchRemitTab('groom'); // 열릴 때 기본적으로 신랑측이 보이도록 초기화
 }
 
 function closeRemittance() {
     document.getElementById('remittance-page').classList.add('hidden');
-}
-
-// 신랑측 / 신부측 탭 전환 함수
-function switchRemitTab(side) {
-    const tabGroom = document.getElementById('tab-groom');
-    const tabBride = document.getElementById('tab-bride');
-    const areaGroom = document.getElementById('area-groom');
-    const areaBride = document.getElementById('area-bride');
-
-    if (side === 'groom') {
-        tabGroom.classList.add('active');
-        tabBride.classList.remove('active');
-        areaGroom.style.display = 'block';
-        areaBride.style.display = 'none';
-    } else {
-        tabGroom.classList.remove('active');
-        tabBride.classList.add('active');
-        areaGroom.style.display = 'none';
-        areaBride.style.display = 'block';
-    }
-}
-
-// 계좌번호 복사 기능 함수
-function copyAccount(accountInfo) {
-    // 은행명과 계좌번호 숫자만 깔끔하게 추출하여 복사합니다.
-    navigator.clipboard.writeText(accountInfo).then(() => {
-        alert(`계좌번호가 복사되었습니다.\n(${accountInfo})`);
-    }).catch(err => {
-        console.error('복사 실패:', err);
-    });
 }

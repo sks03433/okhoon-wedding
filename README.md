@@ -54,15 +54,7 @@ const RSVP_SHEET_URL = 'https://script.google.com/macros/s/XXXX/exec';
 > 시트 자체는 비공개로 두세요. 공개할 필요는 없습니다.  
 > 웹 앱만 “모든 사용자”로 배포하면 하객 제출이 시트에 쌓입니다.
 
-### 축의금 접수 (직원용) → 구글 시트 연동
-
-- 접수 화면: [`gift/index.html`](gift/index.html) → 배포 주소 `https://sks03433.github.io/okhoon-wedding/gift/`
-- 청첩장 화면에는 링크가 없고, 접수 담당자에게만 주소를 전달합니다.
-- RSVP와 **같은 웹 앱 URL**을 쓰며, 같은 스프레드시트의 `축의금` 탭에 저장됩니다.
-- 등록·수정·삭제가 시트에 그대로 반영됩니다. 기기마다 구분값(`D-XXXX`)이 붙고, 행은 `기기 + 순번`으로 찾습니다.
-- 삭제해도 다른 봉투 번호는 바뀌지 않고, 전체 초기화 후에도 번호는 이어서 셉니다. 전체 초기화는 그 기기 화면만 비우고 시트 기록은 남깁니다.
-- 인터넷이 끊겨 전송에 실패하면 화면에 `미전송 N건`이 뜹니다. 연결이 돌아오면 자동으로 다시 보내고, `다시 보내기` 버튼으로 직접 보낼 수도 있습니다.
-- 행사 후 각 접수 기기에서 **엑셀로 내보내기**로 백업해 두세요.
+`RSVP_SHEET_URL`을 비워두면 참석 여부 제출 시 "접수가 마감되었습니다" 안내만 표시됩니다.
 
 `rsvp.gs`를 수정했다면 Apps Script에 다시 붙여넣고 **배포 관리 → 수정 → 새 버전**으로 재배포해야 반영됩니다.
 
@@ -78,7 +70,7 @@ const RSVP_SHEET_URL = 'https://script.google.com/macros/s/XXXX/exec';
 | 위치 | 메뉴 | 기능 |
 |------|------|------|
 | 상단 | 음악 재생 | BGM 재생/정지 |
-| 1열 | 마음 전하기 | 축의금 계좌 안내 |
+| 1열 | 마음 전하기 | 감사 인사 (계좌 안내 종료) |
 | 1열 | 게스트 스냅 | 사진 업로드 링크 (Dropbox) |
 | 1열 | 방명록 | 축하 메시지 작성·조회 |
 | 1열 | 안내사항 | 예식·주차·식사·촬영 안내 |
@@ -96,7 +88,7 @@ const RSVP_SHEET_URL = 'https://script.google.com/macros/s/XXXX/exec';
 ### 방명록
 - 이름, 비밀번호(4자리), 메시지 작성 후 등록
 - 본인 비밀번호로 삭제 가능
-- 관리자 비밀번호: `script.js`의 `deleteComment` 함수 참고
+- 다른 사람의 메모는 Firebase Console에서 직접 삭제합니다.
 
 ---
 
@@ -121,8 +113,7 @@ okhoon-wedding/
 ├── profile/            # 미니 프로필 어린시절 사진
 │   ├── groom-child.jpg
 │   └── bride-child.jpg
-├── gift/index.html     # 축의금 접수 (직원용)
-├── google-apps-script/rsvp.gs  # RSVP·축의금 → 구글 시트
+├── google-apps-script/rsvp.gs  # 참석 여부 → 구글 시트
 └── 68efc2557f10d891ca18ba81_더아리엘 약도.pdf  # 약도 원본 PDF
 ```
 
@@ -200,10 +191,9 @@ doc.close()
 - 카카오맵·네이버 지도 링크
 - `script.js` → `copyAddress()` 복사 주소
 
-### 마음 전하기(계좌) 수정
+### 마음 전하기 수정
 
-`index.html` → `#remittance-page` 섹션
-- 신랑측·신부측 계좌번호·이름 수정
+`index.html` → `#remittance-page` 섹션 (현재 감사 인사만 표시)
 
 ### 게스트 스냅 링크 변경
 
@@ -216,8 +206,7 @@ doc.close()
 - **방명록** → Realtime Database `guestbook` 노드
 - 참석 여부는 Firebase가 아니라 구글 시트에 저장됩니다. ([참석 의사 → 구글 시트 연동](#참석-의사--구글-시트-연동) 참고)
 
-Firebase Console에서 Realtime Database 규칙을 설정해야 합니다.  
-방명록 삭제용 관리자 비밀번호는 `script.js` → `deleteComment()` 함수에 있습니다.
+Firebase Console에서 Realtime Database 규칙을 설정해야 합니다.
 
 ---
 
